@@ -66,9 +66,13 @@ export function LegalLayout({
         <BackgroundGlow />
         <div className="container-px relative mx-auto max-w-4xl text-center">
           <Eyebrow>{eyebrow}</Eyebrow>
-          <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl">{title}</h1>
+          <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl">
+            {title}
+          </h1>
           {subtitle && (
-            <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">{subtitle}</p>
+            <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
+              {subtitle}
+            </p>
           )}
           <p className="mt-4 text-xs text-muted-foreground">
             Effective from February 2026
@@ -123,9 +127,16 @@ export function LegalSection({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-28 border-t border-border/60 py-10 first:border-t-0 first:pt-0">
-      <h2 className="font-display text-2xl font-semibold sm:text-3xl">{title}</h2>
-      <div className="mt-5 space-y-4 text-muted-foreground leading-relaxed">{children}</div>
+    <section
+      id={id}
+      className="scroll-mt-28 border-t border-border/60 py-10 first:border-t-0 first:pt-0"
+    >
+      <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+        {title}
+      </h2>
+      <div className="mt-5 space-y-4 text-muted-foreground leading-relaxed">
+        {children}
+      </div>
     </section>
   );
 }

@@ -1,4 +1,11 @@
-import { addDoc, collection, serverTimestamp, query, where, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 export type SubmissionKind =
@@ -9,7 +16,7 @@ export type SubmissionKind =
 
 export async function save(
   kind: SubmissionKind,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ) {
   await addDoc(collection(db, kind), {
     ...data,
@@ -31,11 +38,11 @@ export async function saveCareerApplication(data: Record<string, unknown>) {
 /** Returns true if email already exists in the given collection */
 export async function emailExists(
   kind: SubmissionKind,
-  email: string
+  email: string,
 ): Promise<boolean> {
   const q = query(
     collection(db, kind),
-    where("email", "==", email.toLowerCase().trim())
+    where("email", "==", email.toLowerCase().trim()),
   );
   const snap = await getDocs(q);
   return !snap.empty;

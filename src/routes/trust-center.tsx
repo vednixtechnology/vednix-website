@@ -34,7 +34,8 @@ export const Route = createFileRoute("/trust-center")({
       { property: "og:title", content: "Trust Center — Vednix Technology" },
       {
         property: "og:description",
-        content: "Privacy, security, and responsible data handling at Vednix Technology.",
+        content:
+          "Privacy, security, and responsible data handling at Vednix Technology.",
       },
       { property: "og:url", content: "/trust-center" },
     ],
@@ -137,8 +138,9 @@ function TrustCenterPage() {
             <span className="text-gradient">foundation we build on</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            We build financial products. That means we take privacy, security, and responsible data
-            handling more seriously than most — because your financial life depends on it.
+            We build financial products. That means we take privacy, security,
+            and responsible data handling more seriously than most — because
+            your financial life depends on it.
           </p>
         </div>
       </section>
@@ -152,7 +154,9 @@ function TrustCenterPage() {
               <Reveal key={pillar.title} delay={i * 0.06}>
                 <div
                   className={`glass h-full rounded-2xl overflow-hidden transition ${
-                    isEmerald ? "hover:border-emerald/30" : "hover:border-electric/30"
+                    isEmerald
+                      ? "hover:border-emerald/30"
+                      : "hover:border-electric/30"
                   }`}
                 >
                   <div
@@ -171,13 +175,20 @@ function TrustCenterPage() {
                         className={`h-6 w-6 ${isEmerald ? "text-emerald" : "text-electric"}`}
                       />
                     </span>
-                    <h2 className="font-display text-xl font-semibold">{pillar.title}</h2>
+                    <h2 className="font-display text-xl font-semibold">
+                      {pillar.title}
+                    </h2>
                   </div>
                   <div className="p-6">
-                    <p className="text-sm text-muted-foreground leading-relaxed">{pillar.desc}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {pillar.desc}
+                    </p>
                     <ul className="mt-5 space-y-2.5">
                       {pillar.points.map((point) => (
-                        <li key={point} className="flex items-start gap-2.5 text-sm">
+                        <li
+                          key={point}
+                          className="flex items-start gap-2.5 text-sm"
+                        >
                           <CheckCircle2
                             className={`mt-0.5 h-4 w-4 shrink-0 ${
                               isEmerald ? "text-emerald" : "text-electric"
@@ -211,7 +222,10 @@ function TrustCenterPage() {
               <h3 className="font-semibold">Technical Safeguards</h3>
               <ul className="mt-4 space-y-2.5">
                 {INFRASTRUCTURE_NOTES.map((note, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                  <li
+                    key={i}
+                    className="flex items-start gap-2.5 text-sm text-muted-foreground"
+                  >
                     <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald" />
                     {note}
                   </li>
@@ -239,8 +253,12 @@ function TrustCenterPage() {
                   <c.icon className="h-5 w-5 text-emerald" />
                 </span>
                 <div>
-                  <h3 className="font-display text-base font-semibold">{c.title}</h3>
-                  <p className="mt-1.5 text-sm text-muted-foreground">{c.desc}</p>
+                  <h3 className="font-display text-base font-semibold">
+                    {c.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground">
+                    {c.desc}
+                  </p>
                 </div>
               </GlassCard>
             </Reveal>
@@ -257,10 +275,11 @@ function TrustCenterPage() {
               <div>
                 <h3 className="font-semibold">A note on our stage</h3>
                 <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                  Vednix Technology is an early-stage startup. While we design with enterprise-grade
-                  security principles, we are a growing company and our security posture will
-                  continue to mature as we scale. We commit to transparency about our capabilities
-                  and limitations.
+                  Vednix Technology is an early-stage startup. While we design
+                  with enterprise-grade security principles, we are a growing
+                  company and our security posture will continue to mature as we
+                  scale. We commit to transparency about our capabilities and
+                  limitations.
                 </p>
               </div>
             </div>
@@ -274,8 +293,8 @@ function TrustCenterPage() {
               Questions about privacy or security?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              We're happy to answer any questions about how we handle your data, our security
-              approach, or our compliance posture.
+              We're happy to answer any questions about how we handle your data,
+              our security approach, or our compliance posture.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <LinkButton to="/contact">Contact Us</LinkButton>

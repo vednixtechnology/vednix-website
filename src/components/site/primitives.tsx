@@ -1,5 +1,16 @@
-import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useRef, type ReactNode, type ComponentPropsWithoutRef } from "react";
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import {
+  useEffect,
+  useRef,
+  type ReactNode,
+  type ComponentPropsWithoutRef,
+} from "react";
 import { Link } from "@tanstack/react-router";
 
 /* -------- Section wrapper -------- */
@@ -13,7 +24,10 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className={`container-px mx-auto max-w-7xl section-py ${className}`}>
+    <section
+      id={id}
+      className={`container-px mx-auto max-w-7xl section-py ${className}`}
+    >
       {children}
     </section>
   );
@@ -42,7 +56,9 @@ export function SectionHeading({
   align?: "left" | "center";
 }) {
   return (
-    <div className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
+    <div
+      className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}
+    >
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
         {title}
@@ -85,7 +101,11 @@ type BtnProps = {
   className?: string;
 };
 
-function btnClasses({ variant = "primary", size = "md", className = "" }: BtnProps) {
+function btnClasses({
+  variant = "primary",
+  size = "md",
+  className = "",
+}: BtnProps) {
   const base =
     "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none";
   const sizes = { md: "h-11 px-5 text-sm", lg: "h-12 px-6 text-base" };
@@ -132,7 +152,11 @@ export function Button({
 }: BtnProps & ComponentPropsWithoutRef<"button">) {
   const { variant, size, className, children, ...native } = rest;
   return (
-    <button type={type} {...native} className={btnClasses({ variant, size, className, children })}>
+    <button
+      type={type}
+      {...native}
+      className={btnClasses({ variant, size, className, children })}
+    >
       {children}
     </button>
   );
@@ -201,7 +225,10 @@ export function Counter({
 /* -------- Background glow -------- */
 export function BackgroundGlow() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
       <div className="absolute -top-32 left-1/2 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-electric/15 blur-[120px]" />
       <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-emerald/15 blur-[100px]" />
       <div className="absolute inset-0 grid-bg opacity-50" />

@@ -37,7 +37,10 @@ export const Route = createFileRoute("/about")({
           "Building intelligent financial infrastructure through innovation, AI, and user-centric financial technology. Learn about our story, mission, founders and mentors.",
       },
       { property: "og:title", content: "About — Vednix Technology" },
-      { property: "og:description", content: "Our story, mission, and the people behind Vednix Technology." },
+      {
+        property: "og:description",
+        content: "Our story, mission, and the people behind Vednix Technology.",
+      },
       { property: "og:url", content: "/about" },
     ],
     links: [{ rel: "canonical", href: "/about" }],
@@ -46,12 +49,36 @@ export const Route = createFileRoute("/about")({
 });
 
 const VALUES = [
-  { icon: Lightbulb, title: "Innovation", desc: "We continuously build practical technology that solves meaningful financial problems." },
-  { icon: ShieldCheck, title: "Trust", desc: "Security, transparency, and reliability are the foundation of everything we create." },
-  { icon: Users, title: "Customer First", desc: "Every product begins with understanding real user needs." },
-  { icon: Sparkles, title: "Responsible AI", desc: "We believe AI and technology should always empower users responsibly." },
-  { icon: HandshakeIcon, title: "Collaboration", desc: "We value partnerships, mentorship, and teamwork to achieve sustainable growth." },
-  { icon: Target, title: "Long-Term Impact", desc: "We focus on solutions that deliver lasting value rather than short-term trends." },
+  {
+    icon: Lightbulb,
+    title: "Innovation",
+    desc: "We continuously build practical technology that solves meaningful financial problems.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Trust",
+    desc: "Security, transparency, and reliability are the foundation of everything we create.",
+  },
+  {
+    icon: Users,
+    title: "Customer First",
+    desc: "Every product begins with understanding real user needs.",
+  },
+  {
+    icon: Sparkles,
+    title: "Responsible AI",
+    desc: "We believe AI and technology should always empower users responsibly.",
+  },
+  {
+    icon: HandshakeIcon,
+    title: "Collaboration",
+    desc: "We value partnerships, mentorship, and teamwork to achieve sustainable growth.",
+  },
+  {
+    icon: Target,
+    title: "Long-Term Impact",
+    desc: "We focus on solutions that deliver lasting value rather than short-term trends.",
+  },
 ];
 
 const ADVISORS = [
@@ -73,13 +100,41 @@ const ADVISORS = [
 ];
 
 const JOURNEY = [
-  { date: "Feb 2026", title: "Vednix Technology Founded", desc: "Incorporated in Indore, MP." },
-  { date: "—", title: "Business Idea Validation", desc: "Refined the SmartPocket vision with mentors and users." },
-  { date: "—", title: "Mentorship from IIST Indore", desc: "Academic guidance and innovation support." },
-  { date: "—", title: "Incubation Support", desc: "IIT Indore ACE Foundation joins the journey." },
-  { date: "—", title: "Development of SmartPocket", desc: "Our flagship product begins construction." },
-  { date: "—", title: "Early User Program", desc: "Invite-only access for first cohort." },
-  { date: "Future", title: "Product Expansion", desc: "New financial products for businesses and institutions." },
+  {
+    date: "Feb 2026",
+    title: "Vednix Technology Founded",
+    desc: "Incorporated in Indore, MP.",
+  },
+  {
+    date: "—",
+    title: "Business Idea Validation",
+    desc: "Refined the SmartPocket vision with mentors and users.",
+  },
+  {
+    date: "—",
+    title: "Mentorship from IIST Indore",
+    desc: "Academic guidance and innovation support.",
+  },
+  {
+    date: "—",
+    title: "Incubation Support",
+    desc: "IIT Indore ACE Foundation joins the journey.",
+  },
+  {
+    date: "—",
+    title: "Development of SmartPocket",
+    desc: "Our flagship product begins construction.",
+  },
+  {
+    date: "—",
+    title: "Early User Program",
+    desc: "Invite-only access for first cohort.",
+  },
+  {
+    date: "Future",
+    title: "Product Expansion",
+    desc: "New financial products for businesses and institutions.",
+  },
 ];
 
 const WHY = [
@@ -102,8 +157,8 @@ function AboutPage() {
             About <span className="text-gradient">Vednix Technology</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            Building intelligent financial infrastructure through innovation, AI, and user-centric
-            financial technology.
+            Building intelligent financial infrastructure through innovation,
+            AI, and user-centric financial technology.
           </p>
         </div>
       </section>
@@ -112,25 +167,31 @@ function AboutPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
           <Reveal>
-            <SectionHeading eyebrow="Our Story" title="From observation to infrastructure." />
+            <SectionHeading
+              eyebrow="Our Story"
+              title="From observation to infrastructure."
+            />
           </Reveal>
           <Reveal delay={0.1}>
             <div className="space-y-5 text-muted-foreground">
               <p>
-                Vednix Technology was founded in February 2026 with a vision to solve real-world
-                financial challenges using technology. The company began with a simple observation:
-                while digital payments have become easy, financial behaviour and money management
+                Vednix Technology was founded in February 2026 with a vision to
+                solve real-world financial challenges using technology. The
+                company began with a simple observation: while digital payments
+                have become easy, financial behaviour and money management
                 remain difficult for millions of people.
               </p>
               <p>
-                Rather than building just another payment application, Vednix aims to create
-                intelligent financial infrastructure that empowers users to make smarter financial
-                decisions, build better financial habits, and access innovative financial services.
+                Rather than building just another payment application, Vednix
+                aims to create intelligent financial infrastructure that
+                empowers users to make smarter financial decisions, build better
+                financial habits, and access innovative financial services.
               </p>
               <p>
-                SmartPocket is the company's first flagship product and represents the beginning of
-                a much larger vision — to build technology that connects finance, artificial
-                intelligence, analytics, and digital innovation into one unified ecosystem.
+                SmartPocket is the company's first flagship product and
+                represents the beginning of a much larger vision — to build
+                technology that connects finance, artificial intelligence,
+                analytics, and digital innovation into one unified ecosystem.
               </p>
             </div>
           </Reveal>
@@ -143,22 +204,28 @@ function AboutPage() {
           <Reveal>
             <GlassCard className="h-full">
               <Eye className="h-8 w-8 text-emerald" />
-              <h3 className="mt-4 font-display text-2xl font-semibold">Our Vision</h3>
+              <h3 className="mt-4 font-display text-2xl font-semibold">
+                Our Vision
+              </h3>
               <p className="mt-3 text-muted-foreground">
-                To become one of India's leading financial technology companies by building
-                intelligent financial infrastructure that transforms the way people, businesses, and
-                institutions interact with money.
+                To become one of India's leading financial technology companies
+                by building intelligent financial infrastructure that transforms
+                the way people, businesses, and institutions interact with
+                money.
               </p>
             </GlassCard>
           </Reveal>
           <Reveal delay={0.1}>
             <GlassCard className="h-full">
               <Target className="h-8 w-8 text-electric" />
-              <h3 className="mt-4 font-display text-2xl font-semibold">Our Mission</h3>
+              <h3 className="mt-4 font-display text-2xl font-semibold">
+                Our Mission
+              </h3>
               <p className="mt-3 text-muted-foreground">
-                To create secure, scalable, and user-focused financial products that simplify
-                financial management, encourage responsible financial behaviour, and enable the
-                future of digital finance through innovation and technology.
+                To create secure, scalable, and user-focused financial products
+                that simplify financial management, encourage responsible
+                financial behaviour, and enable the future of digital finance
+                through innovation and technology.
               </p>
             </GlassCard>
           </Reveal>
@@ -168,7 +235,11 @@ function AboutPage() {
       {/* CORE VALUES */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Core Values" title="What we stand for." align="center" />
+          <SectionHeading
+            eyebrow="Core Values"
+            title="What we stand for."
+            align="center"
+          />
         </Reveal>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {VALUES.map((v, i) => (
@@ -177,7 +248,9 @@ function AboutPage() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary/10 ring-1 ring-emerald/30">
                   <v.icon className="h-5 w-5 text-emerald" />
                 </span>
-                <h3 className="mt-4 font-display text-lg font-semibold">{v.title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  {v.title}
+                </h3>
                 <p className="mt-2 text-sm text-muted-foreground">{v.desc}</p>
               </GlassCard>
             </Reveal>
@@ -188,7 +261,11 @@ function AboutPage() {
       {/* FOUNDERS */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Leadership" title="Meet our founders." align="center" />
+          <SectionHeading
+            eyebrow="Leadership"
+            title="Meet our founders."
+            align="center"
+          />
         </Reveal>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <FounderCard
@@ -219,11 +296,21 @@ function AboutPage() {
             <Reveal key={a.name} delay={i * 0.08}>
               <GlassCard className="h-full">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary font-display text-lg font-bold text-primary-foreground">
-                  {a.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+                  {a.name
+                    .split(" ")
+                    .map((w) => w[0])
+                    .slice(0, 2)
+                    .join("")}
                 </div>
-                <h3 className="mt-4 font-display text-lg font-semibold">{a.name}</h3>
-                <p className="text-xs uppercase tracking-[0.14em] text-emerald">{a.role}</p>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  {a.name}
+                </h3>
+                <p className="text-xs uppercase tracking-[0.14em] text-emerald">
+                  {a.role}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {a.desc}
+                </p>
               </GlassCard>
             </Reveal>
           ))}
@@ -233,7 +320,11 @@ function AboutPage() {
       {/* INCUBATION */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Incubation" title="Ecosystem support." align="center" />
+          <SectionHeading
+            eyebrow="Incubation"
+            title="Ecosystem support."
+            align="center"
+          />
         </Reveal>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           {[
@@ -253,7 +344,9 @@ function AboutPage() {
                 <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary shadow-emerald">
                   <p.icon className="h-6 w-6 text-primary-foreground" />
                 </span>
-                <h3 className="mt-4 font-display text-xl font-semibold">{p.title}</h3>
+                <h3 className="mt-4 font-display text-xl font-semibold">
+                  {p.title}
+                </h3>
                 <p className="mt-2 text-muted-foreground">{p.desc}</p>
               </GlassCard>
             </Reveal>
@@ -264,7 +357,11 @@ function AboutPage() {
       {/* JOURNEY */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Our Journey" title="Milestones along the way." align="center" />
+          <SectionHeading
+            eyebrow="Our Journey"
+            title="Milestones along the way."
+            align="center"
+          />
         </Reveal>
         <div className="mx-auto mt-14 max-w-3xl">
           <ol className="relative space-y-6 border-l border-border pl-6">
@@ -278,8 +375,12 @@ function AboutPage() {
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald">
                       {j.date}
                     </p>
-                    <h3 className="mt-1 font-display text-lg font-semibold">{j.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{j.desc}</p>
+                    <h3 className="mt-1 font-display text-lg font-semibold">
+                      {j.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {j.desc}
+                    </p>
                   </div>
                 </li>
               </Reveal>
@@ -291,7 +392,11 @@ function AboutPage() {
       {/* WHY VEDNIX */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Why Vednix" title="Built for the next decade of finance." align="center" />
+          <SectionHeading
+            eyebrow="Why Vednix"
+            title="Built for the next decade of finance."
+            align="center"
+          />
         </Reveal>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {WHY.map((w, i) => (
@@ -300,7 +405,9 @@ function AboutPage() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-electric/10 ring-1 ring-electric/30">
                   <w.icon className="h-5 w-5 text-electric" />
                 </span>
-                <h3 className="mt-4 font-display text-lg font-semibold">{w.title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  {w.title}
+                </h3>
               </GlassCard>
             </Reveal>
           ))}
@@ -314,13 +421,17 @@ function AboutPage() {
             Let's build the future of finance together.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-            Whether you're a student, professional, business, investor, institution, or banking
-            partner — Vednix Technology is committed to building innovative financial solutions
-            that create lasting impact.
+            Whether you're a student, professional, business, investor,
+            institution, or banking partner — Vednix Technology is committed to
+            building innovative financial solutions that create lasting impact.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <LinkButton to="/smartpocket">Explore SmartPocket <ArrowRight className="h-4 w-4" /></LinkButton>
-            <LinkButton to="/contact" variant="outline">Contact Us</LinkButton>
+            <LinkButton to="/smartpocket">
+              Explore SmartPocket <ArrowRight className="h-4 w-4" />
+            </LinkButton>
+            <LinkButton to="/contact" variant="outline">
+              Contact Us
+            </LinkButton>
           </div>
         </div>
       </Section>
@@ -328,19 +439,33 @@ function AboutPage() {
   );
 }
 
-function FounderCard({ name, role, desc }: { name: string; role: string; desc: string }) {
+function FounderCard({
+  name,
+  role,
+  desc,
+}: {
+  name: string;
+  role: string;
+  desc: string;
+}) {
   return (
     <GlassCard className="h-full">
       <div className="flex items-start gap-4">
         <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gradient-primary font-display text-xl font-bold text-primary-foreground shadow-emerald">
-          {name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+          {name
+            .split(" ")
+            .map((w) => w[0])
+            .slice(0, 2)
+            .join("")}
         </div>
         <div className="min-w-0">
           <h3 className="font-display text-xl font-semibold">{name}</h3>
           <p className="text-sm font-medium text-emerald">{role}</p>
         </div>
       </div>
-      <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+      <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+        {desc}
+      </p>
       <a
         href="https://www.linkedin.com/company/vednix-technology/"
         target="_blank"

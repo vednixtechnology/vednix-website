@@ -53,7 +53,10 @@ export function CookieConsent() {
           <p className="text-sm font-semibold">We use cookies</p>
           <p className="mt-1 text-xs text-muted-foreground">
             We use essential cookies to make this site work. Read our{" "}
-            <Link to="/cookies" className="underline underline-offset-2 hover:text-foreground">
+            <Link
+              to="/cookies"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
               Cookie Policy
             </Link>
             .

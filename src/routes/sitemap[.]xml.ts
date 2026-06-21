@@ -5,7 +5,14 @@ const BASE_URL = "https://vednix.in";
 
 interface SitemapEntry {
   path: string;
-  changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+  changefreq?:
+    | "always"
+    | "hourly"
+    | "daily"
+    | "weekly"
+    | "monthly"
+    | "yearly"
+    | "never";
   priority?: string;
 }
 
@@ -25,7 +32,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/career-apply", changefreq: "monthly", priority: "0.5" },
           { path: "/insights", changefreq: "weekly", priority: "0.6" },
           { path: "/contact", changefreq: "monthly", priority: "0.7" },
-          { path: "/investor-relations", changefreq: "monthly", priority: "0.6" },
+          {
+            path: "/investor-relations",
+            changefreq: "monthly",
+            priority: "0.6",
+          },
           { path: "/trust-center", changefreq: "monthly", priority: "0.6" },
           { path: "/privacy", changefreq: "yearly", priority: "0.3" },
           { path: "/terms", changefreq: "yearly", priority: "0.3" },
@@ -41,7 +52,9 @@ export const Route = createFileRoute("/sitemap.xml")({
               `  <url>`,
               `    <loc>${BASE_URL}${e.path}</loc>`,
               `    <lastmod>${now}</lastmod>`,
-              e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
+              e.changefreq
+                ? `    <changefreq>${e.changefreq}</changefreq>`
+                : null,
               e.priority ? `    <priority>${e.priority}</priority>` : null,
               `  </url>`,
             ]

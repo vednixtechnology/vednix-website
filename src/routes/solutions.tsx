@@ -36,7 +36,10 @@ export const Route = createFileRoute("/solutions")({
           "Vednix Technology builds financial solutions for individuals, businesses, educational institutions, financial institutions, and government. Explore how we solve financial challenges.",
       },
       { property: "og:title", content: "Solutions — Vednix Technology" },
-      { property: "og:description", content: "Intelligent financial solutions for every kind of customer." },
+      {
+        property: "og:description",
+        content: "Intelligent financial solutions for every kind of customer.",
+      },
       { property: "og:url", content: "/solutions" },
     ],
     links: [{ rel: "canonical", href: "/solutions" }],
@@ -192,12 +195,13 @@ function SolutionsPage() {
         <div className="container-px relative mx-auto max-w-5xl text-center">
           <Eyebrow>Solutions</Eyebrow>
           <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl md:text-6xl">
-            Built for <span className="text-gradient">every kind</span> of customer.
+            Built for <span className="text-gradient">every kind</span> of
+            customer.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            Vednix Technology is building intelligent financial solutions for individuals,
-            businesses, institutions, and future partners — each addressing a real, meaningful
-            financial challenge.
+            Vednix Technology is building intelligent financial solutions for
+            individuals, businesses, institutions, and future partners — each
+            addressing a real, meaningful financial challenge.
           </p>
         </div>
       </section>
@@ -217,14 +221,20 @@ function SolutionsPage() {
                     <div className="p-6 sm:p-8">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-start gap-4">
-                          <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${colors.icon}`}>
+                          <span
+                            className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${colors.icon}`}
+                          >
                             <s.icon className={`h-6 w-6 ${colors.iconText}`} />
                           </span>
                           <div>
-                            <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${colors.badge}`}>
+                            <span
+                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${colors.badge}`}
+                            >
                               {s.eyebrow}
                             </span>
-                            <h2 className="mt-2 font-display text-2xl font-bold">{s.segment}</h2>
+                            <h2 className="mt-2 font-display text-2xl font-bold">
+                              {s.segment}
+                            </h2>
                           </div>
                         </div>
                         {s.future && (
@@ -235,12 +245,20 @@ function SolutionsPage() {
                       </div>
 
                       <div className="mt-5">
-                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">The Problem</p>
-                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.problem}</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                          The Problem
+                        </p>
+                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                          {s.problem}
+                        </p>
                       </div>
                       <div className="mt-4">
-                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Our Approach</p>
-                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.solution}</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                          Our Approach
+                        </p>
+                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                          {s.solution}
+                        </p>
                       </div>
                     </div>
 
@@ -254,9 +272,16 @@ function SolutionsPage() {
                       </p>
                       <ul className="mt-4 space-y-2.5">
                         {s.benefits.map((b) => (
-                          <li key={b} className="flex items-center gap-2.5 text-sm">
-                            <span className={`grid h-5 w-5 shrink-0 place-items-center rounded-full ${colors.checkBg}`}>
-                              <CheckCircle2 className={`h-3 w-3 ${colors.check}`} />
+                          <li
+                            key={b}
+                            className="flex items-center gap-2.5 text-sm"
+                          >
+                            <span
+                              className={`grid h-5 w-5 shrink-0 place-items-center rounded-full ${colors.checkBg}`}
+                            >
+                              <CheckCircle2
+                                className={`h-3 w-3 ${colors.check}`}
+                              />
                             </span>
                             {b}
                           </li>
@@ -291,18 +316,38 @@ function SolutionsPage() {
         </Reveal>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: Brain, title: "Behaviour-First", desc: "We study how people interact with money — not just what they spend." },
-            { icon: BarChart3, title: "Data Intelligence", desc: "Financial insights that go beyond numbers to reveal patterns and opportunities." },
-            { icon: ShieldCheck, title: "Privacy by Design", desc: "Every product is built with security and user privacy as non-negotiable principles." },
-            { icon: TrendingUp, title: "Long-Term Value", desc: "Products designed to create lasting change, not just short-term engagement." },
+            {
+              icon: Brain,
+              title: "Behaviour-First",
+              desc: "We study how people interact with money — not just what they spend.",
+            },
+            {
+              icon: BarChart3,
+              title: "Data Intelligence",
+              desc: "Financial insights that go beyond numbers to reveal patterns and opportunities.",
+            },
+            {
+              icon: ShieldCheck,
+              title: "Privacy by Design",
+              desc: "Every product is built with security and user privacy as non-negotiable principles.",
+            },
+            {
+              icon: TrendingUp,
+              title: "Long-Term Value",
+              desc: "Products designed to create lasting change, not just short-term engagement.",
+            },
           ].map((item, i) => (
             <Reveal key={item.title} delay={i * 0.05}>
               <GlassCard className="h-full text-center">
                 <span className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary shadow-emerald">
                   <item.icon className="h-6 w-6 text-primary-foreground" />
                 </span>
-                <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+                <h3 className="mt-4 font-display text-base font-semibold">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {item.desc}
+                </p>
               </GlassCard>
             </Reveal>
           ))}
@@ -317,8 +362,8 @@ function SolutionsPage() {
             Looking for something specific?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Tell us about your needs — we'd love to explore how Vednix Technology can help you
-            solve your financial challenges.
+            Tell us about your needs — we'd love to explore how Vednix
+            Technology can help you solve your financial challenges.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <LinkButton to="/contact">Contact Us</LinkButton>

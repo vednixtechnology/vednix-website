@@ -9,8 +9,16 @@ const NAV = [
     label: "Products",
     to: "/products",
     children: [
-      { label: "SmartPocket", to: "/smartpocket", desc: "AI-powered financial behaviour" },
-      { label: "Future Innovations", to: "/products", desc: "What's coming next" },
+      {
+        label: "SmartPocket",
+        to: "/smartpocket",
+        desc: "AI-powered financial behaviour",
+      },
+      {
+        label: "Future Innovations",
+        to: "/products",
+        desc: "What's coming next",
+      },
     ],
   },
   {
@@ -72,7 +80,9 @@ export function Navbar() {
             const active =
               pathname === item.to ||
               pathname.startsWith(item.to + "/") ||
-              item.children?.some((c) => pathname === c.to || pathname.startsWith(c.to + "/"));
+              item.children?.some(
+                (c) => pathname === c.to || pathname.startsWith(c.to + "/"),
+              );
 
             if (item.children) {
               return (
@@ -83,7 +93,9 @@ export function Navbar() {
                 >
                   <button
                     className={`relative flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
-                      active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                      active
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                     aria-expanded={activeDropdown === item.label}
                     aria-haspopup="true"
@@ -108,8 +120,12 @@ export function Navbar() {
                             to={child.to}
                             className="block rounded-lg px-3 py-2.5 transition hover:bg-card"
                           >
-                            <p className="text-sm font-medium text-foreground">{child.label}</p>
-                            <p className="text-xs text-muted-foreground">{child.desc}</p>
+                            <p className="text-sm font-medium text-foreground">
+                              {child.label}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {child.desc}
+                            </p>
                           </Link>
                         ))}
                       </div>
@@ -124,7 +140,9 @@ export function Navbar() {
                 key={item.to}
                 to={item.to}
                 className={`relative rounded-lg px-3 py-2 text-sm font-medium transition ${
-                  active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                  active
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {item.label}
@@ -159,7 +177,10 @@ export function Navbar() {
       {/* Mobile Menu */}
       {open && (
         <div className="border-t border-border/60 bg-background/95 backdrop-blur-xl lg:hidden">
-          <nav className="container-px mx-auto max-w-7xl py-4" aria-label="Mobile">
+          <nav
+            className="container-px mx-auto max-w-7xl py-4"
+            aria-label="Mobile"
+          >
             <ul className="grid gap-1">
               {(NAV as NavItem[]).map((item) => (
                 <li key={item.to}>

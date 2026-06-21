@@ -23,8 +23,15 @@ export const Route = createFileRoute("/early-access")({
         content:
           "Be among the first to experience SmartPocket before its public launch. Get priority access, exclusive previews, and help shape the future of intelligent personal finance.",
       },
-      { property: "og:title", content: "Early Access — SmartPocket by Vednix Technology" },
-      { property: "og:description", content: "Join the SmartPocket Early Access Program. Limited spots available." },
+      {
+        property: "og:title",
+        content: "Early Access — SmartPocket by Vednix Technology",
+      },
+      {
+        property: "og:description",
+        content:
+          "Join the SmartPocket Early Access Program. Limited spots available.",
+      },
       { property: "og:url", content: "/early-access" },
     ],
     links: [{ rel: "canonical", href: "/early-access" }],
@@ -68,10 +75,13 @@ function EarlyAccessPage() {
       const normalizedEmail = values.email.toLowerCase().trim();
 
       // Prevent duplicate registrations
-      const alreadyRegistered = await emailExists("early_access_users", normalizedEmail);
+      const alreadyRegistered = await emailExists(
+        "early_access_users",
+        normalizedEmail,
+      );
       if (alreadyRegistered) {
         setError(
-          "This email is already registered for Early Access. We'll be in touch soon!"
+          "This email is already registered for Early Access. We'll be in touch soon!",
         );
         setSubmitting(false);
         return;
@@ -95,12 +105,13 @@ function EarlyAccessPage() {
         <div className="container-px relative mx-auto max-w-5xl text-center">
           <Eyebrow>Early Access · Invite-only</Eyebrow>
           <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl md:text-6xl">
-            Join the <span className="text-gradient">Early Access</span> Program.
+            Join the <span className="text-gradient">Early Access</span>{" "}
+            Program.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            Be among the first to experience SmartPocket before its public launch. Early members
-            receive priority access, exclusive product previews, and the opportunity to directly
-            shape the product.
+            Be among the first to experience SmartPocket before its public
+            launch. Early members receive priority access, exclusive product
+            previews, and the opportunity to directly shape the product.
           </p>
         </div>
       </section>
@@ -109,7 +120,9 @@ function EarlyAccessPage() {
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
           <Reveal>
             <div className="space-y-6">
-              <h2 className="font-display text-2xl font-semibold">What you'll get</h2>
+              <h2 className="font-display text-2xl font-semibold">
+                What you'll get
+              </h2>
               <ul className="space-y-4">
                 {[
                   {
@@ -135,7 +148,9 @@ function EarlyAccessPage() {
                     </span>
                     <div>
                       <p className="text-sm font-semibold">{item.title}</p>
-                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {item.desc}
+                      </p>
                     </div>
                   </li>
                 ))}
@@ -147,8 +162,9 @@ function EarlyAccessPage() {
                   <div>
                     <p className="text-sm font-semibold">Privacy Commitment</p>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Your data is stored securely on Firebase and used only to keep you informed
-                      about SmartPocket. We never sell or share your information.
+                      Your data is stored securely on Firebase and used only to
+                      keep you informed about SmartPocket. We never sell or
+                      share your information.
                     </p>
                   </div>
                 </div>
@@ -158,7 +174,9 @@ function EarlyAccessPage() {
 
           <Reveal delay={0.1}>
             <GlassCard hover={false}>
-              <h3 className="font-display text-lg font-semibold">Register for Early Access</h3>
+              <h3 className="font-display text-lg font-semibold">
+                Register for Early Access
+              </h3>
               <p className="mt-1 text-sm text-muted-foreground">
                 Fill in your details to secure your spot.
               </p>
@@ -170,7 +188,11 @@ function EarlyAccessPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit(onSubmit)} className="mt-5 grid gap-5" noValidate>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="mt-5 grid gap-5"
+                noValidate
+              >
                 <Field label="Full Name" error={errors.fullName?.message}>
                   <input
                     {...register("fullName")}
@@ -225,12 +247,14 @@ function EarlyAccessPage() {
                     className="mt-1 h-4 w-4 rounded border-border bg-card accent-emerald-500"
                   />
                   <span className="text-muted-foreground">
-                    I agree to receive product updates and launch notifications about SmartPocket
-                    from Vednix Technology.
+                    I agree to receive product updates and launch notifications
+                    about SmartPocket from Vednix Technology.
                   </span>
                 </label>
                 {errors.consent?.message && (
-                  <p className="-mt-3 text-xs text-destructive">{errors.consent.message}</p>
+                  <p className="-mt-3 text-xs text-destructive">
+                    {errors.consent.message}
+                  </p>
                 )}
 
                 <Button type="submit" disabled={submitting} size="lg">
@@ -257,9 +281,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-medium text-foreground">{label}</span>
+      <span className="mb-2 block text-sm font-medium text-foreground">
+        {label}
+      </span>
       {children}
-      {error && <span className="mt-1.5 block text-xs text-destructive">{error}</span>}
+      {error && (
+        <span className="mt-1.5 block text-xs text-destructive">{error}</span>
+      )}
     </label>
   );
 }

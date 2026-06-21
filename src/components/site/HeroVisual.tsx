@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { TrendingUp, Sparkles, ShieldCheck, Wallet, BarChart3, Cpu } from "lucide-react";
+import {
+  TrendingUp,
+  Sparkles,
+  ShieldCheck,
+  Wallet,
+  BarChart3,
+  Cpu,
+} from "lucide-react";
 
 export function HeroVisual() {
   return (
@@ -8,7 +15,10 @@ export function HeroVisual() {
       <div className="absolute inset-8 rounded-full bg-gradient-primary opacity-20 blur-3xl" />
 
       {/* AI network rings */}
-      <svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full opacity-40">
+      <svg
+        viewBox="0 0 400 400"
+        className="absolute inset-0 h-full w-full opacity-40"
+      >
         <defs>
           <linearGradient id="ring" x1="0" x2="1">
             <stop offset="0%" stopColor="oklch(0.74 0.17 162)" />
@@ -32,7 +42,9 @@ export function HeroVisual() {
           const rad = (deg * Math.PI) / 180;
           const x = 200 + Math.cos(rad) * 140;
           const y = 200 + Math.sin(rad) * 140;
-          return <circle key={i} cx={x} cy={y} r="3" fill="oklch(0.74 0.17 162)" />;
+          return (
+            <circle key={i} cx={x} cy={y} r="3" fill="oklch(0.74 0.17 162)" />
+          );
         })}
       </svg>
 
@@ -48,7 +60,9 @@ export function HeroVisual() {
           <div className="absolute inset-3 overflow-hidden rounded-[1.6rem] bg-background p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Balance</p>
+                <p className="text-[9px] uppercase tracking-widest text-muted-foreground">
+                  Balance
+                </p>
                 <p className="font-display text-base font-bold">₹ 1,24,890</p>
               </div>
               <div className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-primary">
@@ -65,7 +79,9 @@ export function HeroVisual() {
                   />
                 ))}
               </div>
-              <p className="mt-1.5 text-[8px] text-muted-foreground">Spend this week</p>
+              <p className="mt-1.5 text-[8px] text-muted-foreground">
+                Spend this week
+              </p>
             </div>
             <div className="mt-2 space-y-1.5">
               {[
@@ -73,7 +89,10 @@ export function HeroVisual() {
                 { l: "Transport", v: "₹ 380" },
                 { l: "Subscriptions", v: "₹ 599" },
               ].map((r) => (
-                <div key={r.l} className="flex items-center justify-between rounded-lg bg-card/60 px-2 py-1.5 text-[10px]">
+                <div
+                  key={r.l}
+                  className="flex items-center justify-between rounded-lg bg-card/60 px-2 py-1.5 text-[10px]"
+                >
                   <span className="text-muted-foreground">{r.l}</span>
                   <span className="font-mono font-semibold">{r.v}</span>
                 </div>
@@ -144,7 +163,9 @@ function FloatCard({
       className={`absolute ${className}`}
     >
       <div className="glass-strong animate-float flex items-center gap-2.5 rounded-xl px-3 py-2 shadow-card">
-        <span className="grid h-7 w-7 place-items-center rounded-lg bg-card/80">{icon}</span>
+        <span className="grid h-7 w-7 place-items-center rounded-lg bg-card/80">
+          {icon}
+        </span>
         <div className="leading-tight">
           <p className="text-xs font-semibold">{title}</p>
           <p className="text-[10px] text-muted-foreground">{sub}</p>

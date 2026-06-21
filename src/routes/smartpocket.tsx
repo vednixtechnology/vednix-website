@@ -32,7 +32,10 @@ import { HeroVisual } from "@/components/site/HeroVisual";
 export const Route = createFileRoute("/smartpocket")({
   head: () => ({
     meta: [
-      { title: "SmartPocket — AI-powered Financial Behaviour Platform | Vednix Technology" },
+      {
+        title:
+          "SmartPocket — AI-powered Financial Behaviour Platform | Vednix Technology",
+      },
       {
         name: "description",
         content:
@@ -102,17 +105,53 @@ const SMART = [
 ];
 
 const PRIVACY_POINTS = [
-  { icon: Lock, title: "Encrypted Storage", desc: "All data encrypted in transit and at rest." },
-  { icon: Eye, title: "No Ad Tracking", desc: "We never sell or share your data with advertisers." },
-  { icon: ShieldCheck, title: "Minimal Collection", desc: "We collect only what's needed to make the product work." },
-  { icon: Smartphone, title: "User Control", desc: "You can request data deletion at any time." },
+  {
+    icon: Lock,
+    title: "Encrypted Storage",
+    desc: "All data encrypted in transit and at rest.",
+  },
+  {
+    icon: Eye,
+    title: "No Ad Tracking",
+    desc: "We never sell or share your data with advertisers.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Minimal Collection",
+    desc: "We collect only what's needed to make the product work.",
+  },
+  {
+    icon: Smartphone,
+    title: "User Control",
+    desc: "You can request data deletion at any time.",
+  },
 ];
 
 const ROADMAP = [
-  { phase: "Now", label: "Development", desc: "Core expense tracking, categories, and budgeting features.", active: true },
-  { phase: "Next", label: "Early Access", desc: "Closed beta with first user cohort — features shaped by feedback.", active: false },
-  { phase: "Soon", label: "AI Insights", desc: "Personalized financial insights and behaviour analysis.", active: false },
-  { phase: "Future", label: "Ecosystem", desc: "Business tools, institutional integrations, and developer APIs.", active: false },
+  {
+    phase: "Now",
+    label: "Development",
+    desc: "Core expense tracking, categories, and budgeting features.",
+    active: true,
+  },
+  {
+    phase: "Next",
+    label: "Early Access",
+    desc: "Closed beta with first user cohort — features shaped by feedback.",
+    active: false,
+  },
+  {
+    phase: "Soon",
+    label: "AI Insights",
+    desc: "Personalized financial insights and behaviour analysis.",
+    active: false,
+  },
+  {
+    phase: "Future",
+    label: "Ecosystem",
+    desc: "Business tools, institutional integrations, and developer APIs.",
+    active: false,
+  },
 ];
 
 const FAQ = [
@@ -160,9 +199,10 @@ function SmartPocketPage() {
               The AI-powered financial behaviour platform.
             </p>
             <p className="mt-3 max-w-xl text-muted-foreground leading-relaxed">
-              SmartPocket helps you organize money more effectively, understand spending patterns,
-              manage savings, and make better financial decisions — through intelligent technology
-              that learns from your behaviour, not just your transactions.
+              SmartPocket helps you organize money more effectively, understand
+              spending patterns, manage savings, and make better financial
+              decisions — through intelligent technology that learns from your
+              behaviour, not just your transactions.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <LinkButton to="/early-access" size="lg">
@@ -202,7 +242,9 @@ function SmartPocketPage() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary shadow-emerald">
                   <f.icon className="h-5 w-5 text-primary-foreground" />
                 </span>
-                <h3 className="mt-4 font-display text-lg font-semibold">{f.title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  {f.title}
+                </h3>
                 <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
               </GlassCard>
             </Reveal>
@@ -228,7 +270,10 @@ function SmartPocketPage() {
               </p>
               <ul className="mt-5 space-y-3">
                 {TRAD.map((t) => (
-                  <li key={t} className="flex items-center gap-3 text-muted-foreground">
+                  <li
+                    key={t}
+                    className="flex items-center gap-3 text-muted-foreground"
+                  >
                     <span className="grid h-6 w-6 place-items-center rounded-full bg-destructive/15 text-destructive">
                       <X className="h-3.5 w-3.5" />
                     </span>
@@ -276,7 +321,9 @@ function SmartPocketPage() {
                 <span className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-emerald/10 ring-1 ring-emerald/20">
                   <p.icon className="h-6 w-6 text-emerald" />
                 </span>
-                <h3 className="mt-4 font-display text-base font-semibold">{p.title}</h3>
+                <h3 className="mt-4 font-display text-base font-semibold">
+                  {p.title}
+                </h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{p.desc}</p>
               </GlassCard>
             </Reveal>
@@ -324,7 +371,9 @@ function SmartPocketPage() {
                 >
                   {r.phase}
                 </span>
-                <h3 className="mt-2 font-display text-base font-semibold">{r.label}</h3>
+                <h3 className="mt-2 font-display text-base font-semibold">
+                  {r.label}
+                </h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{r.desc}</p>
               </div>
             </Reveal>
@@ -350,7 +399,9 @@ function SmartPocketPage() {
                   className="flex w-full items-start justify-between gap-4 text-left"
                   aria-expanded={openFaq === i}
                 >
-                  <span className="font-display text-base font-semibold">{item.q}</span>
+                  <span className="font-display text-base font-semibold">
+                    {item.q}
+                  </span>
                   {openFaq === i ? (
                     <ChevronUp className="mt-0.5 h-5 w-5 shrink-0 text-emerald" />
                   ) : (
@@ -358,7 +409,9 @@ function SmartPocketPage() {
                   )}
                 </button>
                 {openFaq === i && (
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.a}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {item.a}
+                  </p>
                 )}
               </div>
             </Reveal>
@@ -374,8 +427,8 @@ function SmartPocketPage() {
             Be among the first to experience SmartPocket.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Early access members get priority access, exclusive previews, and a direct line to help
-            shape the product.
+            Early access members get priority access, exclusive previews, and a
+            direct line to help shape the product.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <LinkButton to="/early-access" size="lg">

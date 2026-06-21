@@ -13,7 +13,10 @@ import {
 } from "lucide-react";
 import { Logo } from "./Logo";
 
-const COLS: { title: string; links: { label: string; to: string; external?: boolean }[] }[] = [
+const COLS: {
+  title: string;
+  links: { label: string; to: string; external?: boolean }[];
+}[] = [
   {
     title: "Company",
     links: [
@@ -63,9 +66,9 @@ export function Footer() {
           <div className="space-y-5">
             <Logo />
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Vednix Technology is building innovative financial technology solutions designed to
-              simplify finance and improve financial behaviour through intelligent digital
-              experiences.
+              Vednix Technology is building innovative financial technology
+              solutions designed to simplify finance and improve financial
+              behaviour through intelligent digital experiences.
             </p>
 
             <div className="space-y-2.5 text-sm text-muted-foreground">
@@ -176,13 +179,25 @@ export function Footer() {
             © 2026 Vednix Technology Private Limited. All Rights Reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <Link to="/privacy" className="hover:text-foreground transition">Privacy</Link>
-            <Link to="/terms" className="hover:text-foreground transition">Terms</Link>
-            <Link to="/trust-center" className="hover:text-foreground transition">Trust Center</Link>
+            <Link to="/privacy" className="hover:text-foreground transition">
+              Privacy
+            </Link>
+            <Link to="/terms" className="hover:text-foreground transition">
+              Terms
+            </Link>
+            <Link
+              to="/trust-center"
+              className="hover:text-foreground transition"
+            >
+              Trust Center
+            </Link>
           </div>
           <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
             Made with
-            <Heart className="h-3.5 w-3.5 fill-emerald text-emerald" aria-label="love" />
+            <Heart
+              className="h-3.5 w-3.5 fill-emerald text-emerald"
+              aria-label="love"
+            />
             in India
           </p>
         </div>
@@ -217,7 +232,11 @@ function SocialLink({
     "grid h-9 w-9 place-items-center rounded-lg border border-border bg-card/40 transition";
   if (disabled) {
     return (
-      <span aria-label={label} title={label} className={`${cls} opacity-35 cursor-not-allowed`}>
+      <span
+        aria-label={label}
+        title={label}
+        className={`${cls} opacity-35 cursor-not-allowed`}
+      >
         {icon}
       </span>
     );

@@ -1,4 +1,13 @@
-import { Award, Building2, GraduationCap, Landmark, ShieldCheck, Flame, Zap, Brain } from "lucide-react";
+import {
+  Award,
+  Building2,
+  GraduationCap,
+  Landmark,
+  ShieldCheck,
+  Flame,
+  Zap,
+  Brain,
+} from "lucide-react";
 
 const ITEMS = [
   { label: "DPIIT Recognized", icon: Award },
@@ -23,7 +32,10 @@ export function TrustBar() {
       <div className="overflow-hidden">
         <div className="flex w-max animate-marquee gap-14 px-6">
           {loop.map((it, i) => (
-            <div key={i} className="flex shrink-0 items-center gap-3 text-sm text-muted-foreground">
+            <div
+              key={i}
+              className="flex shrink-0 items-center gap-3 text-sm text-muted-foreground"
+            >
               <it.icon className="h-4 w-4 text-emerald" aria-hidden="true" />
               <span className="font-medium tracking-[0.1em]">{it.label}</span>
             </div>

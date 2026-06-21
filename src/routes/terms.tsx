@@ -5,8 +5,15 @@ export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
       { title: "Terms & Conditions — Vednix Technology" },
-      { name: "description", content: "Terms governing your use of the Vednix Technology website and services." },
-      { property: "og:title", content: "Terms & Conditions — Vednix Technology" },
+      {
+        name: "description",
+        content:
+          "Terms governing your use of the Vednix Technology website and services.",
+      },
+      {
+        property: "og:title",
+        content: "Terms & Conditions — Vednix Technology",
+      },
       { property: "og:url", content: "/terms" },
     ],
     links: [{ rel: "canonical", href: "/terms" }],
@@ -35,8 +42,8 @@ function TermsPage() {
     >
       <LegalSection id="intro" title="Introduction">
         <p>
-          By accessing or using the Vednix Technology website, you agree to these Terms &
-          Conditions.
+          By accessing or using the Vednix Technology website, you agree to
+          these Terms & Conditions.
         </p>
       </LegalSection>
 
@@ -56,39 +63,45 @@ function TermsPage() {
           <li>Content, Images, Videos</li>
           <li>Source Code, Product Concepts, Documentation</li>
         </ul>
-        <p>remain the intellectual property of Vednix Technology unless otherwise stated.</p>
+        <p>
+          remain the intellectual property of Vednix Technology unless otherwise
+          stated.
+        </p>
       </LegalSection>
 
       <LegalSection id="smartpocket" title="SmartPocket">
         <p>
-          Information regarding SmartPocket is provided for informational purposes. Features may
-          evolve before official public release.
+          Information regarding SmartPocket is provided for informational
+          purposes. Features may evolve before official public release.
         </p>
       </LegalSection>
 
       <LegalSection id="accuracy" title="Accuracy">
         <p>
-          We strive to keep information accurate and updated. However, some information may change
-          over time as products evolve.
+          We strive to keep information accurate and updated. However, some
+          information may change over time as products evolve.
         </p>
       </LegalSection>
 
       <LegalSection id="third" title="Third Party Links">
         <p>
-          The website may contain links to external websites. Vednix Technology is not responsible
-          for third-party content or privacy practices.
+          The website may contain links to external websites. Vednix Technology
+          is not responsible for third-party content or privacy practices.
         </p>
       </LegalSection>
 
       <LegalSection id="liability" title="Limitation of Liability">
         <p>
-          Vednix Technology shall not be responsible for indirect, incidental, or consequential
-          losses arising from the use of this website.
+          Vednix Technology shall not be responsible for indirect, incidental,
+          or consequential losses arising from the use of this website.
         </p>
       </LegalSection>
 
       <LegalSection id="changes" title="Changes">
-        <p>Terms may be updated periodically. Users should review this page regularly.</p>
+        <p>
+          Terms may be updated periodically. Users should review this page
+          regularly.
+        </p>
       </LegalSection>
     </LegalLayout>
   );

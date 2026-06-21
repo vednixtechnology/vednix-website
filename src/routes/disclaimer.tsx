@@ -5,7 +5,11 @@ export const Route = createFileRoute("/disclaimer")({
   head: () => ({
     meta: [
       { title: "Disclaimer — Vednix Technology" },
-      { name: "description", content: "Disclaimer regarding information provided on the Vednix Technology website." },
+      {
+        name: "description",
+        content:
+          "Disclaimer regarding information provided on the Vednix Technology website.",
+      },
       { property: "og:title", content: "Disclaimer — Vednix Technology" },
       { property: "og:url", content: "/disclaimer" },
     ],
@@ -29,17 +33,19 @@ function DisclaimerPage() {
     >
       <LegalSection id="general" title="General">
         <p>
-          The information provided on this website is intended for general informational purposes
-          only. Nothing on this website should be interpreted as financial advice, investment
-          advice, legal advice, tax advice, or professional consulting.
+          The information provided on this website is intended for general
+          informational purposes only. Nothing on this website should be
+          interpreted as financial advice, investment advice, legal advice, tax
+          advice, or professional consulting.
         </p>
       </LegalSection>
 
       <LegalSection id="future" title="Future Plans">
         <p>
-          SmartPocket and other future products may continue evolving during development. Future
-          plans, product roadmaps, partnerships, and technology directions represent current
-          intentions and may change without prior notice.
+          SmartPocket and other future products may continue evolving during
+          development. Future plans, product roadmaps, partnerships, and
+          technology directions represent current intentions and may change
+          without prior notice.
         </p>
       </LegalSection>
     </LegalLayout>

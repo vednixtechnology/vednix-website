@@ -30,14 +30,20 @@ import {
 export const Route = createFileRoute("/for-banks")({
   head: () => ({
     meta: [
-      { title: "For Banks — Future Financial Infrastructure | Vednix Technology" },
+      {
+        title:
+          "For Banks — Future Financial Infrastructure | Vednix Technology",
+      },
       {
         name: "description",
         content:
           "Vednix Technology aims to collaborate with financial institutions to build intelligent financial experiences, behaviour-driven insights, AI analytics, and future-ready digital ecosystems. Explore our vision for banking infrastructure.",
       },
       { property: "og:title", content: "For Banks — Vednix Technology" },
-      { property: "og:description", content: "Future financial infrastructure for banking innovation." },
+      {
+        property: "og:description",
+        content: "Future financial infrastructure for banking innovation.",
+      },
       { property: "og:url", content: "/for-banks" },
     ],
     links: [{ rel: "canonical", href: "/for-banks" }],
@@ -115,17 +121,29 @@ const COLLABORATION_TYPES = [
   {
     title: "Technology Partnership",
     desc: "Partner with Vednix to integrate our behavioural intelligence layer into your existing digital banking infrastructure.",
-    items: ["API integration planning", "Pilot programs", "Technical collaboration"],
+    items: [
+      "API integration planning",
+      "Pilot programs",
+      "Technical collaboration",
+    ],
   },
   {
     title: "Innovation Collaboration",
     desc: "Work with our team on co-developing next-generation financial products that serve your customer base.",
-    items: ["Joint product development", "Research collaboration", "Pilot user testing"],
+    items: [
+      "Joint product development",
+      "Research collaboration",
+      "Pilot user testing",
+    ],
   },
   {
     title: "Investment & Advisory",
     desc: "Institutions interested in being part of the Vednix growth journey — through investment, advisory, or strategic support.",
-    items: ["Strategic investment discussion", "Advisory board participation", "Mentorship partnership"],
+    items: [
+      "Strategic investment discussion",
+      "Advisory board participation",
+      "Mentorship partnership",
+    ],
   },
 ];
 
@@ -141,13 +159,15 @@ function ForBanksPage() {
             <span className="text-gradient">the future of banking</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            Vednix Technology envisions a future where financial institutions use behavioural
-            intelligence, AI analytics, and user-centric digital infrastructure to serve customers
-            more meaningfully. We are actively researching this space.
+            Vednix Technology envisions a future where financial institutions
+            use behavioural intelligence, AI analytics, and user-centric digital
+            infrastructure to serve customers more meaningfully. We are actively
+            researching this space.
           </p>
           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-dashed border-border bg-card/40 px-4 py-2 text-xs text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-electric animate-pulse-glow" />
-            These are research and vision areas — not current production offerings
+            These are research and vision areas — not current production
+            offerings
           </div>
         </div>
       </section>
@@ -169,7 +189,9 @@ function ForBanksPage() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary/15 ring-1 ring-emerald/30 transition group-hover:bg-gradient-primary group-hover:shadow-emerald">
                   <a.icon className="h-5 w-5 text-emerald transition group-hover:text-primary-foreground" />
                 </span>
-                <h3 className="mt-4 font-display text-base font-semibold">{a.title}</h3>
+                <h3 className="mt-4 font-display text-base font-semibold">
+                  {a.title}
+                </h3>
                 <p className="mt-2 text-sm text-muted-foreground">{a.desc}</p>
               </GlassCard>
             </Reveal>
@@ -194,7 +216,9 @@ function ForBanksPage() {
                   <p.icon className="h-6 w-6 text-emerald" />
                 </span>
                 <div>
-                  <h3 className="font-display text-lg font-semibold">{p.title}</h3>
+                  <h3 className="font-display text-lg font-semibold">
+                    {p.title}
+                  </h3>
                   <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
                 </div>
               </div>
@@ -217,11 +241,16 @@ function ForBanksPage() {
           {COLLABORATION_TYPES.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.06}>
               <GlassCard className="h-full flex flex-col">
-                <h3 className="font-display text-lg font-semibold">{c.title}</h3>
+                <h3 className="font-display text-lg font-semibold">
+                  {c.title}
+                </h3>
                 <p className="mt-2 text-sm text-muted-foreground">{c.desc}</p>
                 <ul className="mt-4 space-y-2 flex-1">
                   {c.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <li
+                      key={item}
+                      className="flex items-center gap-2 text-sm text-muted-foreground"
+                    >
                       <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald" />
                       {item}
                     </li>
@@ -241,11 +270,13 @@ function ForBanksPage() {
               Important Disclosure
             </p>
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-              Vednix Technology is a registered startup currently in the product development phase.
-              The banking and institutional solutions described on this page represent our research
-              vision and future roadmap — they are not current production offerings. We do not claim
-              any existing partnerships with banks, NBFCs, or financial institutions unless explicitly
-              stated. Any collaboration discussions are subject to mutual agreement and due diligence.
+              Vednix Technology is a registered startup currently in the product
+              development phase. The banking and institutional solutions
+              described on this page represent our research vision and future
+              roadmap — they are not current production offerings. We do not
+              claim any existing partnerships with banks, NBFCs, or financial
+              institutions unless explicitly stated. Any collaboration
+              discussions are subject to mutual agreement and due diligence.
             </p>
           </div>
         </Reveal>
@@ -262,12 +293,14 @@ function ForBanksPage() {
               Interested in exploring future collaboration?
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              We welcome early discussions with financial institutions, fintech organizations, NBFCs,
-              and innovation partners who share our vision for the future of intelligent banking.
+              We welcome early discussions with financial institutions, fintech
+              organizations, NBFCs, and innovation partners who share our vision
+              for the future of intelligent banking.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <LinkButton to="/contact">
-                Request a Partnership Discussion <ArrowRight className="h-4 w-4" />
+                Request a Partnership Discussion{" "}
+                <ArrowRight className="h-4 w-4" />
               </LinkButton>
               <a
                 href="mailto:vednixtechnology@gmail.com"

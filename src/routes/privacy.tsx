@@ -5,7 +5,11 @@ export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
       { title: "Privacy Policy — Vednix Technology" },
-      { name: "description", content: "How Vednix Technology collects, uses, stores, and safeguards your information." },
+      {
+        name: "description",
+        content:
+          "How Vednix Technology collects, uses, stores, and safeguards your information.",
+      },
       { property: "og:title", content: "Privacy Policy — Vednix Technology" },
       { property: "og:url", content: "/privacy" },
     ],
@@ -34,10 +38,11 @@ function PrivacyPage() {
     >
       <LegalSection id="intro" title="Introduction">
         <p>
-          Vednix Technology respects your privacy and is committed to protecting your personal
-          information. This Privacy Policy explains how we collect, use, store, and safeguard
-          information when you use our website, join our Early Access Program, contact us, or use
-          our products and services, including SmartPocket.
+          Vednix Technology respects your privacy and is committed to protecting
+          your personal information. This Privacy Policy explains how we
+          collect, use, store, and safeguard information when you use our
+          website, join our Early Access Program, contact us, or use our
+          products and services, including SmartPocket.
         </p>
       </LegalSection>
 
@@ -56,8 +61,9 @@ function PrivacyPage() {
           <li>Usage Data</li>
         </ul>
         <p>
-          When SmartPocket becomes available, additional information may be collected only as
-          required to provide the requested services and in accordance with applicable laws.
+          When SmartPocket becomes available, additional information may be
+          collected only as required to provide the requested services and in
+          accordance with applicable laws.
         </p>
       </LegalSection>
 
@@ -77,9 +83,9 @@ function PrivacyPage() {
 
       <LegalSection id="protect" title="Data Protection">
         <p>
-          We implement reasonable administrative, technical, and organizational safeguards to
-          protect personal information against unauthorized access, misuse, alteration, or
-          disclosure.
+          We implement reasonable administrative, technical, and organizational
+          safeguards to protect personal information against unauthorized
+          access, misuse, alteration, or disclosure.
         </p>
       </LegalSection>
 
@@ -109,7 +115,10 @@ function PrivacyPage() {
       <LegalSection id="contact" title="Contact">
         <p>
           Questions about this policy? Email{" "}
-          <a href="mailto:vednixtechnology@gmail.com" className="text-emerald hover:underline">
+          <a
+            href="mailto:vednixtechnology@gmail.com"
+            className="text-emerald hover:underline"
+          >
             vednixtechnology@gmail.com
           </a>
           .

@@ -19,7 +19,10 @@ export const Route = createFileRoute("/insights")({
           "Thoughts on Financial Technology, Artificial Intelligence, Digital Banking, Startup Journey, and Product Innovation.",
       },
       { property: "og:title", content: "Insights — Vednix Technology" },
-      { property: "og:description", content: "Insights and articles from the Vednix team." },
+      {
+        property: "og:description",
+        content: "Insights and articles from the Vednix team.",
+      },
       { property: "og:url", content: "/insights" },
     ],
     links: [{ rel: "canonical", href: "/insights" }],
@@ -74,11 +77,12 @@ function InsightsPage() {
         <div className="container-px relative mx-auto max-w-5xl text-center">
           <Eyebrow>Insights</Eyebrow>
           <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl md:text-6xl">
-            Thoughts on the future of <span className="text-gradient">finance</span>.
+            Thoughts on the future of{" "}
+            <span className="text-gradient">finance</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            Financial Technology · Artificial Intelligence · Digital Banking · Startup Journey ·
-            Product Innovation.
+            Financial Technology · Artificial Intelligence · Digital Banking ·
+            Startup Journey · Product Innovation.
           </p>
         </div>
       </section>
@@ -99,7 +103,9 @@ function InsightsPage() {
                   <h2 className="mt-2 font-display text-lg font-semibold leading-snug">
                     {a.title}
                   </h2>
-                  <p className="mt-2 flex-1 text-sm text-muted-foreground">{a.excerpt}</p>
+                  <p className="mt-2 flex-1 text-sm text-muted-foreground">
+                    {a.excerpt}
+                  </p>
                   <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-electric">
                     Coming soon <ArrowUpRight className="h-3.5 w-3.5" />
                   </span>
