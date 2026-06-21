@@ -1,0 +1,10 @@
+# Vednix Technology robots.txt
+User-agent: *
+Allow: /
+
+# Disallow private/utility pages
+Disallow: /thank-you
+Disallow: /career-apply
+
+# Sitemap
+Sitemap: https://vednix.in/sitemap.xml
