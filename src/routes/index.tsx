@@ -33,13 +33,19 @@ import { TrustBar } from "@/components/site/TrustBar";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vednix Technology — Building Intelligent Financial Infrastructure" },
+      {
+        title:
+          "Vednix Technology — Building Intelligent Financial Infrastructure",
+      },
       {
         name: "description",
         content:
           "Vednix Technology builds intelligent financial infrastructure through AI and behavioural innovation. SmartPocket is our flagship product for personal finance management.",
       },
-      { property: "og:title", content: "Vednix Technology — Intelligent Financial Infrastructure" },
+      {
+        property: "og:title",
+        content: "Vednix Technology — Intelligent Financial Infrastructure",
+      },
       {
         property: "og:description",
         content:
@@ -128,11 +134,14 @@ function HomePage() {
             <motion.h1
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.7,
+                delay: 0.05,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="mt-5 font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.2rem]"
             >
-              Building{" "}
-              <span className="text-gradient">Intelligent</span>
+              Building <span className="text-gradient">Intelligent</span>
               <br />
               Financial Infrastructure.
             </motion.h1>
@@ -143,9 +152,9 @@ function HomePage() {
               transition={{ duration: 0.7, delay: 0.18 }}
               className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
-              Vednix Technology builds the next generation of intelligent financial
-              infrastructure — empowering individuals, businesses, and institutions through
-              technology, AI, and behavioural innovation.
+              Vednix Technology builds the next generation of intelligent
+              financial infrastructure — empowering individuals, businesses, and
+              institutions through technology, AI, and behavioural innovation.
             </motion.p>
 
             <motion.div
@@ -221,10 +230,11 @@ function HomePage() {
               }
               description={
                 <>
-                  Vednix Technology is a financial technology company focused on building
-                  intelligent digital products that improve financial behaviour, simplify financial
-                  management, and enable smarter financial ecosystems. Our mission is to bridge
-                  technology and finance through innovative, user-centric solutions that create
+                  Vednix Technology is a financial technology company focused on
+                  building intelligent digital products that improve financial
+                  behaviour, simplify financial management, and enable smarter
+                  financial ecosystems. Our mission is to bridge technology and
+                  finance through innovative, user-centric solutions that create
                   long-term value.
                 </>
               }
@@ -275,8 +285,12 @@ function HomePage() {
                   <item.icon className="h-6 w-6 text-emerald" />
                 </span>
                 <div>
-                  <h3 className="font-display text-base font-semibold leading-snug">{item.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+                  <h3 className="font-display text-base font-semibold leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {item.desc}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -304,8 +318,12 @@ function HomePage() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary/15 ring-1 ring-emerald/20 transition group-hover:bg-gradient-primary group-hover:shadow-emerald">
                   <s.icon className="h-5 w-5 text-emerald transition group-hover:text-primary-foreground" />
                 </span>
-                <h3 className="mt-4 font-display text-base font-semibold">{s.label}</h3>
-                <p className="mt-1.5 flex-1 text-sm text-muted-foreground">{s.desc}</p>
+                <h3 className="mt-4 font-display text-base font-semibold">
+                  {s.label}
+                </h3>
+                <p className="mt-1.5 flex-1 text-sm text-muted-foreground">
+                  {s.desc}
+                </p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-electric opacity-0 transition group-hover:opacity-100">
                   Explore <ArrowRight className="h-3 w-3" />
                 </span>
@@ -333,8 +351,8 @@ function HomePage() {
                   Our Mission
                 </span>
                 <h3 className="mt-3 font-display text-xl font-semibold leading-snug">
-                  To build intelligent financial infrastructure that improves how people, businesses,
-                  and institutions interact with money.
+                  To build intelligent financial infrastructure that improves
+                  how people, businesses, and institutions interact with money.
                 </h3>
                 <ul className="mt-5 space-y-2">
                   {[
@@ -342,7 +360,10 @@ function HomePage() {
                     "Improve financial behaviour through AI and data",
                     "Create long-term value for users and partners",
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <li
+                      key={item}
+                      className="flex items-start gap-2 text-sm text-muted-foreground"
+                    >
                       <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald" />
                       {item}
                     </li>
@@ -360,8 +381,8 @@ function HomePage() {
                   Our Vision
                 </span>
                 <h3 className="mt-3 font-display text-xl font-semibold leading-snug">
-                  To become India's trusted financial intelligence platform — trusted by individuals,
-                  businesses, and institutions alike.
+                  To become India's trusted financial intelligence platform —
+                  trusted by individuals, businesses, and institutions alike.
                 </h3>
                 <ul className="mt-5 space-y-2">
                   {[
@@ -369,7 +390,10 @@ function HomePage() {
                     "Behaviour-driven data as a foundation for banking innovation",
                     "Accessible, private, and trustworthy for every user",
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <li
+                      key={item}
+                      className="flex items-start gap-2 text-sm text-muted-foreground"
+                    >
                       <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-electric" />
                       {item}
                     </li>
@@ -393,8 +417,8 @@ function HomePage() {
                 Innovation starts with one step.
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                Join us as we build the future of intelligent financial infrastructure — starting with
-                SmartPocket.
+                Join us as we build the future of intelligent financial
+                infrastructure — starting with SmartPocket.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <LinkButton to="/early-access" size="lg">

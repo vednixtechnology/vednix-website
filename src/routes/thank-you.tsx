@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, ArrowRight } from "lucide-react";
-import { LinkButton, BackgroundGlow, Eyebrow } from "@/components/site/primitives";
+import {
+  LinkButton,
+  BackgroundGlow,
+  Eyebrow,
+} from "@/components/site/primitives";
 
 export const Route = createFileRoute("/thank-you")({
   head: () => ({
@@ -25,11 +29,12 @@ function ThankYouPage() {
         </div>
         <Eyebrow>Early Access Confirmed</Eyebrow>
         <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl">
-          Welcome to the <span className="text-gradient">Vednix Community</span>!
+          Welcome to the <span className="text-gradient">Vednix Community</span>
+          !
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
-          Thank you for joining our Early Access Program. We're excited to have you with us and
-          will keep you updated on SmartPocket's journey.
+          Thank you for joining our Early Access Program. We're excited to have
+          you with us and will keep you updated on SmartPocket's journey.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <LinkButton to="/">Back to Home</LinkButton>

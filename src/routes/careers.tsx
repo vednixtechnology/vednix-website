@@ -37,7 +37,10 @@ export const Route = createFileRoute("/careers")({
           "Join Vednix Technology in building intelligent financial infrastructure. Apply for internships in Flutter, Node.js, React, Marketing, and UI/UX Design.",
       },
       { property: "og:title", content: "Careers — Vednix Technology" },
-      { property: "og:description", content: "Build the future of intelligent finance with Vednix." },
+      {
+        property: "og:description",
+        content: "Build the future of intelligent finance with Vednix.",
+      },
       { property: "og:url", content: "/careers" },
     ],
     links: [{ rel: "canonical", href: "/careers" }],
@@ -46,12 +49,36 @@ export const Route = createFileRoute("/careers")({
 });
 
 const WHY = [
-  { icon: Sparkles, title: "Meaningful Impact", desc: "Work on products that solve real financial challenges for everyday users — not just demos." },
-  { icon: Rocket, title: "Startup Velocity", desc: "Move fast, ship real features, and see your work in production from day one." },
-  { icon: GraduationCap, title: "Mentorship & Growth", desc: "Work closely with founders and mentors from IIT Indore and IIST Indore." },
-  { icon: ShieldCheck, title: "Real Ownership", desc: "Own a feature, a module, or even a full product surface — not just ticket tasks." },
-  { icon: Lightbulb, title: "Innovation Culture", desc: "We encourage new ideas, experiment boldly, and welcome every team member's perspective." },
-  { icon: TrendingUp, title: "Career Acceleration", desc: "Build a portfolio that stands out — fintech, AI, and enterprise-grade product experience." },
+  {
+    icon: Sparkles,
+    title: "Meaningful Impact",
+    desc: "Work on products that solve real financial challenges for everyday users — not just demos.",
+  },
+  {
+    icon: Rocket,
+    title: "Startup Velocity",
+    desc: "Move fast, ship real features, and see your work in production from day one.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Mentorship & Growth",
+    desc: "Work closely with founders and mentors from IIT Indore and IIST Indore.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Real Ownership",
+    desc: "Own a feature, a module, or even a full product surface — not just ticket tasks.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Innovation Culture",
+    desc: "We encourage new ideas, experiment boldly, and welcome every team member's perspective.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Career Acceleration",
+    desc: "Build a portfolio that stands out — fintech, AI, and enterprise-grade product experience.",
+  },
 ];
 
 const INTERNSHIPS = [
@@ -75,7 +102,11 @@ const INTERNSHIPS = [
       "Firebase basics (Firestore / Auth)",
       "Git version control",
     ],
-    preferred: ["State management (Riverpod/Bloc)", "Material 3 design", "Previous app project"],
+    preferred: [
+      "State management (Riverpod/Bloc)",
+      "Material 3 design",
+      "Previous app project",
+    ],
     duration: "2–6 months",
     mode: "Remote / Hybrid",
   },
@@ -99,7 +130,11 @@ const INTERNSHIPS = [
       "PostgreSQL or Firestore basics",
       "Git & basic CI/CD awareness",
     ],
-    preferred: ["TypeScript", "Firebase Admin SDK", "API security best practices"],
+    preferred: [
+      "TypeScript",
+      "Firebase Admin SDK",
+      "API security best practices",
+    ],
     duration: "2–6 months",
     mode: "Remote / Hybrid",
   },
@@ -130,11 +165,31 @@ const INTERNSHIPS = [
 ];
 
 const SELECTION_PROCESS = [
-  { step: "01", title: "Apply Online", desc: "Fill the application form with your details and motivation." },
-  { step: "02", title: "Application Review", desc: "Our team carefully reviews every submission within 7–10 business days." },
-  { step: "03", title: "Shortlisting", desc: "Shortlisted candidates receive an email to schedule an interview." },
-  { step: "04", title: "Interview", desc: "A short conversation to understand your interests, skills, and fit." },
-  { step: "05", title: "Offer & Onboarding", desc: "Selected interns receive an offer and begin their Vednix journey." },
+  {
+    step: "01",
+    title: "Apply Online",
+    desc: "Fill the application form with your details and motivation.",
+  },
+  {
+    step: "02",
+    title: "Application Review",
+    desc: "Our team carefully reviews every submission within 7–10 business days.",
+  },
+  {
+    step: "03",
+    title: "Shortlisting",
+    desc: "Shortlisted candidates receive an email to schedule an interview.",
+  },
+  {
+    step: "04",
+    title: "Interview",
+    desc: "A short conversation to understand your interests, skills, and fit.",
+  },
+  {
+    step: "05",
+    title: "Offer & Onboarding",
+    desc: "Selected interns receive an offer and begin their Vednix journey.",
+  },
 ];
 
 function CareersPage() {
@@ -148,8 +203,9 @@ function CareersPage() {
             Build the future <span className="text-gradient">with Vednix</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            We're a small team with a big mission. Join us as we build intelligent financial
-            infrastructure from the ground up. Real work. Real ownership. Real impact.
+            We're a small team with a big mission. Join us as we build
+            intelligent financial infrastructure from the ground up. Real work.
+            Real ownership. Real impact.
           </p>
         </div>
       </section>
@@ -157,7 +213,11 @@ function CareersPage() {
       {/* WHY VEDNIX */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Why work with us" title="A place to grow, build, and ship." align="center" />
+          <SectionHeading
+            eyebrow="Why work with us"
+            title="A place to grow, build, and ship."
+            align="center"
+          />
         </Reveal>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {WHY.map((w, i) => (
@@ -166,7 +226,9 @@ function CareersPage() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary shadow-emerald">
                   <w.icon className="h-5 w-5 text-primary-foreground" />
                 </span>
-                <h3 className="mt-4 font-display text-lg font-semibold">{w.title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  {w.title}
+                </h3>
                 <p className="mt-2 text-sm text-muted-foreground">{w.desc}</p>
               </GlassCard>
             </Reveal>
@@ -177,10 +239,15 @@ function CareersPage() {
       {/* OPEN POSITIONS */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Open Positions" title="We're hiring interns." align="center" />
+          <SectionHeading
+            eyebrow="Open Positions"
+            title="We're hiring interns."
+            align="center"
+          />
           <p className="mx-auto mt-3 max-w-2xl text-center text-muted-foreground">
-            All positions are unpaid internships with a certificate of completion. Exceptional interns may
-            receive pre-placement opportunities as Vednix grows.
+            All positions are unpaid internships with a certificate of
+            completion. Exceptional interns may receive pre-placement
+            opportunities as Vednix grows.
           </p>
         </Reveal>
 
@@ -204,7 +271,9 @@ function CareersPage() {
                     </span>
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-display text-xl font-semibold">{job.title}</h3>
+                        <h3 className="font-display text-xl font-semibold">
+                          {job.title}
+                        </h3>
                         <span
                           className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                             job.badgeColor === "emerald"
@@ -241,17 +310,23 @@ function CareersPage() {
                 <div className="grid gap-6 p-6 sm:grid-cols-2 lg:grid-cols-4">
                   {/* Overview */}
                   <div className="sm:col-span-2 lg:col-span-4">
-                    <p className="text-sm text-muted-foreground">{job.overview}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {job.overview}
+                    </p>
                   </div>
 
                   {/* Responsibilities */}
                   <div className="sm:col-span-2">
                     <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      <BookOpen className="h-3.5 w-3.5 text-emerald" /> Responsibilities
+                      <BookOpen className="h-3.5 w-3.5 text-emerald" />{" "}
+                      Responsibilities
                     </h4>
                     <ul className="mt-3 space-y-2">
                       {job.responsibilities.map((r) => (
-                        <li key={r} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <li
+                          key={r}
+                          className="flex items-start gap-2 text-sm text-muted-foreground"
+                        >
                           <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald" />
                           {r}
                         </li>
@@ -262,7 +337,8 @@ function CareersPage() {
                   {/* Requirements & Preferred */}
                   <div>
                     <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      <Laptop className="h-3.5 w-3.5 text-emerald" /> Requirements
+                      <Laptop className="h-3.5 w-3.5 text-emerald" />{" "}
+                      Requirements
                     </h4>
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {job.requirements.map((r) => (
@@ -329,8 +405,12 @@ function CareersPage() {
                           {s.step}
                         </span>
                         <div>
-                          <h3 className="font-display text-lg font-semibold">{s.title}</h3>
-                          <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
+                          <h3 className="font-display text-lg font-semibold">
+                            {s.title}
+                          </h3>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {s.desc}
+                          </p>
                         </div>
                       </div>
                     </GlassCard>
@@ -360,8 +440,9 @@ function CareersPage() {
                 Don't see a perfect fit? Apply anyway.
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                We're always open to hearing from talented, motivated individuals. If you believe in
-                Vednix's mission, reach out — we'd love to talk.
+                We're always open to hearing from talented, motivated
+                individuals. If you believe in Vednix's mission, reach out —
+                we'd love to talk.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link

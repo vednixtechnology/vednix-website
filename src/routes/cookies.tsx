@@ -5,7 +5,10 @@ export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
       { title: "Cookie Policy — Vednix Technology" },
-      { name: "description", content: "How Vednix Technology uses cookies on its website." },
+      {
+        name: "description",
+        content: "How Vednix Technology uses cookies on its website.",
+      },
       { property: "og:title", content: "Cookie Policy — Vednix Technology" },
       { property: "og:url", content: "/cookies" },
     ],
@@ -40,8 +43,8 @@ function CookiesPage() {
 
       <LegalSection id="control" title="Your control">
         <p>
-          Users may disable cookies through their browser settings. Disabling some cookies may
-          affect website functionality.
+          Users may disable cookies through their browser settings. Disabling
+          some cookies may affect website functionality.
         </p>
       </LegalSection>
     </LegalLayout>

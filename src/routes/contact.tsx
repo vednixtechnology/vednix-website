@@ -34,7 +34,10 @@ export const Route = createFileRoute("/contact")({
           "Get in touch with Vednix Technology. Whether you're a user, startup, investor, institution, or future banking partner — our team is ready to connect.",
       },
       { property: "og:title", content: "Contact — Vednix Technology" },
-      { property: "og:description", content: "Connect with the Vednix Technology team." },
+      {
+        property: "og:description",
+        content: "Connect with the Vednix Technology team.",
+      },
       { property: "og:url", content: "/contact" },
     ],
     links: [{ rel: "canonical", href: "/contact" }],
@@ -52,9 +55,15 @@ const schema = z.object({
     .max(20)
     .regex(/^[0-9+\-\s()]+$/, "Only digits and + - ( ) are allowed"),
   subject: z.string().trim().min(3, "Please add a subject").max(120),
-  message: z.string().trim().min(10, "Please write at least 10 characters").max(2000),
+  message: z
+    .string()
+    .trim()
+    .min(10, "Please write at least 10 characters")
+    .max(2000),
   consent: z.literal(true, {
-    errorMap: () => ({ message: "Please agree to the Privacy Policy and Terms" }),
+    errorMap: () => ({
+      message: "Please agree to the Privacy Policy and Terms",
+    }),
   }),
 });
 type FormValues = z.infer<typeof schema>;
@@ -82,7 +91,9 @@ function ContactPage() {
       setSuccess(true);
       reset();
     } catch {
-      setError("Something went wrong. Please try again or email us directly at vednixtechnology@gmail.com");
+      setError(
+        "Something went wrong. Please try again or email us directly at vednixtechnology@gmail.com",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -98,8 +109,8 @@ function ContactPage() {
             Let's <span className="text-gradient">connect</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            Whether you're a user, startup, investor, institution, or future banking partner —
-            we'd love to hear from you.
+            Whether you're a user, startup, investor, institution, or future
+            banking partner — we'd love to hear from you.
           </p>
         </div>
       </section>
@@ -108,7 +119,9 @@ function ContactPage() {
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.2fr]">
           <Reveal>
             <div className="space-y-5">
-              <h2 className="font-display text-2xl font-semibold">Contact information</h2>
+              <h2 className="font-display text-2xl font-semibold">
+                Contact information
+              </h2>
               <p className="text-sm text-muted-foreground">
                 Vednix Technology Private Limited
               </p>
@@ -123,11 +136,17 @@ function ContactPage() {
                   </a>
                 </InfoRow>
                 <InfoRow icon={Phone} label="Phone">
-                  <a href="tel:+919039462506" className="hover:text-emerald transition">
+                  <a
+                    href="tel:+919039462506"
+                    className="hover:text-emerald transition"
+                  >
                     +91 90394 62506
                   </a>
                   <span className="mx-2 text-muted-foreground">·</span>
-                  <a href="tel:+919131060960" className="hover:text-emerald transition">
+                  <a
+                    href="tel:+919131060960"
+                    className="hover:text-emerald transition"
+                  >
                     +91 91310 60960
                   </a>
                 </InfoRow>
@@ -173,15 +192,21 @@ function ContactPage() {
                 </p>
                 <ul className="mt-3 space-y-1.5 text-sm font-mono text-foreground/80">
                   <li className="flex items-center gap-2">
-                    <span className="rounded bg-card px-1.5 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">CIN</span>
+                    <span className="rounded bg-card px-1.5 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">
+                      CIN
+                    </span>
                     U62020MP2026PTC082279
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="rounded bg-card px-1.5 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">DPIIT</span>
+                    <span className="rounded bg-card px-1.5 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">
+                      DPIIT
+                    </span>
                     DIPP251835
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="rounded bg-card px-1.5 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">MSME</span>
+                    <span className="rounded bg-card px-1.5 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">
+                      MSME
+                    </span>
                     UDYAM-MP-23-0273140
                   </li>
                 </ul>
@@ -209,7 +234,9 @@ function ContactPage() {
                 <SuccessState onReset={() => setSuccess(false)} />
               ) : (
                 <>
-                  <h3 className="font-display text-lg font-semibold">Send us a message</h3>
+                  <h3 className="font-display text-lg font-semibold">
+                    Send us a message
+                  </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     We typically respond within 1–2 business days.
                   </p>
@@ -221,7 +248,11 @@ function ContactPage() {
                     </div>
                   )}
 
-                  <form onSubmit={handleSubmit(onSubmit)} className="mt-5 grid gap-5" noValidate>
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="mt-5 grid gap-5"
+                    noValidate
+                  >
                     <Field label="Full Name" error={errors.fullName?.message}>
                       <input
                         {...register("fullName")}
@@ -273,18 +304,26 @@ function ContactPage() {
                       />
                       <span className="text-muted-foreground">
                         I agree to the{" "}
-                        <a href="/privacy" className="text-foreground underline underline-offset-2 hover:text-emerald">
+                        <a
+                          href="/privacy"
+                          className="text-foreground underline underline-offset-2 hover:text-emerald"
+                        >
                           Privacy Policy
                         </a>{" "}
                         and{" "}
-                        <a href="/terms" className="text-foreground underline underline-offset-2 hover:text-emerald">
+                        <a
+                          href="/terms"
+                          className="text-foreground underline underline-offset-2 hover:text-emerald"
+                        >
                           Terms & Conditions
                         </a>
                         .
                       </span>
                     </label>
                     {errors.consent?.message && (
-                      <p className="-mt-3 text-xs text-destructive">{errors.consent.message}</p>
+                      <p className="-mt-3 text-xs text-destructive">
+                        {errors.consent.message}
+                      </p>
                     )}
 
                     <Button type="submit" disabled={submitting} size="lg">
@@ -316,9 +355,12 @@ function SuccessState({ onReset }: { onReset: () => void }) {
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald/15 text-emerald shadow-emerald">
         <CheckCircle2 className="h-8 w-8" />
       </div>
-      <h3 className="mt-5 font-display text-xl font-semibold">Message sent — thank you!</h3>
+      <h3 className="mt-5 font-display text-xl font-semibold">
+        Message sent — thank you!
+      </h3>
       <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-        We've received your message and will get back to you within 1–2 business days.
+        We've received your message and will get back to you within 1–2 business
+        days.
       </p>
       <button
         onClick={onReset}
@@ -341,9 +383,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-medium text-foreground">{label}</span>
+      <span className="mb-2 block text-sm font-medium text-foreground">
+        {label}
+      </span>
       {children}
-      {error && <span className="mt-1.5 block text-xs text-destructive">{error}</span>}
+      {error && (
+        <span className="mt-1.5 block text-xs text-destructive">{error}</span>
+      )}
     </label>
   );
 }

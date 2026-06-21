@@ -1,5 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, ArrowUpRight, Sparkles, Smartphone, Compass } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Sparkles,
+  Smartphone,
+  Compass,
+} from "lucide-react";
 import {
   Section,
   SectionHeading,
@@ -20,7 +26,11 @@ export const Route = createFileRoute("/products")({
           "Vednix Technology is building a growing ecosystem of intelligent financial products. SmartPocket is our flagship product with more innovations on the way.",
       },
       { property: "og:title", content: "Products — Vednix Technology" },
-      { property: "og:description", content: "SmartPocket and future financial innovations from Vednix Technology." },
+      {
+        property: "og:description",
+        content:
+          "SmartPocket and future financial innovations from Vednix Technology.",
+      },
       { property: "og:url", content: "/products" },
     ],
     links: [{ rel: "canonical", href: "/products" }],
@@ -36,11 +46,12 @@ function ProductsPage() {
         <div className="container-px relative mx-auto max-w-5xl text-center">
           <Eyebrow>Our Products</Eyebrow>
           <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl md:text-6xl">
-            A growing ecosystem of <span className="text-gradient">financial products</span>.
+            A growing ecosystem of{" "}
+            <span className="text-gradient">financial products</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            SmartPocket is our flagship product, with more innovative solutions planned for the
-            future.
+            SmartPocket is our flagship product, with more innovative solutions
+            planned for the future.
           </p>
         </div>
       </section>
@@ -55,11 +66,14 @@ function ProductsPage() {
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-foreground">
                   <Sparkles className="h-3 w-3" /> Flagship Product
                 </span>
-                <h2 className="mt-5 font-display text-3xl font-bold sm:text-4xl">SmartPocket</h2>
+                <h2 className="mt-5 font-display text-3xl font-bold sm:text-4xl">
+                  SmartPocket
+                </h2>
                 <p className="mt-4 text-muted-foreground">
-                  SmartPocket is an AI-powered financial behaviour platform designed to simplify
-                  personal finance. It helps users organize money, manage expenses, build smarter
-                  financial habits, and gain meaningful financial insights through an intuitive and
+                  SmartPocket is an AI-powered financial behaviour platform
+                  designed to simplify personal finance. It helps users organize
+                  money, manage expenses, build smarter financial habits, and
+                  gain meaningful financial insights through an intuitive and
                   intelligent experience.
                 </p>
 
@@ -85,11 +99,14 @@ function ProductsPage() {
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-electric/40 bg-electric/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-electric">
                   <Compass className="h-3 w-3" /> Future Vision
                 </span>
-                <h2 className="mt-5 font-display text-3xl font-bold sm:text-4xl">Future Innovations</h2>
+                <h2 className="mt-5 font-display text-3xl font-bold sm:text-4xl">
+                  Future Innovations
+                </h2>
                 <p className="mt-4 text-muted-foreground">
-                  Vednix Technology is actively researching and developing future financial
-                  solutions for businesses, institutions, and financial organizations. Our long-term
-                  vision is to build an integrated ecosystem that combines financial intelligence,
+                  Vednix Technology is actively researching and developing
+                  future financial solutions for businesses, institutions, and
+                  financial organizations. Our long-term vision is to build an
+                  integrated ecosystem that combines financial intelligence,
                   analytics, AI, and digital infrastructure.
                 </p>
 
@@ -116,7 +133,9 @@ function PhoneMockup() {
           <div className="grid h-6 w-6 place-items-center rounded-md bg-gradient-primary">
             <Smartphone className="h-3 w-3 text-primary-foreground" />
           </div>
-          <p className="mt-2 text-[8px] uppercase tracking-widest text-muted-foreground">SmartPocket</p>
+          <p className="mt-2 text-[8px] uppercase tracking-widest text-muted-foreground">
+            SmartPocket
+          </p>
           <p className="font-display text-sm font-bold">₹ 1,24,890</p>
           <div className="mt-2 flex items-end gap-1">
             {[35, 60, 45, 80, 55, 90].map((h, i) => (
@@ -146,11 +165,15 @@ function RoadmapVisual() {
                   : "border border-dashed border-border bg-card/40"
               } grid place-items-center`}
             >
-              <span className={`font-display text-sm font-bold ${i === 0 ? "text-primary-foreground" : "text-muted-foreground"}`}>
+              <span
+                className={`font-display text-sm font-bold ${i === 0 ? "text-primary-foreground" : "text-muted-foreground"}`}
+              >
                 {i + 1}
               </span>
             </div>
-            <p className={`mt-2 text-xs ${i === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
+            <p
+              className={`mt-2 text-xs ${i === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+            >
               {step}
             </p>
           </div>

@@ -38,10 +38,14 @@ export const Route = createFileRoute("/investor-relations")({
         content:
           "Vednix Technology is building intelligent financial infrastructure for India and beyond. Learn about our vision, market opportunity, milestones, and growth strategy.",
       },
-      { property: "og:title", content: "Investor Relations — Vednix Technology" },
+      {
+        property: "og:title",
+        content: "Investor Relations — Vednix Technology",
+      },
       {
         property: "og:description",
-        content: "Building intelligent financial infrastructure for the next generation.",
+        content:
+          "Building intelligent financial infrastructure for the next generation.",
       },
       { property: "og:url", content: "/investor-relations" },
     ],
@@ -51,14 +55,62 @@ export const Route = createFileRoute("/investor-relations")({
 });
 
 const MILESTONES = [
-  { date: "Feb 2026", title: "Company Incorporated", desc: "Vednix Technology Private Limited registered in Indore, MP.", icon: Building2, done: true },
-  { date: "2026", title: "DPIIT Recognition", desc: "Recognized under Startup India (DIPP251835) as an eligible startup.", icon: Award, done: true },
-  { date: "2026", title: "MSME Registration", desc: "Registered as a Micro enterprise under UDYAM (UDYAM-MP-23-0273140).", icon: ShieldCheck, done: true },
-  { date: "2026", title: "IIT Indore Incubation", desc: "Accepted into the IIT Indore ACE Foundation incubation program.", icon: Landmark, done: true },
-  { date: "2026", title: "Mentorship – IIST Indore", desc: "Supported by academic mentors from IIST Indore for product and strategy development.", icon: GraduationCap, done: true },
-  { date: "In Progress", title: "SmartPocket Development", desc: "Active development of the flagship financial behaviour platform.", icon: Rocket, done: false },
-  { date: "Upcoming", title: "Early Access Launch", desc: "Closed early access program for first user cohort.", icon: Users, done: false },
-  { date: "Future", title: "Public Launch", desc: "SmartPocket public release across Android and iOS.", icon: Globe, done: false },
+  {
+    date: "Feb 2026",
+    title: "Company Incorporated",
+    desc: "Vednix Technology Private Limited registered in Indore, MP.",
+    icon: Building2,
+    done: true,
+  },
+  {
+    date: "2026",
+    title: "DPIIT Recognition",
+    desc: "Recognized under Startup India (DIPP251835) as an eligible startup.",
+    icon: Award,
+    done: true,
+  },
+  {
+    date: "2026",
+    title: "MSME Registration",
+    desc: "Registered as a Micro enterprise under UDYAM (UDYAM-MP-23-0273140).",
+    icon: ShieldCheck,
+    done: true,
+  },
+  {
+    date: "2026",
+    title: "IIT Indore Incubation",
+    desc: "Accepted into the IIT Indore ACE Foundation incubation program.",
+    icon: Landmark,
+    done: true,
+  },
+  {
+    date: "2026",
+    title: "Mentorship – IIST Indore",
+    desc: "Supported by academic mentors from IIST Indore for product and strategy development.",
+    icon: GraduationCap,
+    done: true,
+  },
+  {
+    date: "In Progress",
+    title: "SmartPocket Development",
+    desc: "Active development of the flagship financial behaviour platform.",
+    icon: Rocket,
+    done: false,
+  },
+  {
+    date: "Upcoming",
+    title: "Early Access Launch",
+    desc: "Closed early access program for first user cohort.",
+    icon: Users,
+    done: false,
+  },
+  {
+    date: "Future",
+    title: "Public Launch",
+    desc: "SmartPocket public release across Android and iOS.",
+    icon: Globe,
+    done: false,
+  },
 ];
 
 const MARKET_POINTS = [
@@ -113,9 +165,10 @@ function InvestorRelationsPage() {
             <span className="text-gradient">intelligent finance</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            Vednix Technology is an early-stage fintech startup building intelligent financial
-            infrastructure for India. We are currently seeking strategic investors and partners who
-            share our long-term vision.
+            Vednix Technology is an early-stage fintech startup building
+            intelligent financial infrastructure for India. We are currently
+            seeking strategic investors and partners who share our long-term
+            vision.
           </p>
           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-dashed border-border bg-card/40 px-4 py-2 text-xs text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-electric animate-pulse-glow" />
@@ -133,14 +186,16 @@ function InvestorRelationsPage() {
               title="What we're building and why it matters."
             />
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              Vednix Technology is building intelligent financial infrastructure — starting with
-              SmartPocket, a financial behaviour platform that helps individuals understand and
-              improve their relationship with money through AI and behavioural intelligence.
+              Vednix Technology is building intelligent financial infrastructure
+              — starting with SmartPocket, a financial behaviour platform that
+              helps individuals understand and improve their relationship with
+              money through AI and behavioural intelligence.
             </p>
             <p className="mt-3 text-muted-foreground leading-relaxed">
-              Our long-term vision extends beyond personal finance to include business tools,
-              institutional infrastructure, and developer APIs — creating a comprehensive financial
-              intelligence ecosystem built on proprietary behavioural data.
+              Our long-term vision extends beyond personal finance to include
+              business tools, institutional infrastructure, and developer APIs —
+              creating a comprehensive financial intelligence ecosystem built on
+              proprietary behavioural data.
             </p>
             <div className="mt-8">
               <LinkButton to="/about" variant="outline">
@@ -153,14 +208,32 @@ function InvestorRelationsPage() {
             <div className="grid grid-cols-2 gap-4">
               {[
                 { label: "Founded", value: "Feb 2026", sub: "Indore, India" },
-                { label: "Structure", value: "Pvt. Ltd.", sub: "CIN: U62020MP2026PTC082279" },
-                { label: "Recognition", value: "DPIIT", sub: "DIPP251835 · Startup India" },
-                { label: "Incubation", value: "IIT Indore", sub: "ACE Foundation" },
+                {
+                  label: "Structure",
+                  value: "Pvt. Ltd.",
+                  sub: "CIN: U62020MP2026PTC082279",
+                },
+                {
+                  label: "Recognition",
+                  value: "DPIIT",
+                  sub: "DIPP251835 · Startup India",
+                },
+                {
+                  label: "Incubation",
+                  value: "IIT Indore",
+                  sub: "ACE Foundation",
+                },
               ].map((item) => (
                 <GlassCard key={item.label}>
-                  <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                  <p className="mt-2 font-display text-xl font-bold">{item.value}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{item.sub}</p>
+                  <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                    {item.label}
+                  </p>
+                  <p className="mt-2 font-display text-xl font-bold">
+                    {item.value}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {item.sub}
+                  </p>
                 </GlassCard>
               ))}
             </div>
@@ -188,7 +261,8 @@ function InvestorRelationsPage() {
           ))}
         </div>
         <p className="mt-4 text-xs text-muted-foreground text-center">
-          Market data sourced from publicly available industry reports and RBI publications. No specific financial projections are claimed.
+          Market data sourced from publicly available industry reports and RBI
+          publications. No specific financial projections are claimed.
         </p>
       </Section>
 
@@ -209,7 +283,9 @@ function InvestorRelationsPage() {
                   <p.icon className="h-6 w-6 text-emerald" />
                 </span>
                 <div>
-                  <h3 className="font-display text-lg font-semibold">{p.title}</h3>
+                  <h3 className="font-display text-lg font-semibold">
+                    {p.title}
+                  </h3>
                   <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
                 </div>
               </div>
@@ -253,8 +329,12 @@ function InvestorRelationsPage() {
                         </span>
                       )}
                     </div>
-                    <h3 className="mt-0.5 font-display text-base font-semibold">{m.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{m.desc}</p>
+                    <h3 className="mt-0.5 font-display text-base font-semibold">
+                      {m.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {m.desc}
+                    </p>
                   </div>
                 </div>
               </Reveal>
@@ -274,7 +354,10 @@ function InvestorRelationsPage() {
             />
             <ul className="mt-6 space-y-3">
               {FUNDING_VISION.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+                <li
+                  key={i}
+                  className="flex items-start gap-3 text-sm text-muted-foreground"
+                >
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald" />
                   {item}
                 </li>
@@ -283,19 +366,27 @@ function InvestorRelationsPage() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <GlassCard hover={false} className="h-full flex flex-col justify-between">
+            <GlassCard
+              hover={false}
+              className="h-full flex flex-col justify-between"
+            >
               <div>
                 <Eyebrow>Important Disclosure</Eyebrow>
-                <h3 className="mt-4 font-display text-lg font-semibold">What we don't claim</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  What we don't claim
+                </h3>
                 <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                  Vednix Technology is a pre-revenue startup currently in the product development
-                  phase. We do not have any existing institutional investors, disclosed funding
-                  rounds, or revenue. All figures presented on this page are based on publicly
-                  available industry data and our internal planning — not audited financials.
+                  Vednix Technology is a pre-revenue startup currently in the
+                  product development phase. We do not have any existing
+                  institutional investors, disclosed funding rounds, or revenue.
+                  All figures presented on this page are based on publicly
+                  available industry data and our internal planning — not
+                  audited financials.
                 </p>
                 <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                  Any investment discussion is subject to full due diligence, legal review, and
-                  mutual agreement. We maintain transparency in all investor communications.
+                  Any investment discussion is subject to full due diligence,
+                  legal review, and mutual agreement. We maintain transparency
+                  in all investor communications.
                 </p>
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -330,9 +421,9 @@ function InvestorRelationsPage() {
                 Interested in learning more?
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                We welcome conversations with angel investors, seed funds, incubators, accelerators,
-                and strategic partners who believe in the future of intelligent financial
-                infrastructure.
+                We welcome conversations with angel investors, seed funds,
+                incubators, accelerators, and strategic partners who believe in
+                the future of intelligent financial infrastructure.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <a

@@ -42,7 +42,12 @@ const POSITIONS = [
 ];
 
 const YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year"];
-const AVAILABILITY = ["Immediately", "Within 2 weeks", "Within 1 month", "After 2 months"];
+const AVAILABILITY = [
+  "Immediately",
+  "Within 2 weeks",
+  "Within 1 month",
+  "After 2 months",
+];
 const WORK_MODES = ["Remote", "Hybrid", "On-site (Indore)"];
 
 const schema = z.object({
@@ -94,7 +99,7 @@ const schema = z.object({
     .max(500)
     .refine(
       (v) => v.includes("drive.google.com") || v.includes("docs.google.com"),
-      "Please share a Google Drive link"
+      "Please share a Google Drive link",
     ),
   whyVednix: z
     .string()
@@ -160,8 +165,9 @@ function CareerApplyPage() {
             Thank you for <span className="text-gradient">applying</span>!
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
-            We've received your application and will review it carefully. If you're shortlisted, our
-            team will reach out to you via email within 7–10 business days.
+            We've received your application and will review it carefully. If
+            you're shortlisted, our team will reach out to you via email within
+            7–10 business days.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
@@ -196,11 +202,12 @@ function CareerApplyPage() {
           <div className="mt-6">
             <Eyebrow>Internship Application</Eyebrow>
             <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl">
-              Apply to join <span className="text-gradient">Vednix Technology</span>.
+              Apply to join{" "}
+              <span className="text-gradient">Vednix Technology</span>.
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              Fill in the details below. All fields marked with * are required. We review every
-              application carefully.
+              Fill in the details below. All fields marked with * are required.
+              We review every application carefully.
             </p>
           </div>
         </div>
@@ -209,7 +216,11 @@ function CareerApplyPage() {
       <Section>
         <Reveal>
           <GlassCard hover={false} className="mx-auto max-w-3xl">
-            <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6" noValidate>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="grid gap-6"
+              noValidate
+            >
               {/* SECTION: Position */}
               <FormSection title="Position">
                 <Field label="Applying for *" error={errors.position?.message}>
@@ -268,7 +279,10 @@ function CareerApplyPage() {
 
               {/* SECTION: Academic Details */}
               <FormSection title="Academic Details">
-                <Field label="College / University *" error={errors.college?.message}>
+                <Field
+                  label="College / University *"
+                  error={errors.college?.message}
+                >
                   <input
                     {...register("college")}
                     className="input"
@@ -283,7 +297,10 @@ function CareerApplyPage() {
                       placeholder="B.Tech, BCA, MBA..."
                     />
                   </Field>
-                  <Field label="Branch / Specialization *" error={errors.branch?.message}>
+                  <Field
+                    label="Branch / Specialization *"
+                    error={errors.branch?.message}
+                  >
                     <input
                       {...register("branch")}
                       className="input"
@@ -292,7 +309,10 @@ function CareerApplyPage() {
                   </Field>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Current Year *" error={errors.currentYear?.message}>
+                  <Field
+                    label="Current Year *"
+                    error={errors.currentYear?.message}
+                  >
                     <select {...register("currentYear")} className="input">
                       <option value="">Select year</option>
                       {YEARS.map((y) => (
@@ -302,7 +322,10 @@ function CareerApplyPage() {
                       ))}
                     </select>
                   </Field>
-                  <Field label="Graduation Year *" error={errors.graduationYear?.message}>
+                  <Field
+                    label="Graduation Year *"
+                    error={errors.graduationYear?.message}
+                  >
                     <input
                       {...register("graduationYear")}
                       className="input"
@@ -316,7 +339,10 @@ function CareerApplyPage() {
               {/* SECTION: Online Profiles */}
               <FormSection title="Online Profiles">
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="LinkedIn Profile" error={errors.linkedin?.message}>
+                  <Field
+                    label="LinkedIn Profile"
+                    error={errors.linkedin?.message}
+                  >
                     <input
                       {...register("linkedin")}
                       type="url"
@@ -333,7 +359,10 @@ function CareerApplyPage() {
                     />
                   </Field>
                 </div>
-                <Field label="Portfolio / Website" error={errors.portfolio?.message}>
+                <Field
+                  label="Portfolio / Website"
+                  error={errors.portfolio?.message}
+                >
                   <input
                     {...register("portfolio")}
                     type="url"
@@ -341,7 +370,10 @@ function CareerApplyPage() {
                     placeholder="https://yourwebsite.com"
                   />
                 </Field>
-                <Field label="Resume (Google Drive Link) *" error={errors.resumeLink?.message}>
+                <Field
+                  label="Resume (Google Drive Link) *"
+                  error={errors.resumeLink?.message}
+                >
                   <div className="relative">
                     <input
                       {...register("resumeLink")}
@@ -352,8 +384,8 @@ function CareerApplyPage() {
                     <Upload className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   </div>
                   <p className="mt-1.5 text-[11px] text-muted-foreground">
-                    Share your resume via Google Drive with link access set to "Anyone with the
-                    link"
+                    Share your resume via Google Drive with link access set to
+                    "Anyone with the link"
                   </p>
                 </Field>
               </FormSection>
@@ -375,7 +407,10 @@ function CareerApplyPage() {
                 </Field>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Availability *" error={errors.availability?.message}>
+                  <Field
+                    label="Availability *"
+                    error={errors.availability?.message}
+                  >
                     <select {...register("availability")} className="input">
                       <option value="">When can you start?</option>
                       {AVAILABILITY.map((a) => (
@@ -385,7 +420,10 @@ function CareerApplyPage() {
                       ))}
                     </select>
                   </Field>
-                  <Field label="Preferred Work Mode *" error={errors.workMode?.message}>
+                  <Field
+                    label="Preferred Work Mode *"
+                    error={errors.workMode?.message}
+                  >
                     <select {...register("workMode")} className="input">
                       <option value="">Select work mode</option>
                       {WORK_MODES.map((m) => (
@@ -407,12 +445,15 @@ function CareerApplyPage() {
                     className="mt-1 h-4 w-4 accent-emerald-500"
                   />
                   <span className="text-muted-foreground">
-                    I confirm that all the information provided is accurate and complete. I consent
-                    to Vednix Technology storing and using this data to evaluate my application.
+                    I confirm that all the information provided is accurate and
+                    complete. I consent to Vednix Technology storing and using
+                    this data to evaluate my application.
                   </span>
                 </label>
                 {errors.consent?.message && (
-                  <p className="mt-1.5 text-xs text-destructive">{errors.consent.message}</p>
+                  <p className="mt-1.5 text-xs text-destructive">
+                    {errors.consent.message}
+                  </p>
                 )}
               </div>
 
@@ -466,9 +507,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-medium text-foreground">{label}</span>
+      <span className="mb-2 block text-sm font-medium text-foreground">
+        {label}
+      </span>
       {children}
-      {error && <span className="mt-1.5 block text-xs text-destructive">{error}</span>}
+      {error && (
+        <span className="mt-1.5 block text-xs text-destructive">{error}</span>
+      )}
     </label>
   );
 }
