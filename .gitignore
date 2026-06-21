@@ -5,3 +5,5 @@ dist/
 .env.local
 .firebase/
 .DS_Store
+.vercel
+.env*
