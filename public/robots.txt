@@ -7,4 +7,4 @@ Disallow: /thank-you
 Disallow: /career-apply
 
 # Sitemap
-Sitemap: https://vednix.in/sitemap.xml
+Sitemap: https://vednixtech.in/sitemap.xml
