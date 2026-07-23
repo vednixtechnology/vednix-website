@@ -164,7 +164,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "@type": "Organization",
             name: "Vednix Technology",
             legalName: "Vednix Technology Private Limited",
-            url: "https://vednix.in",
+            url: "https://vednixtech.in",
             email: "vednixtechnology@gmail.com",
             telephone: ["+91-9039462506", "+91-9131060960"],
             foundingDate: "2026-02",
