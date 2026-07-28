@@ -58,6 +58,7 @@ function AdminMediaPage() {
 function MediaContent() {
   const [assets, setAssets] = useState<MediaAsset[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [folder, setFolder] = useState<"all" | CloudinaryFolder>("all");
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -66,9 +67,12 @@ function MediaContent() {
 
   async function refresh() {
     setLoading(true);
+    setError(null);
     try {
       setAssets(await listMedia());
     } catch (err) {
+      console.error("Failed to load media assets:", err);
+      setError(err instanceof Error ? err.message : "Failed to retrieve media library assets");
       toast.error(err instanceof Error ? err.message : "Failed to load media");
     } finally {
       setLoading(false);
@@ -188,7 +192,15 @@ function MediaContent() {
         </Select>
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-5 text-sm text-destructive space-y-2">
+          <p className="font-semibold text-base">Error Loading Media Library</p>
+          <p className="text-xs font-mono">{error}</p>
+          <p className="text-xs text-muted-foreground pt-1">
+            This usually happens if your Firestore Security Rules are not deployed, or if the database is inaccessible. Please deploy your security rules using the Firebase CLI or check your Firebase Console.
+          </p>
+        </div>
+      ) : loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>

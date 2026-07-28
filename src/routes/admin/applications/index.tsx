@@ -73,6 +73,7 @@ function AdminApplicationsPage() {
 function ApplicationsContent() {
   const [apps, setApps] = useState<CareerApplication[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ApplicationStatus>(
     "all",
@@ -82,8 +83,15 @@ function ApplicationsContent() {
 
   async function refresh() {
     setLoading(true);
-    setApps(await listApplications());
-    setLoading(false);
+    setError(null);
+    try {
+      setApps(await listApplications());
+    } catch (err) {
+      console.error("Failed to load applications:", err);
+      setError(err instanceof Error ? err.message : "Failed to retrieve applications");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -177,7 +185,15 @@ function ApplicationsContent() {
         </Select>
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-5 text-sm text-destructive space-y-2">
+          <p className="font-semibold text-base">Error Loading Applications</p>
+          <p className="text-xs font-mono">{error}</p>
+          <p className="text-xs text-muted-foreground pt-1">
+            This usually happens if your Firestore Security Rules are not deployed, or if the database is inaccessible. Please deploy your security rules using the Firebase CLI or check your Firebase Console.
+          </p>
+        </div>
+      ) : loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>

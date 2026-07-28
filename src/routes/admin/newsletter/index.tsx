@@ -49,12 +49,20 @@ function AdminNewsletterPage() {
 function NewsletterContent() {
   const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
   async function refresh() {
     setLoading(true);
-    setSubscribers(await listNewsletterSubscribers());
-    setLoading(false);
+    setError(null);
+    try {
+      setSubscribers(await listNewsletterSubscribers());
+    } catch (err) {
+      console.error("Failed to load subscribers:", err);
+      setError(err instanceof Error ? err.message : "Failed to retrieve newsletter subscribers");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -106,7 +114,7 @@ function NewsletterContent() {
         </Button>
       </div>
 
-      {subscribers.length === 0 && !loading && (
+      {subscribers.length === 0 && !loading && !error && (
         <div className="flex items-start gap-3 rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
           <Info className="mt-0.5 h-4 w-4 shrink-0" />
           <p>
@@ -128,7 +136,15 @@ function NewsletterContent() {
         />
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-5 text-sm text-destructive space-y-2">
+          <p className="font-semibold text-base">Error Loading Newsletter Subscribers</p>
+          <p className="text-xs font-mono">{error}</p>
+          <p className="text-xs text-muted-foreground pt-1">
+            This usually happens if your Firestore Security Rules are not deployed, or if the database is inaccessible. Please deploy your security rules using the Firebase CLI or check your Firebase Console.
+          </p>
+        </div>
+      ) : loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>

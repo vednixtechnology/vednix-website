@@ -49,12 +49,20 @@ function AdminEarlyAccessPage() {
 function EarlyAccessContent() {
   const [users, setUsers] = useState<EarlyAccessUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
   async function refresh() {
     setLoading(true);
-    setUsers(await listEarlyAccessUsers());
-    setLoading(false);
+    setError(null);
+    try {
+      setUsers(await listEarlyAccessUsers());
+    } catch (err) {
+      console.error("Failed to load early access signups:", err);
+      setError(err instanceof Error ? err.message : "Failed to retrieve early access list");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -128,7 +136,15 @@ function EarlyAccessContent() {
         />
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-5 text-sm text-destructive space-y-2">
+          <p className="font-semibold text-base">Error Loading Early Access Signups</p>
+          <p className="text-xs font-mono">{error}</p>
+          <p className="text-xs text-muted-foreground pt-1">
+            This usually happens if your Firestore Security Rules are not deployed, or if the database is inaccessible. Please deploy your security rules using the Firebase CLI or check your Firebase Console.
+          </p>
+        </div>
+      ) : loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>

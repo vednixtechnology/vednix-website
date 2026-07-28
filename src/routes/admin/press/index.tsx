@@ -49,12 +49,20 @@ function AdminPressListPage() {
 function PressListContent() {
   const [items, setItems] = useState<PressRelease[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
   async function refresh() {
     setLoading(true);
-    setItems(await listAdminPressReleases());
-    setLoading(false);
+    setError(null);
+    try {
+      setItems(await listAdminPressReleases());
+    } catch (err) {
+      console.error("Failed to load press releases:", err);
+      setError(err instanceof Error ? err.message : "Failed to retrieve press releases list");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -102,7 +110,15 @@ function PressListContent() {
         />
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-5 text-sm text-destructive space-y-2">
+          <p className="font-semibold text-base">Error Loading Press Releases</p>
+          <p className="text-xs font-mono">{error}</p>
+          <p className="text-xs text-muted-foreground pt-1">
+            This usually happens if your Firestore Security Rules are not deployed, or if the database is inaccessible. Please deploy your security rules using the Firebase CLI or check your Firebase Console.
+          </p>
+        </div>
+      ) : loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
