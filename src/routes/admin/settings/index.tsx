@@ -111,13 +111,20 @@ function ImageField({
 function SettingsContent() {
   const { admin } = useAdminAuth();
   const [settings, setSettings] = useState<WebsiteSettingsInput | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    getWebsiteSettings().then((s) => {
-      const { updatedAt: _updatedAt, updatedBy: _updatedBy, ...rest } = s;
-      setSettings(rest);
-    });
+    getWebsiteSettings()
+      .then((s) => {
+        const { updatedAt: _updatedAt, updatedBy: _updatedBy, ...rest } = s;
+        setSettings(rest);
+      })
+      .catch((err) => {
+        console.error("Failed to load settings:", err);
+        setError(err instanceof Error ? err.message : "Failed to load website settings");
+        toast.error("Failed to load settings: " + (err instanceof Error ? err.message : ""));
+      });
   }, []);
 
   function update<K extends keyof WebsiteSettingsInput>(
@@ -139,6 +146,18 @@ function SettingsContent() {
     } finally {
       setSaving(false);
     }
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-5 text-sm text-destructive space-y-2">
+        <p className="font-semibold text-base">Error Loading Website Settings</p>
+        <p className="text-xs font-mono">{error}</p>
+        <p className="text-xs text-muted-foreground pt-1">
+          This usually happens if your Firestore Security Rules are not deployed, or if the database is inaccessible. Please deploy your security rules using the Firebase CLI or check your Firebase Console.
+        </p>
+      </div>
+    );
   }
 
   if (!settings) {

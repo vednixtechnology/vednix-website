@@ -57,14 +57,22 @@ function CareersListContent() {
   const { admin } = useAdminAuth();
   const [jobs, setJobs] = useState<CareerJob[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | JobStatus>("all");
   const [page, setPage] = useState(1);
 
   async function refresh() {
     setLoading(true);
-    setJobs(await listAdminJobs());
-    setLoading(false);
+    setError(null);
+    try {
+      setJobs(await listAdminJobs());
+    } catch (err) {
+      console.error("Failed to load jobs:", err);
+      setError(err instanceof Error ? err.message : "Failed to retrieve careers list");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -151,7 +159,15 @@ function CareersListContent() {
         </Select>
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-5 text-sm text-destructive space-y-2">
+          <p className="font-semibold text-base">Error Loading Careers</p>
+          <p className="text-xs font-mono">{error}</p>
+          <p className="text-xs text-muted-foreground pt-1">
+            This usually happens if your Firestore Security Rules are not deployed, or if the database is inaccessible. Please deploy your security rules using the Firebase CLI or check your Firebase Console.
+          </p>
+        </div>
+      ) : loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
