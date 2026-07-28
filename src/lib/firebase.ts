@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -15,6 +16,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+
+// Firebase Authentication (used by the /admin CMS only — the public site
+// never requires a signed-in user).
+export const auth = getAuth(app);
 
 // Initialize Analytics only in supported browsers
 isSupported().then((supported) => {

@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import { Logo } from "./Logo";
+import { useWebsiteSettings } from "@/hooks/useWebsiteSettings";
 
 const NAV = [
   { label: "About", to: "/about" },
@@ -33,6 +34,8 @@ const NAV = [
   },
   { label: "Careers", to: "/careers" },
   { label: "Insights", to: "/insights" },
+  { label: "Updates", to: "/product-updates" },
+  { label: "Press", to: "/press" },
   { label: "Contact", to: "/contact" },
 ] as const;
 
@@ -47,6 +50,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { settings } = useWebsiteSettings();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -69,14 +73,14 @@ export function Navbar() {
       }`}
     >
       <div className="container-px mx-auto flex h-16 max-w-7xl items-center justify-between gap-4">
-        <Logo />
+        <Logo companyName={settings.companyName} logoUrl={settings.logoUrl} />
 
         <nav
           className="hidden items-center gap-0.5 lg:flex"
           aria-label="Primary"
           onMouseLeave={() => setActiveDropdown(null)}
         >
-          {(NAV as NavItem[]).map((item) => {
+          {(NAV as unknown as NavItem[]).map((item) => {
             const active =
               pathname === item.to ||
               pathname.startsWith(item.to + "/") ||
@@ -182,7 +186,7 @@ export function Navbar() {
             aria-label="Mobile"
           >
             <ul className="grid gap-1">
-              {(NAV as NavItem[]).map((item) => (
+              {(NAV as unknown as NavItem[]).map((item) => (
                 <li key={item.to}>
                   {item.children ? (
                     <div>

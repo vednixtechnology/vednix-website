@@ -1,5 +1,5 @@
 import { createFileRoute, useSearch, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,6 +13,7 @@ import {
   Button,
 } from "@/components/site/primitives";
 import { saveCareerApplication } from "@/lib/submissions";
+import { listOpenJobs } from "@/lib/admin/careers";
 
 export const Route = createFileRoute("/career-apply")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -33,7 +34,7 @@ export const Route = createFileRoute("/career-apply")({
   component: CareerApplyPage,
 });
 
-const POSITIONS = [
+const FALLBACK_POSITIONS = [
   "Flutter Developer Intern",
   "Node.js Developer Intern",
   "Marketing & Growth Intern",
@@ -120,6 +121,17 @@ function CareerApplyPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [positions, setPositions] = useState<string[]>(FALLBACK_POSITIONS);
+
+  useEffect(() => {
+    listOpenJobs()
+      .then((jobs) => {
+        if (jobs.length > 0) setPositions(jobs.map((j) => j.title));
+      })
+      .catch(() => {
+        /* keep the fallback list */
+      });
+  }, []);
 
   const {
     register,
@@ -226,7 +238,7 @@ function CareerApplyPage() {
                 <Field label="Applying for *" error={errors.position?.message}>
                   <select {...register("position")} className="input">
                     <option value="">Select a position</option>
-                    {POSITIONS.map((p) => (
+                    {positions.map((p) => (
                       <option key={p} value={p}>
                         {p}
                       </option>

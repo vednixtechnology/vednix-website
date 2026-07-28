@@ -12,7 +12,7 @@ import {
   Eyebrow,
   Button,
 } from "@/components/site/primitives";
-import { save, emailExists } from "@/lib/submissions";
+import { saveWithEmailKey, emailExistsByKey } from "@/lib/submissions";
 
 export const Route = createFileRoute("/early-access")({
   head: () => ({
@@ -75,7 +75,7 @@ function EarlyAccessPage() {
       const normalizedEmail = values.email.toLowerCase().trim();
 
       // Prevent duplicate registrations
-      const alreadyRegistered = await emailExists(
+      const alreadyRegistered = await emailExistsByKey(
         "early_access_users",
         normalizedEmail,
       );
@@ -87,7 +87,7 @@ function EarlyAccessPage() {
         return;
       }
 
-      await save("early_access_users", {
+      await saveWithEmailKey("early_access_users", normalizedEmail, {
         ...values,
         email: normalizedEmail,
       });

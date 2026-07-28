@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Sparkles,
@@ -6,9 +7,6 @@ import {
   ShieldCheck,
   Lightbulb,
   TrendingUp,
-  Code2,
-  Server,
-  Megaphone,
   Clock,
   MapPin,
   Users,
@@ -26,6 +24,9 @@ import {
   BackgroundGlow,
   Eyebrow,
 } from "@/components/site/primitives";
+import { listOpenJobs } from "@/lib/admin/careers";
+import { getCareerIcon } from "@/lib/admin/careerIcons";
+import type { CareerJob } from "@/lib/admin/types";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -81,89 +82,6 @@ const WHY = [
   },
 ];
 
-const INTERNSHIPS = [
-  {
-    icon: Code2,
-    title: "Flutter Developer Intern",
-    badge: "Engineering",
-    badgeColor: "emerald",
-    overview:
-      "Build the SmartPocket mobile application using Flutter — handling UI, state management, API integration, and Firebase connectivity across Android and iOS.",
-    responsibilities: [
-      "Develop and maintain Flutter UI components for SmartPocket",
-      "Integrate REST APIs and Firebase services",
-      "Collaborate with the product team on feature development",
-      "Ensure responsive layouts and smooth animations",
-      "Write clean, well-documented Dart code",
-    ],
-    requirements: [
-      "Flutter & Dart fundamentals",
-      "Understanding of REST APIs",
-      "Firebase basics (Firestore / Auth)",
-      "Git version control",
-    ],
-    preferred: [
-      "State management (Riverpod/Bloc)",
-      "Material 3 design",
-      "Previous app project",
-    ],
-    duration: "2–6 months",
-    mode: "Remote / Hybrid",
-  },
-  {
-    icon: Server,
-    title: "Node.js Backend Intern",
-    badge: "Engineering",
-    badgeColor: "emerald",
-    overview:
-      "Support backend development for Vednix's financial infrastructure — building APIs, data models, integrations, and scalable architecture patterns.",
-    responsibilities: [
-      "Build and maintain RESTful APIs using Node.js and Express",
-      "Design Firestore data models and query logic",
-      "Implement authentication, input validation, and error handling",
-      "Collaborate with frontend teams on API contracts",
-      "Write unit tests and maintain documentation",
-    ],
-    requirements: [
-      "Node.js & Express.js",
-      "REST API design principles",
-      "PostgreSQL or Firestore basics",
-      "Git & basic CI/CD awareness",
-    ],
-    preferred: [
-      "TypeScript",
-      "Firebase Admin SDK",
-      "API security best practices",
-    ],
-    duration: "2–6 months",
-    mode: "Remote / Hybrid",
-  },
-  {
-    icon: Megaphone,
-    title: "Marketing & Growth Intern",
-    badge: "Growth",
-    badgeColor: "electric",
-    overview:
-      "Drive Vednix's digital presence, startup branding, and early community building — creating compelling content and building meaningful partnerships.",
-    responsibilities: [
-      "Plan and execute social media content across LinkedIn, Instagram",
-      "Create content that communicates Vednix's mission and product vision",
-      "Support early user acquisition and community engagement",
-      "Research startup ecosystems, incubators, and fintech communities",
-      "Assist in preparing pitch decks, investor materials, and marketing assets",
-    ],
-    requirements: [
-      "Strong written and verbal communication",
-      "Social media content creation",
-      "Research and analytical mindset",
-      "Understanding of fintech or startup space",
-    ],
-    preferred: ["Canva / design tools", "LinkedIn strategy", "Email marketing"],
-    duration: "2–4 months",
-    mode: "Remote",
-  },
-];
-
 const SELECTION_PROCESS = [
   {
     step: "01",
@@ -193,6 +111,14 @@ const SELECTION_PROCESS = [
 ];
 
 function CareersPage() {
+  const [jobs, setJobs] = useState<CareerJob[] | null>(null);
+
+  useEffect(() => {
+    listOpenJobs()
+      .then(setJobs)
+      .catch(() => setJobs([]));
+  }, []);
+
   return (
     <>
       <section className="relative overflow-hidden pt-16 md:pt-24">
@@ -252,125 +178,169 @@ function CareersPage() {
         </Reveal>
 
         <div className="mt-12 grid gap-8">
-          {INTERNSHIPS.map((job, i) => (
-            <Reveal key={job.title} delay={i * 0.06}>
-              <div className="glass rounded-2xl overflow-hidden transition hover:border-emerald/30">
-                {/* Header */}
-                <div className="flex flex-col gap-4 border-b border-border/60 p-6 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="flex items-start gap-4">
-                    <span
-                      className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${
-                        job.badgeColor === "emerald"
-                          ? "bg-emerald/15 ring-1 ring-emerald/30"
-                          : "bg-electric/15 ring-1 ring-electric/30"
-                      }`}
-                    >
-                      <job.icon
-                        className={`h-6 w-6 ${job.badgeColor === "emerald" ? "text-emerald" : "text-electric"}`}
-                      />
-                    </span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-display text-xl font-semibold">
-                          {job.title}
-                        </h3>
+          {jobs === null ? (
+            Array.from({ length: 2 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-64 animate-pulse rounded-2xl border border-border/60 bg-surface/40"
+              />
+            ))
+          ) : jobs.length === 0 ? (
+            <p className="py-8 text-center text-muted-foreground">
+              No open positions right now — check back soon, or apply anyway
+              below.
+            </p>
+          ) : (
+            jobs.map((job, i) => {
+              const JobIcon = getCareerIcon(job.iconKey);
+              return (
+                <Reveal key={job.id} delay={i * 0.06}>
+                  <div className="glass rounded-2xl overflow-hidden transition hover:border-emerald/30">
+                    {/* Header */}
+                    <div className="flex flex-col gap-4 border-b border-border/60 p-6 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="flex items-start gap-4">
                         <span
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                          className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${
                             job.badgeColor === "emerald"
-                              ? "bg-emerald/15 text-emerald"
-                              : "bg-electric/15 text-electric"
+                              ? "bg-emerald/15 ring-1 ring-emerald/30"
+                              : "bg-electric/15 ring-1 ring-electric/30"
                           }`}
                         >
-                          {job.badge}
+                          <JobIcon
+                            className={`h-6 w-6 ${job.badgeColor === "emerald" ? "text-emerald" : "text-electric"}`}
+                          />
                         </span>
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-display text-xl font-semibold">
+                              {job.title}
+                            </h3>
+                            <span
+                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                                job.badgeColor === "emerald"
+                                  ? "bg-emerald/15 text-emerald"
+                                  : "bg-electric/15 text-electric"
+                              }`}
+                            >
+                              {job.department}
+                            </span>
+                          </div>
+                          <div className="mt-1.5 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3.5 w-3.5" /> {job.duration}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3.5 w-3.5" /> {job.location}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Users className="h-3.5 w-3.5" />{" "}
+                              {job.employmentType}
+                            </span>
+                            {job.experience && (
+                              <span className="flex items-center gap-1">
+                                <GraduationCap className="h-3.5 w-3.5" />{" "}
+                                {job.experience}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <div className="mt-1.5 flex flex-wrap gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3.5 w-3.5" /> {job.duration}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5" /> {job.mode}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="h-3.5 w-3.5" /> Internship
-                        </span>
+                      {job.applyLink ? (
+                        <a
+                          href={job.applyLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-gradient-primary px-5 text-sm font-semibold text-primary-foreground shadow-emerald transition hover:opacity-90"
+                        >
+                          Apply Now <ArrowRight className="h-3.5 w-3.5" />
+                        </a>
+                      ) : (
+                        <Link
+                          to="/career-apply"
+                          search={{ position: job.title }}
+                          className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-gradient-primary px-5 text-sm font-semibold text-primary-foreground shadow-emerald transition hover:opacity-90"
+                        >
+                          Apply Now <ArrowRight className="h-3.5 w-3.5" />
+                        </Link>
+                      )}
+                    </div>
+
+                    {/* Body */}
+                    <div className="grid gap-6 p-6 sm:grid-cols-2 lg:grid-cols-4">
+                      {/* Overview */}
+                      <div className="sm:col-span-2 lg:col-span-4">
+                        <p className="text-sm text-muted-foreground">
+                          {job.overview}
+                        </p>
                       </div>
+
+                      {/* Responsibilities */}
+                      <div className="sm:col-span-2">
+                        <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                          <BookOpen className="h-3.5 w-3.5 text-emerald" />{" "}
+                          Responsibilities
+                        </h4>
+                        <ul className="mt-3 space-y-2">
+                          {job.responsibilities.map((r) => (
+                            <li
+                              key={r}
+                              className="flex items-start gap-2 text-sm text-muted-foreground"
+                            >
+                              <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald" />
+                              {r}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Requirements & Preferred */}
+                      <div>
+                        <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                          <Laptop className="h-3.5 w-3.5 text-emerald" />{" "}
+                          Requirements
+                        </h4>
+                        <div className="mt-3 flex flex-wrap gap-1.5">
+                          {job.requirements.map((r) => (
+                            <span
+                              key={r}
+                              className="rounded-md border border-border bg-card/60 px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                            >
+                              {r}
+                            </span>
+                          ))}
+                        </div>
+                        {job.salary && (
+                          <p className="mt-3 text-xs text-muted-foreground">
+                            <span className="font-semibold">Compensation:</span>{" "}
+                            {job.salary}
+                          </p>
+                        )}
+                      </div>
+
+                      {job.preferred.length > 0 && (
+                        <div>
+                          <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                            <Star className="h-3.5 w-3.5 text-electric" />{" "}
+                            Preferred
+                          </h4>
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {job.preferred.map((r) => (
+                              <span
+                                key={r}
+                                className="rounded-md border border-electric/20 bg-electric/10 px-2 py-1 text-[11px] font-medium text-electric/80"
+                              >
+                                {r}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <Link
-                    to="/career-apply"
-                    search={{ position: job.title }}
-                    className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-gradient-primary px-5 text-sm font-semibold text-primary-foreground shadow-emerald transition hover:opacity-90"
-                  >
-                    Apply Now <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-
-                {/* Body */}
-                <div className="grid gap-6 p-6 sm:grid-cols-2 lg:grid-cols-4">
-                  {/* Overview */}
-                  <div className="sm:col-span-2 lg:col-span-4">
-                    <p className="text-sm text-muted-foreground">
-                      {job.overview}
-                    </p>
-                  </div>
-
-                  {/* Responsibilities */}
-                  <div className="sm:col-span-2">
-                    <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      <BookOpen className="h-3.5 w-3.5 text-emerald" />{" "}
-                      Responsibilities
-                    </h4>
-                    <ul className="mt-3 space-y-2">
-                      {job.responsibilities.map((r) => (
-                        <li
-                          key={r}
-                          className="flex items-start gap-2 text-sm text-muted-foreground"
-                        >
-                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald" />
-                          {r}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Requirements & Preferred */}
-                  <div>
-                    <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      <Laptop className="h-3.5 w-3.5 text-emerald" />{" "}
-                      Requirements
-                    </h4>
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {job.requirements.map((r) => (
-                        <span
-                          key={r}
-                          className="rounded-md border border-border bg-card/60 px-2 py-1 text-[11px] font-medium text-muted-foreground"
-                        >
-                          {r}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      <Star className="h-3.5 w-3.5 text-electric" /> Preferred
-                    </h4>
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {job.preferred.map((r) => (
-                        <span
-                          key={r}
-                          className="rounded-md border border-electric/20 bg-electric/10 px-2 py-1 text-[11px] font-medium text-electric/80"
-                        >
-                          {r}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+                </Reveal>
+              );
+            })
+          )}
         </div>
       </Section>
 

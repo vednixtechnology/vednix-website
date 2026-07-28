@@ -1,0 +1,125 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // True only for a signed-in user whose uid has a doc in /admins.
+    // Every admin-only write in this file goes through this check.
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // ---------------------------------------------------------------------
+    // admins — who is allowed into /admin. Never writable from the client;
+    // managed exclusively by scripts/bootstrap-admin.mjs (Admin SDK, which
+    // bypasses these rules entirely).
+    // ---------------------------------------------------------------------
+    match /admins/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // ---------------------------------------------------------------------
+    // blogs — public can read published posts only; admins can read/write
+    // everything (drafts included).
+    // ---------------------------------------------------------------------
+    match /blogs/{blogId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // categories — public can read (used to render category filters);
+    // only admins can create/edit.
+    // ---------------------------------------------------------------------
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // activityLogs — admin-only, both read and write. Written by the CMS
+    // itself (via logActivity()) whenever an admin takes an action.
+    // ---------------------------------------------------------------------
+    match /activityLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false; // logs are append-only
+    }
+
+    // ---------------------------------------------------------------------
+    // Existing public-form collections (already live on the site before
+    // this CMS project): anyone can create a submission, only admins can
+    // read/manage/delete them. Matches src/lib/submissions.ts exactly.
+    // ---------------------------------------------------------------------
+    match /contact_messages/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /early_access_users/{docId} {
+      // docId is a deterministic, encoded email (see saveWithEmailKey in
+      // src/lib/submissions.ts), so a public single-doc `get` only ever
+      // reveals whether *that exact* email has signed up — never a bulk
+      // list of every subscriber's email.
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    match /newsletter_subscribers/{docId} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    match /career_applications/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // Careers, Product Updates, Press Releases, Website Settings — public
+    // reads only published/open content or (for settings) everything;
+    // admins can read/write everything.
+    // ---------------------------------------------------------------------
+    match /careers/{docId} {
+      allow read: if resource.data.status == 'open' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /productUpdates/{docId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /pressReleases/{docId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /websiteSettings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // media — Media Library index of Cloudinary uploads made through the
+    // CMS. Admin-only; the actual images are served straight from
+    // Cloudinary's CDN regardless of these rules.
+    // ---------------------------------------------------------------------
+    match /media/{mediaId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

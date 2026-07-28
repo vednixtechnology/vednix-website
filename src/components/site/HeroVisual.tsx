@@ -40,8 +40,8 @@ export function HeroVisual() {
         ))}
         {[0, 60, 120, 180, 240, 300].map((deg, i) => {
           const rad = (deg * Math.PI) / 180;
-          const x = 200 + Math.cos(rad) * 140;
-          const y = 200 + Math.sin(rad) * 140;
+          const x = Math.round((200 + Math.cos(rad) * 140) * 100) / 100;
+          const y = Math.round((200 + Math.sin(rad) * 140) * 100) / 100;
           return (
             <circle key={i} cx={x} cy={y} r="3" fill="oklch(0.74 0.17 162)" />
           );

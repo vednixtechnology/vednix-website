@@ -16,7 +16,9 @@ import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as SmartpocketRouteImport } from './routes/smartpocket'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ProductUpdatesRouteImport } from './routes/product-updates'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PressRouteImport } from './routes/press'
 import { Route as InvestorRelationsRouteImport } from './routes/investor-relations'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as ForBanksRouteImport } from './routes/for-banks'
@@ -27,7 +29,32 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CareerApplyRouteImport } from './routes/career-apply'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as ProductUpdatesSlugRouteImport } from './routes/product-updates.$slug'
+import { Route as PressSlugRouteImport } from './routes/press.$slug'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminUpdatesIndexRouteImport } from './routes/admin/updates/index'
+import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
+import { Route as AdminPressIndexRouteImport } from './routes/admin/press/index'
+import { Route as AdminNewsletterIndexRouteImport } from './routes/admin/newsletter/index'
+import { Route as AdminMediaIndexRouteImport } from './routes/admin/media/index'
+import { Route as AdminLogsIndexRouteImport } from './routes/admin/logs/index'
+import { Route as AdminEarlyAccessIndexRouteImport } from './routes/admin/early-access/index'
+import { Route as AdminContactsIndexRouteImport } from './routes/admin/contacts/index'
+import { Route as AdminCareersIndexRouteImport } from './routes/admin/careers/index'
+import { Route as AdminBlogsIndexRouteImport } from './routes/admin/blogs/index'
+import { Route as AdminApplicationsIndexRouteImport } from './routes/admin/applications/index'
+import { Route as AdminUpdatesNewRouteImport } from './routes/admin/updates/new'
+import { Route as AdminUpdatesUpdateIdRouteImport } from './routes/admin/updates/$updateId'
+import { Route as AdminPressNewRouteImport } from './routes/admin/press/new'
+import { Route as AdminPressPressIdRouteImport } from './routes/admin/press/$pressId'
+import { Route as AdminCareersNewRouteImport } from './routes/admin/careers/new'
+import { Route as AdminCareersJobIdRouteImport } from './routes/admin/careers/$jobId'
+import { Route as AdminBlogsNewRouteImport } from './routes/admin/blogs/new'
+import { Route as AdminBlogsBlogIdRouteImport } from './routes/admin/blogs/$blogId'
 
 const TrustCenterRoute = TrustCenterRouteImport.update({
   id: '/trust-center',
@@ -64,9 +91,19 @@ const ProductsRoute = ProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductUpdatesRoute = ProductUpdatesRouteImport.update({
+  id: '/product-updates',
+  path: '/product-updates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InvestorRelationsRoute = InvestorRelationsRouteImport.update({
@@ -119,14 +156,140 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const ProductUpdatesSlugRoute = ProductUpdatesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ProductUpdatesRoute,
+} as any)
+const PressSlugRoute = PressSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PressRoute,
+} as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => InsightsRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminUpdatesIndexRoute = AdminUpdatesIndexRouteImport.update({
+  id: '/updates/',
+  path: '/updates/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminPressIndexRoute = AdminPressIndexRouteImport.update({
+  id: '/press/',
+  path: '/press/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminNewsletterIndexRoute = AdminNewsletterIndexRouteImport.update({
+  id: '/newsletter/',
+  path: '/newsletter/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminMediaIndexRoute = AdminMediaIndexRouteImport.update({
+  id: '/media/',
+  path: '/media/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminLogsIndexRoute = AdminLogsIndexRouteImport.update({
+  id: '/logs/',
+  path: '/logs/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminEarlyAccessIndexRoute = AdminEarlyAccessIndexRouteImport.update({
+  id: '/early-access/',
+  path: '/early-access/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminContactsIndexRoute = AdminContactsIndexRouteImport.update({
+  id: '/contacts/',
+  path: '/contacts/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCareersIndexRoute = AdminCareersIndexRouteImport.update({
+  id: '/careers/',
+  path: '/careers/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBlogsIndexRoute = AdminBlogsIndexRouteImport.update({
+  id: '/blogs/',
+  path: '/blogs/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminApplicationsIndexRoute = AdminApplicationsIndexRouteImport.update({
+  id: '/applications/',
+  path: '/applications/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminUpdatesNewRoute = AdminUpdatesNewRouteImport.update({
+  id: '/updates/new',
+  path: '/updates/new',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminUpdatesUpdateIdRoute = AdminUpdatesUpdateIdRouteImport.update({
+  id: '/updates/$updateId',
+  path: '/updates/$updateId',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminPressNewRoute = AdminPressNewRouteImport.update({
+  id: '/press/new',
+  path: '/press/new',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminPressPressIdRoute = AdminPressPressIdRouteImport.update({
+  id: '/press/$pressId',
+  path: '/press/$pressId',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCareersNewRoute = AdminCareersNewRouteImport.update({
+  id: '/careers/new',
+  path: '/careers/new',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCareersJobIdRoute = AdminCareersJobIdRouteImport.update({
+  id: '/careers/$jobId',
+  path: '/careers/$jobId',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBlogsNewRoute = AdminBlogsNewRouteImport.update({
+  id: '/blogs/new',
+  path: '/blogs/new',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBlogsBlogIdRoute = AdminBlogsBlogIdRouteImport.update({
+  id: '/blogs/$blogId',
+  path: '/blogs/$blogId',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/career-apply': typeof CareerApplyRoute
   '/careers': typeof CareersRoute
@@ -135,9 +298,11 @@ export interface FileRoutesByFullPath {
   '/disclaimer': typeof DisclaimerRoute
   '/early-access': typeof EarlyAccessRoute
   '/for-banks': typeof ForBanksRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/investor-relations': typeof InvestorRelationsRoute
+  '/press': typeof PressRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/product-updates': typeof ProductUpdatesRouteWithChildren
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/smartpocket': typeof SmartpocketRoute
@@ -145,6 +310,30 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/trust-center': typeof TrustCenterRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/press/$slug': typeof PressSlugRoute
+  '/product-updates/$slug': typeof ProductUpdatesSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/blogs/$blogId': typeof AdminBlogsBlogIdRoute
+  '/admin/blogs/new': typeof AdminBlogsNewRoute
+  '/admin/careers/$jobId': typeof AdminCareersJobIdRoute
+  '/admin/careers/new': typeof AdminCareersNewRoute
+  '/admin/press/$pressId': typeof AdminPressPressIdRoute
+  '/admin/press/new': typeof AdminPressNewRoute
+  '/admin/updates/$updateId': typeof AdminUpdatesUpdateIdRoute
+  '/admin/updates/new': typeof AdminUpdatesNewRoute
+  '/admin/applications/': typeof AdminApplicationsIndexRoute
+  '/admin/blogs/': typeof AdminBlogsIndexRoute
+  '/admin/careers/': typeof AdminCareersIndexRoute
+  '/admin/contacts/': typeof AdminContactsIndexRoute
+  '/admin/early-access/': typeof AdminEarlyAccessIndexRoute
+  '/admin/logs/': typeof AdminLogsIndexRoute
+  '/admin/media/': typeof AdminMediaIndexRoute
+  '/admin/newsletter/': typeof AdminNewsletterIndexRoute
+  '/admin/press/': typeof AdminPressIndexRoute
+  '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/admin/updates/': typeof AdminUpdatesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -156,9 +345,11 @@ export interface FileRoutesByTo {
   '/disclaimer': typeof DisclaimerRoute
   '/early-access': typeof EarlyAccessRoute
   '/for-banks': typeof ForBanksRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/investor-relations': typeof InvestorRelationsRoute
+  '/press': typeof PressRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/product-updates': typeof ProductUpdatesRouteWithChildren
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/smartpocket': typeof SmartpocketRoute
@@ -166,10 +357,35 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/trust-center': typeof TrustCenterRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/press/$slug': typeof PressSlugRoute
+  '/product-updates/$slug': typeof ProductUpdatesSlugRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/blogs/$blogId': typeof AdminBlogsBlogIdRoute
+  '/admin/blogs/new': typeof AdminBlogsNewRoute
+  '/admin/careers/$jobId': typeof AdminCareersJobIdRoute
+  '/admin/careers/new': typeof AdminCareersNewRoute
+  '/admin/press/$pressId': typeof AdminPressPressIdRoute
+  '/admin/press/new': typeof AdminPressNewRoute
+  '/admin/updates/$updateId': typeof AdminUpdatesUpdateIdRoute
+  '/admin/updates/new': typeof AdminUpdatesNewRoute
+  '/admin/applications': typeof AdminApplicationsIndexRoute
+  '/admin/blogs': typeof AdminBlogsIndexRoute
+  '/admin/careers': typeof AdminCareersIndexRoute
+  '/admin/contacts': typeof AdminContactsIndexRoute
+  '/admin/early-access': typeof AdminEarlyAccessIndexRoute
+  '/admin/logs': typeof AdminLogsIndexRoute
+  '/admin/media': typeof AdminMediaIndexRoute
+  '/admin/newsletter': typeof AdminNewsletterIndexRoute
+  '/admin/press': typeof AdminPressIndexRoute
+  '/admin/settings': typeof AdminSettingsIndexRoute
+  '/admin/updates': typeof AdminUpdatesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/career-apply': typeof CareerApplyRoute
   '/careers': typeof CareersRoute
@@ -178,9 +394,11 @@ export interface FileRoutesById {
   '/disclaimer': typeof DisclaimerRoute
   '/early-access': typeof EarlyAccessRoute
   '/for-banks': typeof ForBanksRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/investor-relations': typeof InvestorRelationsRoute
+  '/press': typeof PressRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/product-updates': typeof ProductUpdatesRouteWithChildren
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/smartpocket': typeof SmartpocketRoute
@@ -188,11 +406,36 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/trust-center': typeof TrustCenterRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/press/$slug': typeof PressSlugRoute
+  '/product-updates/$slug': typeof ProductUpdatesSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/blogs/$blogId': typeof AdminBlogsBlogIdRoute
+  '/admin/blogs/new': typeof AdminBlogsNewRoute
+  '/admin/careers/$jobId': typeof AdminCareersJobIdRoute
+  '/admin/careers/new': typeof AdminCareersNewRoute
+  '/admin/press/$pressId': typeof AdminPressPressIdRoute
+  '/admin/press/new': typeof AdminPressNewRoute
+  '/admin/updates/$updateId': typeof AdminUpdatesUpdateIdRoute
+  '/admin/updates/new': typeof AdminUpdatesNewRoute
+  '/admin/applications/': typeof AdminApplicationsIndexRoute
+  '/admin/blogs/': typeof AdminBlogsIndexRoute
+  '/admin/careers/': typeof AdminCareersIndexRoute
+  '/admin/contacts/': typeof AdminContactsIndexRoute
+  '/admin/early-access/': typeof AdminEarlyAccessIndexRoute
+  '/admin/logs/': typeof AdminLogsIndexRoute
+  '/admin/media/': typeof AdminMediaIndexRoute
+  '/admin/newsletter/': typeof AdminNewsletterIndexRoute
+  '/admin/press/': typeof AdminPressIndexRoute
+  '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/admin/updates/': typeof AdminUpdatesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/about'
     | '/career-apply'
     | '/careers'
@@ -203,7 +446,9 @@ export interface FileRouteTypes {
     | '/for-banks'
     | '/insights'
     | '/investor-relations'
+    | '/press'
     | '/privacy'
+    | '/product-updates'
     | '/products'
     | '/sitemap.xml'
     | '/smartpocket'
@@ -211,6 +456,30 @@ export interface FileRouteTypes {
     | '/terms'
     | '/thank-you'
     | '/trust-center'
+    | '/admin/login'
+    | '/insights/$slug'
+    | '/press/$slug'
+    | '/product-updates/$slug'
+    | '/admin/'
+    | '/admin/blogs/$blogId'
+    | '/admin/blogs/new'
+    | '/admin/careers/$jobId'
+    | '/admin/careers/new'
+    | '/admin/press/$pressId'
+    | '/admin/press/new'
+    | '/admin/updates/$updateId'
+    | '/admin/updates/new'
+    | '/admin/applications/'
+    | '/admin/blogs/'
+    | '/admin/careers/'
+    | '/admin/contacts/'
+    | '/admin/early-access/'
+    | '/admin/logs/'
+    | '/admin/media/'
+    | '/admin/newsletter/'
+    | '/admin/press/'
+    | '/admin/settings/'
+    | '/admin/updates/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -224,7 +493,9 @@ export interface FileRouteTypes {
     | '/for-banks'
     | '/insights'
     | '/investor-relations'
+    | '/press'
     | '/privacy'
+    | '/product-updates'
     | '/products'
     | '/sitemap.xml'
     | '/smartpocket'
@@ -232,9 +503,34 @@ export interface FileRouteTypes {
     | '/terms'
     | '/thank-you'
     | '/trust-center'
+    | '/admin/login'
+    | '/insights/$slug'
+    | '/press/$slug'
+    | '/product-updates/$slug'
+    | '/admin'
+    | '/admin/blogs/$blogId'
+    | '/admin/blogs/new'
+    | '/admin/careers/$jobId'
+    | '/admin/careers/new'
+    | '/admin/press/$pressId'
+    | '/admin/press/new'
+    | '/admin/updates/$updateId'
+    | '/admin/updates/new'
+    | '/admin/applications'
+    | '/admin/blogs'
+    | '/admin/careers'
+    | '/admin/contacts'
+    | '/admin/early-access'
+    | '/admin/logs'
+    | '/admin/media'
+    | '/admin/newsletter'
+    | '/admin/press'
+    | '/admin/settings'
+    | '/admin/updates'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/about'
     | '/career-apply'
     | '/careers'
@@ -245,7 +541,9 @@ export interface FileRouteTypes {
     | '/for-banks'
     | '/insights'
     | '/investor-relations'
+    | '/press'
     | '/privacy'
+    | '/product-updates'
     | '/products'
     | '/sitemap.xml'
     | '/smartpocket'
@@ -253,10 +551,35 @@ export interface FileRouteTypes {
     | '/terms'
     | '/thank-you'
     | '/trust-center'
+    | '/admin/login'
+    | '/insights/$slug'
+    | '/press/$slug'
+    | '/product-updates/$slug'
+    | '/admin/'
+    | '/admin/blogs/$blogId'
+    | '/admin/blogs/new'
+    | '/admin/careers/$jobId'
+    | '/admin/careers/new'
+    | '/admin/press/$pressId'
+    | '/admin/press/new'
+    | '/admin/updates/$updateId'
+    | '/admin/updates/new'
+    | '/admin/applications/'
+    | '/admin/blogs/'
+    | '/admin/careers/'
+    | '/admin/contacts/'
+    | '/admin/early-access/'
+    | '/admin/logs/'
+    | '/admin/media/'
+    | '/admin/newsletter/'
+    | '/admin/press/'
+    | '/admin/settings/'
+    | '/admin/updates/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   CareerApplyRoute: typeof CareerApplyRoute
   CareersRoute: typeof CareersRoute
@@ -265,9 +588,11 @@ export interface RootRouteChildren {
   DisclaimerRoute: typeof DisclaimerRoute
   EarlyAccessRoute: typeof EarlyAccessRoute
   ForBanksRoute: typeof ForBanksRoute
-  InsightsRoute: typeof InsightsRoute
+  InsightsRoute: typeof InsightsRouteWithChildren
   InvestorRelationsRoute: typeof InvestorRelationsRoute
+  PressRoute: typeof PressRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  ProductUpdatesRoute: typeof ProductUpdatesRouteWithChildren
   ProductsRoute: typeof ProductsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SmartpocketRoute: typeof SmartpocketRoute
@@ -328,11 +653,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/product-updates': {
+      id: '/product-updates'
+      path: '/product-updates'
+      fullPath: '/product-updates'
+      preLoaderRoute: typeof ProductUpdatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/investor-relations': {
@@ -405,6 +744,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -412,11 +758,266 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/product-updates/$slug': {
+      id: '/product-updates/$slug'
+      path: '/$slug'
+      fullPath: '/product-updates/$slug'
+      preLoaderRoute: typeof ProductUpdatesSlugRouteImport
+      parentRoute: typeof ProductUpdatesRoute
+    }
+    '/press/$slug': {
+      id: '/press/$slug'
+      path: '/$slug'
+      fullPath: '/press/$slug'
+      preLoaderRoute: typeof PressSlugRouteImport
+      parentRoute: typeof PressRoute
+    }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof InsightsRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/updates/': {
+      id: '/admin/updates/'
+      path: '/updates'
+      fullPath: '/admin/updates/'
+      preLoaderRoute: typeof AdminUpdatesIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/settings/': {
+      id: '/admin/settings/'
+      path: '/settings'
+      fullPath: '/admin/settings/'
+      preLoaderRoute: typeof AdminSettingsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/press/': {
+      id: '/admin/press/'
+      path: '/press'
+      fullPath: '/admin/press/'
+      preLoaderRoute: typeof AdminPressIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/newsletter/': {
+      id: '/admin/newsletter/'
+      path: '/newsletter'
+      fullPath: '/admin/newsletter/'
+      preLoaderRoute: typeof AdminNewsletterIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/media/': {
+      id: '/admin/media/'
+      path: '/media'
+      fullPath: '/admin/media/'
+      preLoaderRoute: typeof AdminMediaIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/logs/': {
+      id: '/admin/logs/'
+      path: '/logs'
+      fullPath: '/admin/logs/'
+      preLoaderRoute: typeof AdminLogsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/early-access/': {
+      id: '/admin/early-access/'
+      path: '/early-access'
+      fullPath: '/admin/early-access/'
+      preLoaderRoute: typeof AdminEarlyAccessIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/contacts/': {
+      id: '/admin/contacts/'
+      path: '/contacts'
+      fullPath: '/admin/contacts/'
+      preLoaderRoute: typeof AdminContactsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/careers/': {
+      id: '/admin/careers/'
+      path: '/careers'
+      fullPath: '/admin/careers/'
+      preLoaderRoute: typeof AdminCareersIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/blogs/': {
+      id: '/admin/blogs/'
+      path: '/blogs'
+      fullPath: '/admin/blogs/'
+      preLoaderRoute: typeof AdminBlogsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/applications/': {
+      id: '/admin/applications/'
+      path: '/applications'
+      fullPath: '/admin/applications/'
+      preLoaderRoute: typeof AdminApplicationsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/updates/new': {
+      id: '/admin/updates/new'
+      path: '/updates/new'
+      fullPath: '/admin/updates/new'
+      preLoaderRoute: typeof AdminUpdatesNewRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/updates/$updateId': {
+      id: '/admin/updates/$updateId'
+      path: '/updates/$updateId'
+      fullPath: '/admin/updates/$updateId'
+      preLoaderRoute: typeof AdminUpdatesUpdateIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/press/new': {
+      id: '/admin/press/new'
+      path: '/press/new'
+      fullPath: '/admin/press/new'
+      preLoaderRoute: typeof AdminPressNewRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/press/$pressId': {
+      id: '/admin/press/$pressId'
+      path: '/press/$pressId'
+      fullPath: '/admin/press/$pressId'
+      preLoaderRoute: typeof AdminPressPressIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/careers/new': {
+      id: '/admin/careers/new'
+      path: '/careers/new'
+      fullPath: '/admin/careers/new'
+      preLoaderRoute: typeof AdminCareersNewRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/careers/$jobId': {
+      id: '/admin/careers/$jobId'
+      path: '/careers/$jobId'
+      fullPath: '/admin/careers/$jobId'
+      preLoaderRoute: typeof AdminCareersJobIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/blogs/new': {
+      id: '/admin/blogs/new'
+      path: '/blogs/new'
+      fullPath: '/admin/blogs/new'
+      preLoaderRoute: typeof AdminBlogsNewRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/blogs/$blogId': {
+      id: '/admin/blogs/$blogId'
+      path: '/blogs/$blogId'
+      fullPath: '/admin/blogs/$blogId'
+      preLoaderRoute: typeof AdminBlogsBlogIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminBlogsBlogIdRoute: typeof AdminBlogsBlogIdRoute
+  AdminBlogsNewRoute: typeof AdminBlogsNewRoute
+  AdminCareersJobIdRoute: typeof AdminCareersJobIdRoute
+  AdminCareersNewRoute: typeof AdminCareersNewRoute
+  AdminPressPressIdRoute: typeof AdminPressPressIdRoute
+  AdminPressNewRoute: typeof AdminPressNewRoute
+  AdminUpdatesUpdateIdRoute: typeof AdminUpdatesUpdateIdRoute
+  AdminUpdatesNewRoute: typeof AdminUpdatesNewRoute
+  AdminApplicationsIndexRoute: typeof AdminApplicationsIndexRoute
+  AdminBlogsIndexRoute: typeof AdminBlogsIndexRoute
+  AdminCareersIndexRoute: typeof AdminCareersIndexRoute
+  AdminContactsIndexRoute: typeof AdminContactsIndexRoute
+  AdminEarlyAccessIndexRoute: typeof AdminEarlyAccessIndexRoute
+  AdminLogsIndexRoute: typeof AdminLogsIndexRoute
+  AdminMediaIndexRoute: typeof AdminMediaIndexRoute
+  AdminNewsletterIndexRoute: typeof AdminNewsletterIndexRoute
+  AdminPressIndexRoute: typeof AdminPressIndexRoute
+  AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
+  AdminUpdatesIndexRoute: typeof AdminUpdatesIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminBlogsBlogIdRoute: AdminBlogsBlogIdRoute,
+  AdminBlogsNewRoute: AdminBlogsNewRoute,
+  AdminCareersJobIdRoute: AdminCareersJobIdRoute,
+  AdminCareersNewRoute: AdminCareersNewRoute,
+  AdminPressPressIdRoute: AdminPressPressIdRoute,
+  AdminPressNewRoute: AdminPressNewRoute,
+  AdminUpdatesUpdateIdRoute: AdminUpdatesUpdateIdRoute,
+  AdminUpdatesNewRoute: AdminUpdatesNewRoute,
+  AdminApplicationsIndexRoute: AdminApplicationsIndexRoute,
+  AdminBlogsIndexRoute: AdminBlogsIndexRoute,
+  AdminCareersIndexRoute: AdminCareersIndexRoute,
+  AdminContactsIndexRoute: AdminContactsIndexRoute,
+  AdminEarlyAccessIndexRoute: AdminEarlyAccessIndexRoute,
+  AdminLogsIndexRoute: AdminLogsIndexRoute,
+  AdminMediaIndexRoute: AdminMediaIndexRoute,
+  AdminNewsletterIndexRoute: AdminNewsletterIndexRoute,
+  AdminPressIndexRoute: AdminPressIndexRoute,
+  AdminSettingsIndexRoute: AdminSettingsIndexRoute,
+  AdminUpdatesIndexRoute: AdminUpdatesIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+interface InsightsRouteChildren {
+  InsightsSlugRoute: typeof InsightsSlugRoute
+}
+
+const InsightsRouteChildren: InsightsRouteChildren = {
+  InsightsSlugRoute: InsightsSlugRoute,
+}
+
+const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
+  InsightsRouteChildren,
+)
+
+interface PressRouteChildren {
+  PressSlugRoute: typeof PressSlugRoute
+}
+
+const PressRouteChildren: PressRouteChildren = {
+  PressSlugRoute: PressSlugRoute,
+}
+
+const PressRouteWithChildren = PressRoute._addFileChildren(PressRouteChildren)
+
+interface ProductUpdatesRouteChildren {
+  ProductUpdatesSlugRoute: typeof ProductUpdatesSlugRoute
+}
+
+const ProductUpdatesRouteChildren: ProductUpdatesRouteChildren = {
+  ProductUpdatesSlugRoute: ProductUpdatesSlugRoute,
+}
+
+const ProductUpdatesRouteWithChildren = ProductUpdatesRoute._addFileChildren(
+  ProductUpdatesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   CareerApplyRoute: CareerApplyRoute,
   CareersRoute: CareersRoute,
@@ -425,9 +1026,11 @@ const rootRouteChildren: RootRouteChildren = {
   DisclaimerRoute: DisclaimerRoute,
   EarlyAccessRoute: EarlyAccessRoute,
   ForBanksRoute: ForBanksRoute,
-  InsightsRoute: InsightsRoute,
+  InsightsRoute: InsightsRouteWithChildren,
   InvestorRelationsRoute: InvestorRelationsRoute,
+  PressRoute: PressRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  ProductUpdatesRoute: ProductUpdatesRouteWithChildren,
   ProductsRoute: ProductsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SmartpocketRoute: SmartpocketRoute,
