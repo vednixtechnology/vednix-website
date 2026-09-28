@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import { listMedia, updateMediaRecord } from "@/lib/admin/media";
 import {
   deleteImageFromCloudinary,
@@ -56,6 +58,7 @@ function AdminMediaPage() {
 }
 
 function MediaContent() {
+  const { admin } = useAdminAuth();
   const [assets, setAssets] = useState<MediaAsset[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -101,6 +104,10 @@ function MediaContent() {
   }
 
   async function handleDelete(asset: MediaAsset) {
+    if (!can(admin, "media.delete")) {
+      toast.error("Only Super Admins can delete media");
+      return;
+    }
     setBusyId(asset.id);
     try {
       await deleteImageFromCloudinary(asset.publicId, asset.id);
@@ -249,37 +256,39 @@ function MediaContent() {
                       >
                         <RefreshCw className="h-3.5 w-3.5" />
                       </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            title="Delete"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Permanently delete this image?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This removes the file from Cloudinary storage
-                              entirely — any content still referencing this URL
-                              will show a broken image. This can't be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(asset)}
+                      {can(admin, "media.delete") && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              title="Delete"
                             >
-                              Delete permanently
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Permanently delete this image?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This removes the file from Cloudinary storage
+                                entirely — any content still referencing this URL
+                                will show a broken image. This can't be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(asset)}
+                              >
+                                Delete permanently
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
                     </>
                   )}
                 </div>

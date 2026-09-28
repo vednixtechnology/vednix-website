@@ -2,7 +2,8 @@ import { useState } from "react";
 import { z } from "zod";
 import { Loader2, Mail, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/site/primitives";
-import { saveWithEmailKey, emailExistsByKey } from "@/lib/submissions";
+import { submitNewsletterForm } from "@/lib/api/publicSubmissions.functions";
+import { HoneypotField } from "@/components/site/HoneypotField";
 
 const emailSchema = z
   .string()
@@ -13,6 +14,7 @@ type Status = "idle" | "loading" | "success" | "duplicate" | "error";
 
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,23 +33,33 @@ export function NewsletterSignup() {
     const normalizedEmail = parsed.data.toLowerCase();
     setStatus("loading");
     try {
-      const alreadySubscribed = await emailExistsByKey(
-        "newsletter_subscribers",
-        normalizedEmail,
-      );
-      if (alreadySubscribed) {
-        setStatus("duplicate");
-        return;
-      }
-      await saveWithEmailKey("newsletter_subscribers", normalizedEmail, {
-        email: normalizedEmail,
-        source: "footer",
+      await submitNewsletterForm({
+        data: {
+          email: normalizedEmail,
+          source: "footer",
+          honeypot: honeypot || undefined,
+        },
       });
       setStatus("success");
       setEmail("");
-    } catch {
+      setHoneypot("");
+    } catch (err: unknown) {
+      if (
+        (err != null &&
+          typeof err === "object" &&
+          "code" in err &&
+          err.code === "permission-denied") ||
+        (err instanceof Error && err.message.includes("permission-denied"))
+      ) {
+        setStatus("duplicate");
+        return;
+      }
       setStatus("error");
-      setErrorMessage("Something went wrong. Please try again in a moment.");
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again in a moment.";
+      setErrorMessage(msg);
     }
   }
 
@@ -92,6 +104,10 @@ export function NewsletterSignup() {
               className="h-11 w-full rounded-xl border border-border bg-background/60 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-emerald focus:outline-none focus:ring-2 focus:ring-emerald/30"
             />
           </div>
+          <HoneypotField
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+          />
           <Button
             type="submit"
             variant="primary"

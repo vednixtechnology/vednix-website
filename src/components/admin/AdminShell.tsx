@@ -31,31 +31,37 @@ import {
 } from "@/components/ui/sidebar";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
 import { signOutAdmin } from "@/lib/admin/auth";
+import { can, type Permission } from "@/lib/admin/permissions";
 
 interface NavItem {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   to?: string; // present once the module is live
+  permission?: Permission;
 }
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, to: "/admin" },
-  { label: "Blogs", icon: Newspaper, to: "/admin/blogs" },
-  { label: "Careers", icon: Briefcase, to: "/admin/careers" },
-  { label: "Career Applications", icon: Users, to: "/admin/applications" },
-  { label: "Contact Leads", icon: MessageSquare, to: "/admin/contacts" },
-  { label: "Newsletter", icon: Mail, to: "/admin/newsletter" },
-  { label: "Early Access", icon: UserPlus, to: "/admin/early-access" },
-  { label: "Product Updates", icon: Megaphone, to: "/admin/updates" },
-  { label: "Press Releases", icon: FileText, to: "/admin/press" },
-  { label: "Media Library", icon: ImageIcon, to: "/admin/media" },
-  { label: "Website Settings", icon: Settings, to: "/admin/settings" },
-  { label: "Activity Logs", icon: ScrollText, to: "/admin/logs" },
+  { label: "Blogs", icon: Newspaper, to: "/admin/blogs", permission: "blog.read" },
+  { label: "Careers", icon: Briefcase, to: "/admin/careers", permission: "career.read" },
+  { label: "Career Applications", icon: Users, to: "/admin/applications", permission: "application.read" },
+  { label: "Contact Leads", icon: MessageSquare, to: "/admin/contacts", permission: "contact.read" },
+  { label: "Newsletter", icon: Mail, to: "/admin/newsletter", permission: "newsletter.read" },
+  { label: "Early Access", icon: UserPlus, to: "/admin/early-access", permission: "earlyAccess.read" },
+  { label: "Product Updates", icon: Megaphone, to: "/admin/updates", permission: "update.read" },
+  { label: "Press Releases", icon: FileText, to: "/admin/press", permission: "press.read" },
+  { label: "Media Library", icon: ImageIcon, to: "/admin/media", permission: "media.read" },
+  { label: "Website Settings", icon: Settings, to: "/admin/settings", permission: "settings.manage" },
+  { label: "Activity Logs", icon: ScrollText, to: "/admin/logs", permission: "logs.read" },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const { admin } = useAdminAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const visibleNavItems = NAV_ITEMS.filter(
+    (item) => !item.permission || can(admin, item.permission),
+  );
 
   return (
     <SidebarProvider>
@@ -79,7 +85,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <SidebarGroupLabel>Content Management</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {NAV_ITEMS.map((item) => {
+                {visibleNavItems.map((item) => {
                   const isActive =
                     !!item.to &&
                     (item.to === "/admin"
@@ -116,8 +122,16 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <div className="truncate px-2 py-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
-                {admin?.email}
+              <div className="flex flex-col gap-1 px-2 py-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+                <div className="truncate font-medium text-foreground">
+                  {admin?.email}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {admin?.role?.replace("_", " ") ?? "no role"}
+                  </span>
+                </div>
               </div>
             </SidebarMenuItem>
             <SidebarMenuItem>

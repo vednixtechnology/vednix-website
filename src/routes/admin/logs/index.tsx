@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/table";
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import { listActivityLogs } from "@/lib/admin/activity";
 import type { ActivityLogEntry } from "@/lib/admin/types";
 
@@ -35,12 +37,18 @@ function actionCategory(action: string): string {
 }
 
 function LogsContent() {
+  const { admin } = useAdminAuth();
+  const canReadLogs = can(admin, "logs.read");
   const [logs, setLogs] = useState<ActivityLogEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(canReadLogs);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    if (!canReadLogs) {
+      setLoading(false);
+      return;
+    }
     setError(null);
     listActivityLogs()
       .then(setLogs)
@@ -49,7 +57,26 @@ function LogsContent() {
         setError(err instanceof Error ? err.message : "Failed to retrieve activity logs");
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [canReadLogs]);
+
+  if (!canReadLogs) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="font-display text-2xl font-semibold">Activity Logs</h1>
+          <p className="text-sm text-muted-foreground">
+            System audit logging.
+          </p>
+        </div>
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-6 text-center text-sm text-destructive">
+          <p className="font-semibold text-base">Access Restricted</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Activity audit logs are strictly reserved for Super Administrators.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();

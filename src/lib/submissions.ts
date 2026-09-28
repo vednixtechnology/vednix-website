@@ -40,11 +40,10 @@ export async function saveCareerApplication(data: Record<string, unknown>) {
 
 /** Returns true if email already exists in the given collection.
  *
- * NOTE: this runs a `list` query, which Firestore's security rules only
- * grant to admins (public users can only `create`, not bulk-read, these
- * collections). Use this only from admin-side code. For public-facing
- * duplicate checks, use `emailExistsByKey` / `saveWithEmailKey` below,
- * which only ever need a narrow single-document `get`. */
+ * NOTE: this runs a query or single-document read. To protect user PII from
+ * enumeration, Firestore security rules grant read access to admins only.
+ * For public submissions, use `saveWithEmailKey` directly — Firestore enforces
+ * uniqueness by denying `update` to non-admins if the document ID already exists. */
 export async function emailExists(
   kind: SubmissionKind,
   email: string,
@@ -57,15 +56,12 @@ export async function emailExists(
   return !snap.empty;
 }
 
-/** Deterministic, URL-safe doc ID derived from an email address, so a
- * single-document `get` can check for duplicates without needing bulk
- * `list` access (see firestore.rules — these collections grant public
- * `get` but not `list`). */
+/** Deterministic, URL-safe doc ID derived from an email address. */
 function emailDocId(email: string): string {
   return encodeURIComponent(email.toLowerCase().trim());
 }
 
-/** Public-safe duplicate check: a single-document read, not a query. */
+/** Admin-only duplicate check by document ID. */
 export async function emailExistsByKey(
   kind: SubmissionKind,
   email: string,

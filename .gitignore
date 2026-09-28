@@ -9,3 +9,5 @@ serviceAccountKey.json
 .vercel
 .env*
 .output/
+*-debug.log
+scratch/

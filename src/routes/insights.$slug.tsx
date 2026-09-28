@@ -5,6 +5,8 @@ import { Section, BackgroundGlow, Eyebrow } from "@/components/site/primitives";
 import { getPublishedBlogBySlug } from "@/lib/admin/blogs";
 import type { BlogPost } from "@/lib/admin/types";
 
+import { sanitizeHtml } from "@/lib/sanitize";
+
 export const Route = createFileRoute("/insights/$slug")({
   component: BlogPostPage,
   head: ({ params }) => ({
@@ -140,7 +142,7 @@ function BlogPostPage() {
         )}
         <div
           className="prose prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
         />
         {post.tags.length > 0 && (
           <div className="mt-10 flex flex-wrap gap-2 border-t border-border/60 pt-6">

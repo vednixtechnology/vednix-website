@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import {
   deletePressRelease,
   listAdminPressReleases,
@@ -47,6 +49,7 @@ function AdminPressListPage() {
 }
 
 function PressListContent() {
+  const { admin } = useAdminAuth();
   const [items, setItems] = useState<PressRelease[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,6 +79,7 @@ function PressListContent() {
   }, [items, search]);
 
   async function handleDelete(item: PressRelease) {
+    if (!can(admin, "press.delete")) return;
     await deletePressRelease(item.id);
     await logActivity("press.deleted", `Deleted press release "${item.title}"`);
     refresh();
@@ -160,33 +164,35 @@ function PressListContent() {
                         Edit
                       </Link>
                     </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive"
-                        >
-                          Delete
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Delete this press release?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            "{item.title}" will be permanently removed.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(item)}>
+                    {can(admin, "press.delete") && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive"
+                          >
                             Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Delete this press release?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              "{item.title}" will be permanently removed.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(item)}>
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

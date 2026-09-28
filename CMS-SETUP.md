@@ -324,3 +324,85 @@ files your instructions marked off-limits:**
    dedicated page / etc.)
 2. Wiring Website Settings into the live Navbar/Footer/SEO tags, and
    linking Product Updates/Press into the main Navbar
+
+---
+
+## 13. Firestore Rules Testing & RBAC Verification
+
+The project includes an automated, isolated runtime test suite verifying all database security rules and Role-Based Access Control (RBAC) boundaries against the local Firebase Firestore Emulator.
+
+### Purpose
+Guarantees that modifications to `firestore.rules`, role models, or collection schemas cannot silently introduce privilege escalations, unauthorized destructive actions, or public submission vulnerabilities.
+
+### Canonical Command
+```bash
+# Ensure Java 17+ is on PATH (or set JAVA_HOME)
+npx firebase-tools emulators:exec --only firestore "npm run test:rules"
+```
+
+### Environment Requirements
+- **Node.js**: v18+ (tested on v22)
+- **Java Runtime**: OpenJDK 17+ (required by the Firestore Emulator jar)
+- **Firebase CLI**: `firebase-tools` (automatically executed via `npx`)
+
+### Coverage (132 Tests)
+1. **Admin Documents**: Client writes completely forbidden (`allow write: if false`); read access restricted to authenticated owner.
+2. **RBAC & Content Collections**: `blogs`, `categories`, `productUpdates`, `pressReleases`, `careers`, `media`, and `websiteSettings` verify that only `super_admin` can perform deletions, updates to settings, or category mutations.
+3. **Public Forms Schema Whitelist**: `contact_messages`, `early_access_users`, `newsletter_subscribers`, and `career_applications` enforce strict field whitelisting via `hasOnly(...)` and type bounds, blocking unauthorized extra or privileged fields (`role`, `isAdmin`, etc.).
+4. **Visibility Contracts**: Published/open items are public; draft/closed items are strictly private to authorized editors.
+5. **Activity Logs**: Append-only; immutability rules prevent any update or deletion by any user.
+6. **Batch & Multi-Doc Escalation**: Atomic transaction verification ensures forbidden writes cannot be hidden inside multi-operation batches.
+7. **Malformed Roles**: Missing, null, empty, or unexpected roles (`admin`, `owner`, `root`, etc.) fail closed.
+
+### Safety Guarantee
+All tests execute strictly against local emulator memory data. The suite **never** touches production Firebase, never modifies live data, and requires zero production credentials or secrets.
+
+---
+
+## 14. Public Form Abuse Protection & Anti-Spam (Phase 2B)
+
+The public forms (`contact_messages`, `early_access_users`, `newsletter_subscribers`, `career_applications`) are protected by a defense-in-depth security model:
+
+```text
+Browser (React Form + Honeypot + Turnstile Widget)
+       ↓
+TanStack Start Server Function (Nitro Server Runtime)
+       ↓
+[Layer 3: Abuse Protection]
+  1. Honeypot Check (Bot traps silently dropped)
+  2. Cloudflare Turnstile Verification (Server-Side)
+  3. IP-Based Sliding Window Rate Limiting
+  4. Identifier / Email Cooldown & Deduplication
+  5. Strict Zod Schema & Protocol Bounds
+       ↓
+[Layer 1 & 2: Firestore Authorization & Schema Whitelist]
+  Firestore Security Rules (hasOnly validation & RBAC)
+```
+
+### Protection Mechanisms
+1. **Honeypot Trap**: Invisible field (`website`) rendered off-screen. Automated spambots populate it; human users never see it. Triggered submissions are silently dropped with a generic success response to avoid giving feedback to bot operators.
+2. **IP-Based Sliding Window Limiting**:
+   - `contact_messages`: Max 5 submissions per 10 minutes per IP.
+   - `career_applications`: Max 3 submissions per 15 minutes per IP.
+   - `early_access_users`: Max 5 submissions per 10 minutes per IP.
+   - `newsletter_subscribers`: Max 5 submissions per 10 minutes per IP.
+   - Limit state is maintained in-memory on the server with automatic memory expiration.
+3. **Identifier / Email Cooldown**:
+   - 60-second cooldown per email for contact messages to prevent rapid-fire repeated clicks.
+   - Deterministic email document IDs for `early_access_users` and `newsletter_subscribers` in Firestore.
+4. **Cloudflare Turnstile Verification**:
+   - Verification is conducted strictly server-side against `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
+   - Single-use token enforcement prevents replay attacks.
+   - Operates in non-blocking passthrough mode in local development when unconfigured.
+5. **Career Application Resume Bounds**:
+   - Requires secure HTTPS protocol (`https://`).
+   - Maximum length 500 characters.
+   - Domain whitelisted to verified cloud storage providers (Google Drive, Dropbox, OneDrive). Dangerous schemes (`javascript:`, `data:`, `file:`) are strictly rejected.
+   - Admin view renders external resume links with `rel="noreferrer"` and `target="_blank"`.
+
+### Testing Abuse Protection
+```bash
+npm run test:abuse
+```
+Executes 32 automated tests covering honeypot traps, sliding-window rate limiting, cooldowns, Cloudflare Turnstile token validation/replays, and payload bounds.
+

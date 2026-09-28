@@ -33,6 +33,7 @@ import {
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import { deleteJob, listAdminJobs, setJobStatus } from "@/lib/admin/careers";
 import { logActivity } from "@/lib/admin/activity";
 import type { CareerJob, JobStatus } from "@/lib/admin/types";
@@ -106,6 +107,7 @@ function CareersListContent() {
   }
 
   async function handleDelete(job: CareerJob) {
+    if (!can(admin, "career.delete")) return;
     await deleteJob(job.id);
     await logActivity("career.deleted", `Deleted job "${job.title}"`);
     refresh();
@@ -218,32 +220,34 @@ function CareersListContent() {
                     >
                       {job.status === "open" ? "Close" : "Open"}
                     </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive"
-                        >
-                          Delete
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete this job?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            "{job.title}" will be permanently removed. This
-                            can't be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(job)}>
+                    {can(admin, "career.delete") && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive"
+                          >
                             Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete this job?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              "{job.title}" will be permanently removed. This
+                              can't be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(job)}>
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

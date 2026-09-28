@@ -22,6 +22,7 @@ import {
 import { RichTextEditor } from "@/components/admin/blogs/RichTextEditor";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
 import { uploadImageToCloudinary } from "@/lib/cloudinary";
+import { sanitizeHtml } from "@/lib/sanitize";
 import { ensureCategory, listCategories } from "@/lib/admin/categories";
 import { logActivity } from "@/lib/admin/activity";
 import {
@@ -587,7 +588,7 @@ export function BlogEditor({ initial }: BlogEditorProps) {
           )}
           <div
             className="prose prose-sm max-w-none"
-            dangerouslySetInnerHTML={{ __html: form.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(form.content) }}
           />
         </DialogContent>
       </Dialog>

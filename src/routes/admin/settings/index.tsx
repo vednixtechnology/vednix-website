@@ -17,6 +17,7 @@ import {
   getWebsiteSettings,
   updateWebsiteSettings,
 } from "@/lib/admin/settings";
+import { can } from "@/lib/admin/permissions";
 import type { WebsiteSettingsInput } from "@/lib/admin/types";
 
 export const Route = createFileRoute("/admin/settings/")({
@@ -49,7 +50,7 @@ function ImageField({
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleUpload(file: File) {
-    if (!admin) return;
+    if (!admin || !can(admin, "settings.manage")) return;
     setUploading(true);
     try {
       const result = await uploadImageToCloudinary(file, folder);
@@ -87,7 +88,7 @@ function ImageField({
           type="button"
           variant="outline"
           size="sm"
-          disabled={uploading}
+          disabled={uploading || !can(admin, "settings.manage")}
           onClick={() => inputRef.current?.click()}
         >
           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Upload"}
@@ -113,6 +114,7 @@ function SettingsContent() {
   const [settings, setSettings] = useState<WebsiteSettingsInput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const canManageSettings = can(admin, "settings.manage");
 
   useEffect(() => {
     getWebsiteSettings()
@@ -135,7 +137,7 @@ function SettingsContent() {
   }
 
   async function handleSave() {
-    if (!admin || !settings) return;
+    if (!admin || !settings || !canManageSettings) return;
     setSaving(true);
     try {
       await updateWebsiteSettings(settings, admin.uid);
@@ -170,6 +172,15 @@ function SettingsContent() {
 
   return (
     <div className="space-y-6 pb-24">
+      {!canManageSettings && (
+        <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-300">
+          <p className="font-semibold">Read-Only View</p>
+          <p className="text-xs mt-1">
+            Website settings can only be modified by Super Administrators. You do not have permission to save changes.
+          </p>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-semibold">
@@ -180,7 +191,7 @@ function SettingsContent() {
             about what currently reads from these values.
           </p>
         </div>
-        <Button disabled={saving} onClick={handleSave}>
+        <Button disabled={saving || !canManageSettings} onClick={handleSave}>
           {saving ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (

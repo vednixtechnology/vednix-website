@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import {
   deleteEarlyAccessUser,
   listEarlyAccessUsers,
@@ -47,6 +49,7 @@ function AdminEarlyAccessPage() {
 }
 
 function EarlyAccessContent() {
+  const { admin } = useAdminAuth();
   const [users, setUsers] = useState<EarlyAccessUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -81,6 +84,7 @@ function EarlyAccessContent() {
   }, [users, search]);
 
   async function handleDelete(user: EarlyAccessUser) {
+    if (!can(admin, "earlyAccess.delete")) return;
     await deleteEarlyAccessUser(user.id);
     await logActivity(
       "early_access.deleted",
@@ -179,34 +183,36 @@ function EarlyAccessContent() {
                     {user.createdAt?.toDate().toLocaleDateString() ?? "—"}
                   </TableCell>
                   <TableCell className="text-right">
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive"
-                        >
-                          Delete
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Delete this signup?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            {user.fullName}'s early access signup will be
-                            permanently removed.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(user)}>
+                    {can(admin, "earlyAccess.delete") && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive"
+                          >
                             Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Delete this signup?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {user.fullName}'s early access signup will be
+                              permanently removed.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(user)}>
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

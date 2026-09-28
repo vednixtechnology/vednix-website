@@ -35,7 +35,7 @@ function friendlyAuthError(err: unknown): string {
 }
 
 function AdminLoginPage() {
-  const { admin, loading, signInMock } = useAdminAuth();
+  const { admin, loading } = useAdminAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,26 +54,9 @@ function AdminLoginPage() {
     setSubmitting(true);
     try {
       const emailTrimmed = email.trim();
-      // Special fallback to mock login for testing with your target credentials
-      if (emailTrimmed === "founder@vednixtech.in" && password === "Vednixtech@0818") {
-        if (signInMock) {
-          signInMock(emailTrimmed);
-          navigate({ to: "/admin", replace: true });
-          return;
-        }
-      }
-      
       await signInAdmin(emailTrimmed, password);
       navigate({ to: "/admin", replace: true });
     } catch (err) {
-      // Fallback: If Firebase configuration is not found on client side, automatically log in
-      if (err instanceof FirebaseError && err.code === "auth/configuration-not-found") {
-        if (signInMock) {
-          signInMock(email.trim());
-          navigate({ to: "/admin", replace: true });
-          return;
-        }
-      }
       setError(friendlyAuthError(err));
     } finally {
       setSubmitting(false);

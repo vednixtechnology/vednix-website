@@ -33,6 +33,7 @@ import {
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import { deleteBlog, listAdminBlogs, setBlogStatus } from "@/lib/admin/blogs";
 import { logActivity } from "@/lib/admin/activity";
 import type { BlogPost, BlogStatus } from "@/lib/admin/types";
@@ -108,6 +109,7 @@ function BlogListContent() {
   }
 
   async function handleDelete(blog: BlogPost) {
+    if (!can(admin, "blog.delete")) return;
     await deleteBlog(blog.id);
     await logActivity("blog.deleted", `Deleted blog "${blog.title}"`);
     refresh();
@@ -224,32 +226,34 @@ function BlogListContent() {
                     >
                       {blog.status === "published" ? "Unpublish" : "Publish"}
                     </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive"
-                        >
-                          Delete
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete this blog?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            "{blog.title}" will be permanently removed. This
-                            can't be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(blog)}>
+                    {can(admin, "blog.delete") && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive"
+                          >
                             Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete this blog?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              "{blog.title}" will be permanently removed. This
+                              can't be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(blog)}>
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

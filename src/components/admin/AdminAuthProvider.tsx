@@ -18,8 +18,6 @@ interface AdminAuthState {
   admin: AdminRecord | null;
   /** True until the initial auth check has resolved. */
   loading: boolean;
-  signInMock?: (email: string) => void;
-  signOutMock?: () => void;
 }
 
 const AdminAuthContext = createContext<AdminAuthState | null>(null);
@@ -31,49 +29,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     loading: true,
   });
 
-  const signOutMock = () => {
-    if (typeof window !== "undefined") {
-      sessionStorage.removeItem("mock_admin");
-    }
-    setState({ user: null, admin: null, loading: false });
-  };
-
-  const signInMock = (email: string) => {
-    const mockAdmin: AdminRecord = {
-      uid: "mock-admin-uid",
-      email,
-      role: "super_admin",
-      createdAt: new Date().toISOString(),
-    };
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("mock_admin", JSON.stringify(mockAdmin));
-    }
-    setState({
-      user: { email, uid: "mock-admin-uid" } as any,
-      admin: mockAdmin,
-      loading: false,
-    });
-  };
-
   useEffect(() => {
-    // First, check if there is a mock admin saved locally
-    if (typeof window !== "undefined") {
-      const savedMock = sessionStorage.getItem("mock_admin");
-      if (savedMock) {
-        try {
-          const mockAdmin = JSON.parse(savedMock);
-          setState({
-            user: { email: mockAdmin.email, uid: mockAdmin.uid } as any,
-            admin: mockAdmin,
-            loading: false,
-          });
-          return;
-        } catch {
-          // ignore parsing error
-        }
-      }
-    }
-
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
         setState({ user: null, admin: null, loading: false });
@@ -90,7 +46,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AdminAuthContext.Provider value={{ ...state, signInMock, signOutMock }}>
+    <AdminAuthContext.Provider value={state}>
       {children}
     </AdminAuthContext.Provider>
   );

@@ -5,6 +5,8 @@ import { Section, BackgroundGlow, Eyebrow } from "@/components/site/primitives";
 import { getPublishedUpdateBySlug } from "@/lib/admin/productUpdates";
 import type { ProductUpdate } from "@/lib/admin/types";
 
+import { sanitizeHtml } from "@/lib/sanitize";
+
 export const Route = createFileRoute("/product-updates/$slug")({
   component: ProductUpdateDetailPage,
   head: ({ params }) => ({
@@ -100,7 +102,7 @@ function ProductUpdateDetailPage() {
         )}
         <div
           className="prose prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: update.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(update.content) }}
         />
         <Link
           to="/product-updates"

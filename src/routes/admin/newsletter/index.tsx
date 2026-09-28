@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import {
   deleteNewsletterSubscriber,
   listNewsletterSubscribers,
@@ -47,6 +49,7 @@ function AdminNewsletterPage() {
 }
 
 function NewsletterContent() {
+  const { admin } = useAdminAuth();
   const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,6 +79,7 @@ function NewsletterContent() {
   }, [subscribers, search]);
 
   async function handleDelete(sub: NewsletterSubscriber) {
+    if (!can(admin, "newsletter.delete")) return;
     await deleteNewsletterSubscriber(sub.id);
     await logActivity("newsletter.deleted", `Removed subscriber ${sub.email}`);
     refresh();
@@ -166,33 +170,35 @@ function NewsletterContent() {
                     {sub.createdAt?.toDate().toLocaleDateString() ?? "—"}
                   </TableCell>
                   <TableCell className="text-right">
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive"
-                        >
-                          Delete
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Remove this subscriber?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            {sub.email} will be permanently removed.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(sub)}>
+                    {can(admin, "newsletter.delete") && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive"
+                          >
                             Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Remove this subscriber?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {sub.email} will be permanently removed.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(sub)}>
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

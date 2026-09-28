@@ -52,11 +52,24 @@ async function requireAdminIdToken(): Promise<string> {
   return user.getIdToken();
 }
 
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
 export async function uploadImageToCloudinary(
   file: File,
   folder: CloudinaryFolder,
   options?: { replacePublicId?: string },
 ): Promise<CloudinaryUploadResult> {
+  // Validate file size and format before initiating upload
+  if (file.size > MAX_FILE_SIZE_BYTES) {
+    throw new Error("File exceeds maximum allowed size of 10MB.");
+  }
+  if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+    throw new Error(
+      "Unsupported file format. Only JPEG, PNG, and WebP images are allowed.",
+    );
+  }
+
   const idToken = await requireAdminIdToken();
 
   const signed = await getUploadSignature({
@@ -96,9 +109,8 @@ export async function uploadImageToCloudinary(
     bytes: data.bytes,
   };
 
-  // Best-effort index write for the Media Library — never blocks the
-  // upload itself if it fails. Skipped for in-place replacements of an
-  // asset that's already indexed, to avoid duplicate entries.
+  // Index write for the Media Library. If write fails, attempt to delete
+  // the uploaded asset from Cloudinary to prevent unindexed orphan assets.
   if (!options?.replacePublicId) {
     try {
       await addDoc(collection(db, "media"), {
@@ -109,7 +121,20 @@ export async function uploadImageToCloudinary(
         createdAt: serverTimestamp(),
       });
     } catch (err) {
-      console.error("Failed to index media upload", err);
+      console.error("Failed to index media upload in database", err);
+      try {
+        await deleteCloudinaryImage({
+          data: { idToken, publicId: result.publicId },
+        });
+      } catch (cleanupErr) {
+        console.error(
+          "Failed to clean up unindexed Cloudinary asset",
+          cleanupErr,
+        );
+      }
+      throw new Error(
+        "Media index creation failed in database. Upload was rolled back.",
+      );
     }
   }
 

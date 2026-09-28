@@ -5,6 +5,8 @@ import { Section, BackgroundGlow, Eyebrow } from "@/components/site/primitives";
 import { getPublishedPressReleaseBySlug } from "@/lib/admin/pressReleases";
 import type { PressRelease } from "@/lib/admin/types";
 
+import { sanitizeHtml } from "@/lib/sanitize";
+
 export const Route = createFileRoute("/press/$slug")({
   component: PressReleaseDetailPage,
   head: ({ params }) => ({
@@ -99,7 +101,7 @@ function PressReleaseDetailPage() {
         )}
         <div
           className="prose prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: release.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(release.content) }}
         />
         <Link
           to="/press"

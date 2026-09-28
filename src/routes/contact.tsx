@@ -68,10 +68,16 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 
+import { submitContactForm } from "@/lib/api/publicSubmissions.functions";
+import { HoneypotField } from "@/components/site/HoneypotField";
+import { TurnstileWidget } from "@/components/site/TurnstileWidget";
+
 function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const {
     register,
@@ -84,16 +90,23 @@ function ContactPage() {
     setSubmitting(true);
     setError(null);
     try {
-      await save("contact_messages", {
-        ...values,
-        email: values.email.toLowerCase().trim(),
+      await submitContactForm({
+        data: {
+          ...values,
+          email: values.email.toLowerCase().trim(),
+          honeypot: honeypot || undefined,
+          turnstileToken: turnstileToken || undefined,
+        },
       });
       setSuccess(true);
       reset();
-    } catch {
-      setError(
-        "Something went wrong. Please try again or email us directly at vednixtechnology@gmail.com",
-      );
+      setHoneypot("");
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email us directly at vednixtechnology@gmail.com";
+      setError(msg);
     } finally {
       setSubmitting(false);
     }
@@ -325,6 +338,16 @@ function ContactPage() {
                         {errors.consent.message}
                       </p>
                     )}
+
+                    <HoneypotField
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+
+                    <TurnstileWidget
+                      onVerify={(token) => setTurnstileToken(token)}
+                      onExpire={() => setTurnstileToken("")}
+                    />
 
                     <Button type="submit" disabled={submitting} size="lg">
                       {submitting ? (

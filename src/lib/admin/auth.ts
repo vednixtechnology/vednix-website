@@ -30,9 +30,6 @@ export async function signInAdmin(email: string, password: string) {
 }
 
 export async function signOutAdmin() {
-  if (typeof window !== "undefined") {
-    sessionStorage.removeItem("mock_admin");
-  }
   await firebaseSignOut(auth);
 }
 

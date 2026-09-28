@@ -7,17 +7,82 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // True only for a signed-in user whose uid has a doc in /admins.
-    // Every admin-only write in this file goes through this check.
+    // Fetches the admin record data for the current authenticated user.
+    function getAdminData() {
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid)).data;
+    }
+
+    // True only if the user has an existing document in /admins with a valid role.
+    // Fails closed if the document is missing or role is not recognized.
     function isAdmin() {
       return isSignedIn() &&
-        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        (getAdminData().get('role', '') == 'editor' || getAdminData().get('role', '') == 'super_admin');
+    }
+
+    // True only if the authenticated admin has the 'super_admin' role.
+    function isSuperAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        getAdminData().get('role', '') == 'super_admin';
+    }
+
+    // True for any authorized admin (super_admin or editor).
+    function isEditor() {
+      return isAdmin();
+    }
+
+    // Validation functions for public submissions to protect against abuse,
+    // injection of unauthorized administrative fields, or oversized payloads.
+    function isValidContactMessage() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['fullName', 'email', 'phone', 'subject', 'message', 'consent', 'createdAt', 'updatedAt']) &&
+             data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 100 &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 200 &&
+             data.phone is string && data.phone.size() >= 7 && data.phone.size() <= 30 &&
+             data.subject is string && data.subject.size() >= 2 && data.subject.size() <= 150 &&
+             data.message is string && data.message.size() >= 10 && data.message.size() <= 3000 &&
+             data.consent == true;
+    }
+
+    function isValidEarlyAccessUser() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['fullName', 'email', 'phone', 'occupation', 'city', 'consent', 'createdAt', 'updatedAt']) &&
+             data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 100 &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 200 &&
+             data.phone is string && data.phone.size() >= 7 && data.phone.size() <= 30 &&
+             data.occupation is string && data.occupation.size() >= 2 && data.occupation.size() <= 100 &&
+             data.city is string && data.city.size() >= 2 && data.city.size() <= 100 &&
+             data.consent == true;
+    }
+
+    function isValidNewsletterSubscriber() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['email', 'source', 'createdAt', 'updatedAt']) &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 200;
+    }
+
+    function isValidCareerApplication() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+               'fullName', 'email', 'phone', 'position', 'city', 'college', 'degree',
+               'branch', 'currentYear', 'graduationYear', 'linkedin', 'github',
+               'portfolio', 'resumeLink', 'whyVednix', 'availability', 'workMode',
+               'consent', 'status', 'source', 'createdAt', 'updatedAt'
+             ]) &&
+             data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 100 &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 200 &&
+             data.phone is string && data.phone.size() >= 7 && data.phone.size() <= 30 &&
+             data.position is string && data.position.size() <= 100 &&
+             data.resumeLink is string && data.resumeLink.size() <= 600 &&
+             data.status == 'new' &&
+             data.consent == true;
     }
 
     // ---------------------------------------------------------------------
     // admins — who is allowed into /admin. Never writable from the client;
     // managed exclusively by scripts/bootstrap-admin.mjs (Admin SDK, which
-    // bypasses these rules entirely).
+    // bypasses these rules entirely). Protects against self-promotion.
     // ---------------------------------------------------------------------
     match /admins/{uid} {
       allow read: if isSignedIn() && request.auth.uid == uid;
@@ -25,101 +90,102 @@ service cloud.firestore {
     }
 
     // ---------------------------------------------------------------------
-    // blogs — public can read published posts only; admins can read/write
-    // everything (drafts included).
+    // blogs — public can read published posts only; editors can create/edit;
+    // only super_admin can permanently delete blogs.
     // ---------------------------------------------------------------------
     match /blogs/{blogId} {
-      allow read: if resource.data.status == 'published' || isAdmin();
-      allow create, update, delete: if isAdmin();
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow create, update: if isEditor();
+      allow delete: if isSuperAdmin();
     }
 
     // ---------------------------------------------------------------------
-    // categories — public can read (used to render category filters);
-    // only admins can create/edit.
+    // categories — public can read (filters); editors can create as part
+    // of the blog creation workflow; only super_admin can edit/delete.
     // ---------------------------------------------------------------------
     match /categories/{categoryId} {
       allow read: if true;
-      allow create, update, delete: if isAdmin();
+      allow create: if isEditor();
+      allow update, delete: if isSuperAdmin();
     }
 
     // ---------------------------------------------------------------------
-    // activityLogs — admin-only, both read and write. Written by the CMS
-    // itself (via logActivity()) whenever an admin takes an action.
+    // activityLogs — super_admin can read audit logs; any admin action
+    // creates an entry; logs are strictly append-only (no update or delete).
     // ---------------------------------------------------------------------
     match /activityLogs/{logId} {
-      allow read: if isAdmin();
-      allow create: if isAdmin();
-      allow update, delete: if false; // logs are append-only
+      allow read: if isSuperAdmin();
+      allow create: if isEditor();
+      allow update, delete: if false;
     }
 
     // ---------------------------------------------------------------------
-    // Existing public-form collections (already live on the site before
-    // this CMS project): anyone can create a submission, only admins can
-    // read/manage/delete them. Matches src/lib/submissions.ts exactly.
+    // Public submission collections: anyone can create a valid submission;
+    // editors can read and process statuses; only super_admin can delete.
+    // Public reads are strictly blocked to protect PII.
     // ---------------------------------------------------------------------
     match /contact_messages/{docId} {
-      allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow create: if isValidContactMessage();
+      allow read, update: if isEditor();
+      allow delete: if isSuperAdmin();
     }
 
     match /early_access_users/{docId} {
-      // docId is a deterministic, encoded email (see saveWithEmailKey in
-      // src/lib/submissions.ts), so a public single-doc `get` only ever
-      // reveals whether *that exact* email has signed up — never a bulk
-      // list of every subscriber's email.
-      allow get: if true;
-      allow list: if isAdmin();
-      allow create: if true;
-      allow update, delete: if isAdmin();
+      allow create: if isValidEarlyAccessUser();
+      allow read: if isEditor();
+      allow update, delete: if isSuperAdmin();
     }
 
     match /newsletter_subscribers/{docId} {
-      allow get: if true;
-      allow list: if isAdmin();
-      allow create: if true;
-      allow update, delete: if isAdmin();
+      allow create: if isValidNewsletterSubscriber();
+      allow read: if isEditor();
+      allow update, delete: if isSuperAdmin();
     }
 
     match /career_applications/{docId} {
-      allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow create: if isValidCareerApplication();
+      allow read, update: if isEditor();
+      allow delete: if isSuperAdmin();
     }
 
     // ---------------------------------------------------------------------
-    // Careers, Product Updates, Press Releases, Website Settings — public
-    // reads only published/open content or (for settings) everything;
-    // admins can read/write everything.
+    // Careers, Product Updates, Press Releases — public reads published/open
+    // content; editors can create and edit; only super_admin can delete.
     // ---------------------------------------------------------------------
     match /careers/{docId} {
-      allow read: if resource.data.status == 'open' || isAdmin();
-      allow write: if isAdmin();
+      allow read: if resource.data.status == 'open' || isEditor();
+      allow create, update: if isEditor();
+      allow delete: if isSuperAdmin();
     }
 
     match /productUpdates/{docId} {
-      allow read: if resource.data.status == 'published' || isAdmin();
-      allow write: if isAdmin();
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow create, update: if isEditor();
+      allow delete: if isSuperAdmin();
     }
 
     match /pressReleases/{docId} {
-      allow read: if resource.data.status == 'published' || isAdmin();
-      allow write: if isAdmin();
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow create, update: if isEditor();
+      allow delete: if isSuperAdmin();
     }
 
+    // ---------------------------------------------------------------------
+    // websiteSettings — public reads everything (SEO, metadata, layout);
+    // only super_admin can modify settings (analytics, legal, global config).
+    // ---------------------------------------------------------------------
     match /websiteSettings/{docId} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if isSuperAdmin();
     }
 
     // ---------------------------------------------------------------------
-    // media — Media Library index of Cloudinary uploads made through the
-    // CMS. Admin-only; the actual images are served straight from
-    // Cloudinary's CDN regardless of these rules.
+    // media — Media Library index of Cloudinary uploads made through the CMS.
+    // Editors can view and upload; only super_admin can delete assets.
     // ---------------------------------------------------------------------
     match /media/{mediaId} {
-      allow read: if isAdmin();
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow read, create, update: if isEditor();
+      allow delete: if isSuperAdmin();
     }
   }
 }

@@ -35,7 +35,11 @@ export function RichTextEditor({
     extensions: [
       StarterKit.configure({}),
       Image,
-      Link.configure({ openOnClick: false, autolink: true }),
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        validate: (href) => /^(https?:\/\/|mailto:|tel:|\/)/i.test(href),
+      }),
       Placeholder.configure({
         placeholder: "Write your article...",
       }),
@@ -86,11 +90,18 @@ export function RichTextEditor({
       editor?.chain().focus().extendMarkRange("link").unsetLink().run();
       return;
     }
+    const trimmed = url.trim();
+    if (!/^(https?:\/\/|mailto:|tel:|\/)/i.test(trimmed)) {
+      window.alert(
+        "Invalid URL. Links must start with https://, http://, mailto:, tel:, or /",
+      );
+      return;
+    }
     editor
       ?.chain()
       .focus()
       .extendMarkRange("link")
-      .setLink({ href: url })
+      .setLink({ href: trimmed })
       .run();
   }
 

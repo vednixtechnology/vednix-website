@@ -116,12 +116,18 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+import { submitCareerForm } from "@/lib/api/publicSubmissions.functions";
+import { HoneypotField } from "@/components/site/HoneypotField";
+import { TurnstileWidget } from "@/components/site/TurnstileWidget";
+
 function CareerApplyPage() {
   const { position: prefilledPosition } = useSearch({ from: "/career-apply" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [positions, setPositions] = useState<string[]>(FALLBACK_POSITIONS);
+  const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   useEffect(() => {
     listOpenJobs()
@@ -148,17 +154,25 @@ function CareerApplyPage() {
     setSubmitting(true);
     setError(null);
     try {
-      await saveCareerApplication({
-        ...values,
-        email: values.email.toLowerCase().trim(),
-        linkedin: values.linkedin || null,
-        github: values.github || null,
-        portfolio: values.portfolio || null,
+      await submitCareerForm({
+        data: {
+          ...values,
+          email: values.email.toLowerCase().trim(),
+          linkedin: values.linkedin || "",
+          github: values.github || "",
+          portfolio: values.portfolio || "",
+          honeypot: honeypot || undefined,
+          turnstileToken: turnstileToken || undefined,
+        },
       });
       setSuccess(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch {
-      setError("Something went wrong. Please try again or email us directly.");
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email us directly.";
+      setError(msg);
     } finally {
       setSubmitting(false);
     }
@@ -474,6 +488,16 @@ function CareerApplyPage() {
                   {error}
                 </div>
               )}
+
+              <HoneypotField
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+
+              <TurnstileWidget
+                onVerify={(token) => setTurnstileToken(token)}
+                onExpire={() => setTurnstileToken("")}
+              />
 
               <Button type="submit" disabled={submitting} size="lg">
                 {submitting ? "Submitting Application…" : "Submit Application"}

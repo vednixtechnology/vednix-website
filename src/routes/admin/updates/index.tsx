@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireAdmin } from "@/components/admin/RequireAdmin";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
+import { can } from "@/lib/admin/permissions";
 import { deleteUpdate, listAdminUpdates } from "@/lib/admin/productUpdates";
 import { logActivity } from "@/lib/admin/activity";
 import type { ProductUpdate } from "@/lib/admin/types";
@@ -44,6 +46,7 @@ function AdminUpdatesListPage() {
 }
 
 function UpdatesListContent() {
+  const { admin } = useAdminAuth();
   const [items, setItems] = useState<ProductUpdate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,6 +76,7 @@ function UpdatesListContent() {
   }, [items, search]);
 
   async function handleDelete(item: ProductUpdate) {
+    if (!can(admin, "update.delete")) return;
     await deleteUpdate(item.id);
     await logActivity(
       "update.deleted",
@@ -162,33 +166,35 @@ function UpdatesListContent() {
                         Edit
                       </Link>
                     </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive"
-                        >
-                          Delete
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Delete this update?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            "{item.title}" will be permanently removed.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(item)}>
+                    {can(admin, "update.delete") && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive"
+                          >
                             Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Delete this update?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              "{item.title}" will be permanently removed.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(item)}>
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

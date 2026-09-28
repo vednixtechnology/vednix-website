@@ -1,6 +1,5 @@
-import { cert, getApps, initializeApp } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
+import { existsSync, readFileSync } from "node:fs";
+import admin from "firebase-admin";
 
 /**
  * Required env var (server-only): FIREBASE_SERVICE_ACCOUNT_KEY
@@ -10,10 +9,23 @@ import { getFirestore } from "firebase-admin/firestore";
  * the client.
  */
 function getAdminApp() {
-  const existing = getApps();
-  if (existing.length) return existing[0];
+  const existing = admin.apps;
+  if (existing.length && existing[0]) return existing[0];
 
-  const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+  let raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+  if (!raw && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    if (existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
+      raw = readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, "utf8");
+    }
+  }
+  // Local filesystem fallback is strictly development/test-only
+  if (!raw && process.env.NODE_ENV !== "production") {
+    const localFallback = "./serviceAccountKey.json";
+    if (existsSync(localFallback)) {
+      raw = readFileSync(localFallback, "utf8");
+    }
+  }
+
   if (!raw) {
     throw new Error(
       "FIREBASE_SERVICE_ACCOUNT_KEY is not set on the server. See CMS-SETUP.md.",
@@ -29,14 +41,16 @@ function getAdminApp() {
     );
   }
 
-  return initializeApp({ credential: cert(serviceAccount) });
+  return admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 }
 
-/** Verifies a Firebase ID token and confirms the user is a listed admin.
+import type { AdminRole } from "@/lib/admin/types";
+
+/** Verifies a Firebase ID token and confirms the user is a listed admin with a valid role.
  * Throws (with a client-safe message) if either check fails. */
 export async function verifyAdmin(
   idToken: string,
-): Promise<{ uid: string; email: string }> {
+): Promise<{ uid: string; email: string; role: AdminRole }> {
   if (!idToken) {
     throw new Error("You must be signed in as an admin for this action.");
   }
@@ -44,12 +58,13 @@ export async function verifyAdmin(
   const app = getAdminApp();
   let decoded;
   try {
-    decoded = await getAuth(app).verifyIdToken(idToken);
+    decoded = await admin.auth(app).verifyIdToken(idToken);
   } catch {
     throw new Error("Your session has expired — please sign in again.");
   }
 
-  const adminDoc = await getFirestore(app)
+  const adminDoc = await admin
+    .firestore(app)
     .collection("admins")
     .doc(decoded.uid)
     .get();
@@ -58,5 +73,22 @@ export async function verifyAdmin(
     throw new Error("This account is not authorized to perform admin actions.");
   }
 
-  return { uid: decoded.uid, email: decoded.email ?? "" };
+  const data = adminDoc.data();
+  const rawRole = data?.role;
+  if (rawRole !== "super_admin" && rawRole !== "editor") {
+    throw new Error("This account does not have a recognized admin role.");
+  }
+
+  return { uid: decoded.uid, email: decoded.email ?? "", role: rawRole };
+}
+
+/** Verifies that the signed-in admin holds the 'super_admin' role. */
+export async function verifySuperAdmin(
+  idToken: string,
+): Promise<{ uid: string; email: string; role: "super_admin" }> {
+  const admin = await verifyAdmin(idToken);
+  if (admin.role !== "super_admin") {
+    throw new Error("This action requires super admin privileges.");
+  }
+  return { ...admin, role: "super_admin" };
 }
