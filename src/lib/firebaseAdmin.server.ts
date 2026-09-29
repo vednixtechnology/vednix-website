@@ -63,18 +63,51 @@ export async function verifyAdmin(
     throw new Error("Your session has expired — please sign in again.");
   }
 
-  const adminDoc = await admin
-    .firestore(app)
-    .collection("admins")
-    .doc(decoded.uid)
-    .get();
+  const projectId =
+    app.options.projectId ||
+    process.env.FIREBASE_PROJECT_ID ||
+    process.env.VITE_FIREBASE_PROJECT_ID;
 
-  if (!adminDoc.exists) {
+  if (!projectId) {
     throw new Error("This account is not authorized to perform admin actions.");
   }
 
-  const data = adminDoc.data();
-  const rawRole = data?.role;
+  let rawRole: string | undefined;
+  try {
+    const url = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/databases/(default)/documents/admins/${encodeURIComponent(decoded.uid)}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        "This account is not authorized to perform admin actions.",
+      );
+    }
+
+    const docData = (await response.json()) as {
+      fields?: {
+        role?: { stringValue?: string };
+      };
+    };
+
+    rawRole = docData.fields?.role?.stringValue;
+  } catch (err) {
+    if (
+      err instanceof Error &&
+      err.message === "This account is not authorized to perform admin actions."
+    ) {
+      throw err;
+    }
+    throw new Error(
+      "This account is not authorized to perform admin actions.",
+    );
+  }
+
   if (rawRole !== "super_admin" && rawRole !== "editor") {
     throw new Error("This account does not have a recognized admin role.");
   }
