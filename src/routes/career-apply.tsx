@@ -1,5 +1,5 @@
 import { createFileRoute, useSearch, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,6 +13,7 @@ import {
   Button,
 } from "@/components/site/primitives";
 import { saveCareerApplication } from "@/lib/submissions";
+import { listOpenJobs } from "@/lib/admin/careers";
 
 export const Route = createFileRoute("/career-apply")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -33,7 +34,7 @@ export const Route = createFileRoute("/career-apply")({
   component: CareerApplyPage,
 });
 
-const POSITIONS = [
+const FALLBACK_POSITIONS = [
   "Flutter Developer Intern",
   "Node.js Developer Intern",
   "Marketing & Growth Intern",
@@ -115,11 +116,28 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+import { submitCareerForm } from "@/lib/api/publicSubmissions.functions";
+import { HoneypotField } from "@/components/site/HoneypotField";
+import { TurnstileWidget } from "@/components/site/TurnstileWidget";
+
 function CareerApplyPage() {
   const { position: prefilledPosition } = useSearch({ from: "/career-apply" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [positions, setPositions] = useState<string[]>(FALLBACK_POSITIONS);
+  const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+
+  useEffect(() => {
+    listOpenJobs()
+      .then((jobs) => {
+        if (jobs.length > 0) setPositions(jobs.map((j) => j.title));
+      })
+      .catch(() => {
+        /* keep the fallback list */
+      });
+  }, []);
 
   const {
     register,
@@ -136,17 +154,25 @@ function CareerApplyPage() {
     setSubmitting(true);
     setError(null);
     try {
-      await saveCareerApplication({
-        ...values,
-        email: values.email.toLowerCase().trim(),
-        linkedin: values.linkedin || null,
-        github: values.github || null,
-        portfolio: values.portfolio || null,
+      await submitCareerForm({
+        data: {
+          ...values,
+          email: values.email.toLowerCase().trim(),
+          linkedin: values.linkedin || "",
+          github: values.github || "",
+          portfolio: values.portfolio || "",
+          honeypot: honeypot || undefined,
+          turnstileToken: turnstileToken || undefined,
+        },
       });
       setSuccess(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch {
-      setError("Something went wrong. Please try again or email us directly.");
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email us directly.";
+      setError(msg);
     } finally {
       setSubmitting(false);
     }
@@ -226,7 +252,7 @@ function CareerApplyPage() {
                 <Field label="Applying for *" error={errors.position?.message}>
                   <select {...register("position")} className="input">
                     <option value="">Select a position</option>
-                    {POSITIONS.map((p) => (
+                    {positions.map((p) => (
                       <option key={p} value={p}>
                         {p}
                       </option>
@@ -462,6 +488,16 @@ function CareerApplyPage() {
                   {error}
                 </div>
               )}
+
+              <HoneypotField
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+
+              <TurnstileWidget
+                onVerify={(token) => setTurnstileToken(token)}
+                onExpire={() => setTurnstileToken("")}
+              />
 
               <Button type="submit" disabled={submitting} size="lg">
                 {submitting ? "Submitting Application…" : "Submit Application"}

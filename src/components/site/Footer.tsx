@@ -12,6 +12,8 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { Logo } from "./Logo";
+import { NewsletterSignup } from "./NewsletterSignup";
+import { useWebsiteSettings } from "@/hooks/useWebsiteSettings";
 
 const COLS: {
   title: string;
@@ -57,77 +59,101 @@ const COLS: {
 ];
 
 export function Footer() {
+  const { settings } = useWebsiteSettings();
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="relative mt-20 border-t border-border/60 bg-background/60">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-electric/40 to-transparent" />
       <div className="container-px mx-auto max-w-7xl pb-10 pt-16">
+        <div className="mb-12">
+          <NewsletterSignup />
+        </div>
+
         <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
           {/* Brand Column */}
           <div className="space-y-5">
-            <Logo />
+            <Logo
+              companyName={settings.companyName}
+              logoUrl={settings.logoUrl}
+            />
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Vednix Technology is building innovative financial technology
-              solutions designed to simplify finance and improve financial
-              behaviour through intelligent digital experiences.
+              {settings.footerText}
             </p>
 
             <div className="space-y-2.5 text-sm text-muted-foreground">
-              <a
-                href="mailto:vednixtechnology@gmail.com"
-                className="flex items-center gap-2 transition hover:text-foreground"
-              >
-                <Mail className="h-4 w-4 text-emerald" />
-                vednixtechnology@gmail.com
-              </a>
-              <a
-                href="tel:+919039462506"
-                className="flex items-center gap-2 transition hover:text-foreground"
-              >
-                <Phone className="h-4 w-4 text-emerald" />
-                +91 90394 62506
-              </a>
-              <a
-                href="tel:+919131060960"
-                className="flex items-center gap-2 transition hover:text-foreground"
-              >
-                <Phone className="h-4 w-4 text-emerald" />
-                +91 91310 60960
-              </a>
-              <p className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-emerald" />
-                187 Dudhia, Indore, Madhya Pradesh — 452001
-              </p>
+              {settings.contactEmail && (
+                <a
+                  href={`mailto:${settings.contactEmail}`}
+                  className="flex items-center gap-2 transition hover:text-foreground"
+                >
+                  <Mail className="h-4 w-4 text-emerald" />
+                  {settings.contactEmail}
+                </a>
+              )}
+              {settings.contactPhone && (
+                <a
+                  href={`tel:${settings.contactPhone.replace(/\s+/g, "")}`}
+                  className="flex items-center gap-2 transition hover:text-foreground"
+                >
+                  <Phone className="h-4 w-4 text-emerald" />
+                  {settings.contactPhone}
+                </a>
+              )}
+              {settings.contactPhoneAlt && (
+                <a
+                  href={`tel:${settings.contactPhoneAlt.replace(/\s+/g, "")}`}
+                  className="flex items-center gap-2 transition hover:text-foreground"
+                >
+                  <Phone className="h-4 w-4 text-emerald" />
+                  {settings.contactPhoneAlt}
+                </a>
+              )}
+              {settings.address && (
+                <p className="flex items-start gap-2">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-emerald" />
+                  {settings.address}
+                </p>
+              )}
             </div>
 
             {/* Social Links */}
             <div className="flex flex-wrap gap-2 pt-1">
               <SocialLink
-                href="https://www.linkedin.com/company/vednix-technology/"
+                href={settings.linkedinUrl}
                 label="LinkedIn"
                 icon={<Linkedin className="h-4 w-4" />}
+                disabled={!settings.linkedinUrl}
               />
               <SocialLink
-                href="https://www.instagram.com/vednix_technology_pvt_ltd"
+                href={settings.instagramUrl}
                 label="Instagram"
                 icon={<Instagram className="h-4 w-4" />}
+                disabled={!settings.instagramUrl}
               />
               <SocialLink
-                href="#"
-                label="Twitter / X (coming soon)"
+                href={settings.twitterUrl}
+                label={
+                  settings.twitterUrl
+                    ? "Twitter / X"
+                    : "Twitter / X (coming soon)"
+                }
                 icon={<Twitter className="h-4 w-4" />}
-                disabled
+                disabled={!settings.twitterUrl}
               />
               <SocialLink
-                href="#"
-                label="YouTube (coming soon)"
+                href={settings.youtubeUrl}
+                label={
+                  settings.youtubeUrl ? "YouTube" : "YouTube (coming soon)"
+                }
                 icon={<Youtube className="h-4 w-4" />}
-                disabled
+                disabled={!settings.youtubeUrl}
               />
               <SocialLink
-                href="#"
-                label="GitHub (coming soon)"
+                href={settings.githubUrl}
+                label={settings.githubUrl ? "GitHub" : "GitHub (coming soon)"}
                 icon={<Github className="h-4 w-4" />}
-                disabled
+                disabled={!settings.githubUrl}
               />
             </div>
           </div>
@@ -176,7 +202,8 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row">
           <p className="text-xs text-muted-foreground">
-            © 2026 Vednix Technology Private Limited. All Rights Reserved.
+            © {currentYear} {settings.companyName} Private Limited. All Rights
+            Reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
             <Link to="/privacy" className="hover:text-foreground transition">

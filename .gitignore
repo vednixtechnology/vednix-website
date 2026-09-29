@@ -4,6 +4,10 @@ dist/
 .env
 .env.local
 .firebase/
+serviceAccountKey.json
 .DS_Store
 .vercel
 .env*
+.output/
+*-debug.log
+scratch/

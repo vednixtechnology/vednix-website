@@ -12,7 +12,7 @@ import {
   Eyebrow,
   Button,
 } from "@/components/site/primitives";
-import { save, emailExists } from "@/lib/submissions";
+import { saveWithEmailKey } from "@/lib/submissions";
 
 export const Route = createFileRoute("/early-access")({
   head: () => ({
@@ -55,12 +55,18 @@ const schema = z.object({
   }),
 });
 
+import { submitEarlyAccessForm } from "@/lib/api/publicSubmissions.functions";
+import { HoneypotField } from "@/components/site/HoneypotField";
+import { TurnstileWidget } from "@/components/site/TurnstileWidget";
+
 type FormValues = z.infer<typeof schema>;
 
 function EarlyAccessPage() {
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const {
     register,
@@ -74,26 +80,34 @@ function EarlyAccessPage() {
     try {
       const normalizedEmail = values.email.toLowerCase().trim();
 
-      // Prevent duplicate registrations
-      const alreadyRegistered = await emailExists(
-        "early_access_users",
-        normalizedEmail,
-      );
-      if (alreadyRegistered) {
+      await submitEarlyAccessForm({
+        data: {
+          ...values,
+          email: normalizedEmail,
+          honeypot: honeypot || undefined,
+          turnstileToken: turnstileToken || undefined,
+        },
+      });
+      navigate({ to: "/thank-you" });
+    } catch (err: unknown) {
+      if (
+        (err != null &&
+          typeof err === "object" &&
+          "code" in err &&
+          err.code === "permission-denied") ||
+        (err instanceof Error && err.message.includes("permission-denied"))
+      ) {
         setError(
           "This email is already registered for Early Access. We'll be in touch soon!",
         );
         setSubmitting(false);
         return;
       }
-
-      await save("early_access_users", {
-        ...values,
-        email: normalizedEmail,
-      });
-      navigate({ to: "/thank-you" });
-    } catch {
-      setError("Something went wrong. Please try again or email us directly.");
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email us directly.";
+      setError(msg);
       setSubmitting(false);
     }
   }
@@ -256,6 +270,16 @@ function EarlyAccessPage() {
                     {errors.consent.message}
                   </p>
                 )}
+
+                <HoneypotField
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+
+                <TurnstileWidget
+                  onVerify={(token) => setTurnstileToken(token)}
+                  onExpire={() => setTurnstileToken("")}
+                />
 
                 <Button type="submit" disabled={submitting} size="lg">
                   {submitting ? "Joining…" : "Join Early Access"}

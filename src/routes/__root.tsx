@@ -17,6 +17,8 @@ import { Footer } from "@/components/site/Footer";
 import { PageTransition } from "@/components/site/PageTransition";
 import { BackToTop } from "@/components/site/BackToTop";
 import { CookieConsent } from "@/components/site/CookieConsent";
+import { Toaster } from "@/components/ui/sonner";
+import { DEFAULT_SETTINGS, getWebsiteSettings } from "@/lib/admin/settings";
 
 function NotFoundComponent() {
   return (
@@ -94,98 +96,87 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
-    head: () => ({
-      meta: [
-        { charSet: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { name: "theme-color", content: "#050816" },
-        {
-          title:
-            "Vednix Technology — Building Intelligent Financial Infrastructure",
-        },
-        {
-          name: "description",
-          content:
-            "Vednix Technology is a fintech company building intelligent financial infrastructure powered by AI and behavioural innovation. SmartPocket is our flagship product.",
-        },
-        { name: "author", content: "Vednix Technology" },
-        { property: "og:site_name", content: "Vednix Technology" },
-        { property: "og:type", content: "website" },
-        {
-          property: "og:title",
-          content:
-            "Vednix Technology — Building Intelligent Financial Infrastructure",
-        },
-        {
-          property: "og:description",
-          content:
-            "Building the next generation of intelligent financial infrastructure for individuals, businesses, and institutions.",
-        },
-        { name: "twitter:card", content: "summary_large_image" },
-        {
-          name: "twitter:title",
-          content:
-            "Vednix Technology — Building Intelligent Financial Infrastructure",
-        },
-        {
-          name: "twitter:description",
-          content: "Building Intelligent Financial Infrastructure.",
-        },
-        {
-          property: "og:image",
-          content:
-            "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4a1a28b2-b950-44af-81c1-16dc19cbc7f8/id-preview-f2e0403f--ee846189-c04d-4d38-ab66-9ad1dc7f28a4.lovable.app-1781658337875.png",
-        },
-        {
-          name: "twitter:image",
-          content:
-            "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4a1a28b2-b950-44af-81c1-16dc19cbc7f8/id-preview-f2e0403f--ee846189-c04d-4d38-ab66-9ad1dc7f28a4.lovable.app-1781658337875.png",
-        },
-      ],
-      links: [
-        { rel: "stylesheet", href: appCss },
-        { rel: "icon", href: "/favicon.ico" },
-        { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        {
-          rel: "preconnect",
-          href: "https://fonts.gstatic.com",
-          crossOrigin: "anonymous",
-        },
-        {
-          rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Space+Grotesk:wght@500;600;700&display=swap",
-        },
-      ],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "Vednix Technology",
-            legalName: "Vednix Technology Private Limited",
-            url: "https://vednixtech.in",
-            email: "vednixtechnology@gmail.com",
-            telephone: ["+91-9039462506", "+91-9131060960"],
-            foundingDate: "2026-02",
-            description:
-              "Vednix Technology is building intelligent financial infrastructure through AI and behavioural innovation. SmartPocket is our flagship product.",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "187 Dudhia",
-              addressLocality: "Indore",
-              addressRegion: "Madhya Pradesh",
-              postalCode: "452001",
-              addressCountry: "IN",
-            },
-            sameAs: [
-              "https://www.linkedin.com/company/vednix-technology/",
-              "https://www.instagram.com/vednix_technology_pvt_ltd",
-            ],
-          }),
-        },
-      ],
-    }),
+    loader: async () => {
+      // Falls back to DEFAULT_SETTINGS (which mirror the original hardcoded
+      // content exactly) if Firestore is unreachable, so a network hiccup
+      // during SSR never breaks the page.
+      const settings = await getWebsiteSettings().catch(() => ({
+        ...DEFAULT_SETTINGS,
+        updatedAt: null,
+        updatedBy: null,
+      }));
+      return { settings };
+    },
+    head: ({ loaderData }) => {
+      const s = loaderData?.settings ?? DEFAULT_SETTINGS;
+      const title = s.seoDefaultTitle || DEFAULT_SETTINGS.seoDefaultTitle;
+      const description =
+        s.seoDefaultDescription || DEFAULT_SETTINGS.seoDefaultDescription;
+      const ogImage = s.defaultOgImageUrl || DEFAULT_SETTINGS.defaultOgImageUrl;
+      const favicon = s.faviconUrl || DEFAULT_SETTINGS.faviconUrl;
+
+      return {
+        meta: [
+          { charSet: "utf-8" },
+          { name: "viewport", content: "width=device-width, initial-scale=1" },
+          { name: "theme-color", content: "#050816" },
+          { title },
+          { name: "description", content: description },
+          { name: "author", content: s.companyName },
+          { property: "og:site_name", content: s.companyName },
+          { property: "og:type", content: "website" },
+          { property: "og:title", content: title },
+          { property: "og:description", content: description },
+          { name: "twitter:card", content: "summary_large_image" },
+          { name: "twitter:title", content: title },
+          { name: "twitter:description", content: description },
+          { property: "og:image", content: ogImage },
+          { name: "twitter:image", content: ogImage },
+          ...(s.googleAnalyticsId
+            ? [{ name: "google-analytics-id", content: s.googleAnalyticsId }]
+            : []),
+        ],
+        links: [
+          { rel: "stylesheet", href: appCss },
+          { rel: "icon", href: favicon },
+          { rel: "preconnect", href: "https://fonts.googleapis.com" },
+          {
+            rel: "preconnect",
+            href: "https://fonts.gstatic.com",
+            crossOrigin: "anonymous",
+          },
+          {
+            rel: "stylesheet",
+            href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Space+Grotesk:wght@500;600;700&display=swap",
+          },
+        ],
+        scripts: [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: s.companyName,
+              legalName: `${s.companyName} Private Limited`,
+              url: "https://vednixtech.in",
+              email: s.contactEmail || DEFAULT_SETTINGS.contactEmail,
+              telephone: [s.contactPhone, s.contactPhoneAlt].filter(Boolean),
+              foundingDate: "2026-02",
+              description,
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "187 Dudhia",
+                addressLocality: "Indore",
+                addressRegion: "Madhya Pradesh",
+                postalCode: "452001",
+                addressCountry: "IN",
+              },
+              sameAs: [s.linkedinUrl, s.instagramUrl].filter(Boolean),
+            }),
+          },
+        ],
+      };
+    },
     shellComponent: RootShell,
     component: RootComponent,
     notFoundComponent: NotFoundComponent,
@@ -218,6 +209,20 @@ function ScrollToTop() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
+
+  if (isAdminRoute) {
+    // The /admin CMS has its own dashboard shell (sidebar, header, login
+    // screen) — none of the public site's Navbar/Footer/CookieConsent apply.
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        <Toaster />
+      </QueryClientProvider>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <ScrollToTop />
@@ -231,6 +236,7 @@ function RootComponent() {
         <Footer />
         <BackToTop />
         <CookieConsent />
+        <Toaster />
       </div>
     </QueryClientProvider>
   );
