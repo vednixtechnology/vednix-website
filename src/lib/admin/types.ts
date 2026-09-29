@@ -167,7 +167,7 @@ export interface WebsiteSettings {
   defaultOgImageUrl: string;
   robotsTxt: string;
   sitemapEnabled: boolean;
-  updatedAt: Timestamp | null;
+  updatedAt: Timestamp | string | null;
   updatedBy: string | null;
 }
 

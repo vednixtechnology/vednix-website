@@ -53,7 +53,21 @@ export async function getWebsiteSettings(): Promise<WebsiteSettings> {
     return { ...DEFAULT_SETTINGS, updatedAt: null, updatedBy: null };
   }
   const data = snap.data();
-  return { ...DEFAULT_SETTINGS, ...data } as WebsiteSettings;
+  // Ensure all values are JSON/Seroval-serializable so SSR hydration never fails
+  const rawUpdatedAt = data.updatedAt;
+  const updatedAt =
+    rawUpdatedAt && typeof rawUpdatedAt.toDate === "function"
+      ? (rawUpdatedAt.toDate().toISOString() as string)
+      : typeof rawUpdatedAt === "string"
+        ? rawUpdatedAt
+        : null;
+
+  return {
+    ...DEFAULT_SETTINGS,
+    ...data,
+    updatedAt,
+    updatedBy: typeof data.updatedBy === "string" ? data.updatedBy : null,
+  };
 }
 
 export async function updateWebsiteSettings(
