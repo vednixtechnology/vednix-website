@@ -10,7 +10,7 @@ import {
 import { listPublishedUpdates } from "@/lib/admin/productUpdates";
 import type { ProductUpdate } from "@/lib/admin/types";
 
-export const Route = createFileRoute("/product-updates")({
+export const Route = createFileRoute("/product-updates/")({
   head: () => ({
     meta: [
       { title: "Product Updates — Vednix Technology" },

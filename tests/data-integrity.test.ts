@@ -1,4 +1,6 @@
 import assert from "node:assert";
+import fs from "node:fs";
+import path from "node:path";
 import { slugify, computeReadingTime } from "../src/lib/admin/blogs";
 import { sanitizeHtml } from "../src/lib/sanitize";
 import { abuseLimiter } from "../src/lib/server/rateLimiter.server";
@@ -706,6 +708,76 @@ async function runDataIntegrityTests() {
         assert(!output.includes("<script>"), "Script tag stripped");
         assert(!output.includes("onclick"), "onclick event handler stripped");
         assert(output.includes('class="cms-color-emerald"'), "Approved class remains safe");
+      },
+    );
+
+    console.log("\nSuite 8: CMS Dynamic Route Architecture & Layout Isolation (P0)");
+
+    await record(
+      "TanStack Router route tree contains no layout hierarchy swallowing dynamic content routes",
+      () => {
+        const routeTreePath = path.resolve(process.cwd(), "src/routeTree.gen.ts");
+        assert(fs.existsSync(routeTreePath), "routeTree.gen.ts must exist");
+        const content = fs.readFileSync(routeTreePath, "utf-8");
+
+        // Must not treat listing routes as layout parents with children
+        assert(!content.includes("InsightsRouteWithChildren"), "InsightsRouteWithChildren must not exist");
+        assert(!content.includes("ProductUpdatesRouteWithChildren"), "ProductUpdatesRouteWithChildren must not exist");
+        assert(!content.includes("PressRouteWithChildren"), "PressRouteWithChildren must not exist");
+      },
+    );
+
+    await record(
+      "Public CMS detail routes are direct siblings under rootRouteImport",
+      () => {
+        const routeTreePath = path.resolve(process.cwd(), "src/routeTree.gen.ts");
+        const content = fs.readFileSync(routeTreePath, "utf-8");
+
+        assert(content.includes("id: '/insights/$slug'"), "/insights/$slug must be registered");
+        assert(content.includes("id: '/product-updates/$slug'"), "/product-updates/$slug must be registered");
+        assert(content.includes("id: '/press/$slug'"), "/press/$slug must be registered");
+
+        // Verify rootRouteChildren array includes all 3 detail routes and index routes
+        assert(content.includes("InsightsSlugRoute: InsightsSlugRoute"), "rootRouteChildren contains InsightsSlugRoute");
+        assert(content.includes("ProductUpdatesSlugRoute: ProductUpdatesSlugRoute"), "rootRouteChildren contains ProductUpdatesSlugRoute");
+        assert(content.includes("PressSlugRoute: PressSlugRoute"), "rootRouteChildren contains PressSlugRoute");
+        assert(content.includes("InsightsIndexRoute: InsightsIndexRoute"), "rootRouteChildren contains InsightsIndexRoute");
+        assert(content.includes("ProductUpdatesIndexRoute: ProductUpdatesIndexRoute"), "rootRouteChildren contains ProductUpdatesIndexRoute");
+        assert(content.includes("PressIndexRoute: PressIndexRoute"), "rootRouteChildren contains PressIndexRoute");
+      },
+    );
+
+    await record(
+      "Public CMS route files exist in correct index naming pattern",
+      () => {
+        const routesDir = path.resolve(process.cwd(), "src/routes");
+        assert(fs.existsSync(path.join(routesDir, "insights.index.tsx")), "insights.index.tsx must exist");
+        assert(fs.existsSync(path.join(routesDir, "product-updates.index.tsx")), "product-updates.index.tsx must exist");
+        assert(fs.existsSync(path.join(routesDir, "press.index.tsx")), "press.index.tsx must exist");
+
+        // Ensure bare parent layout files without outlet do NOT exist
+        assert(!fs.existsSync(path.join(routesDir, "insights.tsx")), "insights.tsx must not exist");
+        assert(!fs.existsSync(path.join(routesDir, "product-updates.tsx")), "product-updates.tsx must not exist");
+        assert(!fs.existsSync(path.join(routesDir, "press.tsx")), "press.tsx must not exist");
+      },
+    );
+
+    await record(
+      "Listing card link targets strictly match registered TanStack Router routes",
+      () => {
+        const routesDir = path.resolve(process.cwd(), "src/routes");
+        const insightsContent = fs.readFileSync(path.join(routesDir, "insights.index.tsx"), "utf-8");
+        const updatesContent = fs.readFileSync(path.join(routesDir, "product-updates.index.tsx"), "utf-8");
+        const pressContent = fs.readFileSync(path.join(routesDir, "press.index.tsx"), "utf-8");
+
+        assert(insightsContent.includes('to="/insights/$slug"'), "Insights links to /insights/$slug");
+        assert(insightsContent.includes("params={{ slug: post.slug }}"), "Insights passes slug param");
+
+        assert(updatesContent.includes('to="/product-updates/$slug"'), "Updates links to /product-updates/$slug");
+        assert(updatesContent.includes("params={{ slug: update.slug }}"), "Updates passes slug param");
+
+        assert(pressContent.includes('to="/press/$slug"'), "Press links to /press/$slug");
+        assert(pressContent.includes("params={{ slug: release.slug }}"), "Press passes slug param");
       },
     );
   }

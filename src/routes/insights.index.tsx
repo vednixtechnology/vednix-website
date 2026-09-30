@@ -12,7 +12,7 @@ import {
 import { listPublishedBlogs } from "@/lib/admin/blogs";
 import type { BlogPost } from "@/lib/admin/types";
 
-export const Route = createFileRoute("/insights")({
+export const Route = createFileRoute("/insights/")({
   head: () => ({
     meta: [
       { title: "Insights — Vednix Technology" },
