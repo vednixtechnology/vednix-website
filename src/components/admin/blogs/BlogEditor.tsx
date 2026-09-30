@@ -587,7 +587,7 @@ export function BlogEditor({ initial }: BlogEditorProps) {
             />
           )}
           <div
-            className="prose prose-sm max-w-none"
+            className="prose prose-invert prose-sm max-w-none"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(form.content) }}
           />
         </DialogContent>

@@ -83,14 +83,39 @@ const SANITIZE_CONFIG: Config = {
   RETURN_TRUSTED_TYPE: false,
 };
 
-// Configure DOMPurify hook to ensure all target="_blank" links have rel="noopener noreferrer"
+/** Approved CMS semantic utility classes for rich-text color and highlight formatting. */
+export const ALLOWED_CMS_CLASSES = new Set([
+  "cms-color-emerald",
+  "cms-color-electric",
+  "cms-color-foreground",
+  "cms-color-muted",
+  "cms-highlight-emerald",
+  "cms-highlight-electric",
+]);
+
+// Configure DOMPurify hook to ensure all target="_blank" links have rel="noopener noreferrer",
+// and strictly enforce that only whitelisted CMS semantic classes survive on any element.
 if (typeof DOMPurify.addHook === "function") {
   DOMPurify.addHook("afterSanitizeAttributes", (node) => {
     if (node.tagName === "A" && node.getAttribute("target") === "_blank") {
       node.setAttribute("rel", "noopener noreferrer");
     }
+
+    if (node.hasAttribute("class")) {
+      const rawClasses = node.getAttribute("class") || "";
+      const validClasses = rawClasses
+        .split(/\s+/)
+        .filter((cls) => ALLOWED_CMS_CLASSES.has(cls));
+
+      if (validClasses.length > 0) {
+        node.setAttribute("class", validClasses.join(" "));
+      } else {
+        node.removeAttribute("class");
+      }
+    }
   });
 }
+
 
 /**
  * Sanitizes an untrusted HTML string for safe rendering in the browser.

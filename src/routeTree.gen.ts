@@ -16,11 +16,8 @@ import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as SmartpocketRouteImport } from './routes/smartpocket'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
-import { Route as ProductUpdatesRouteImport } from './routes/product-updates'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PressRouteImport } from './routes/press'
 import { Route as InvestorRelationsRouteImport } from './routes/investor-relations'
-import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as ForBanksRouteImport } from './routes/for-banks'
 import { Route as EarlyAccessRouteImport } from './routes/early-access'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
@@ -31,6 +28,9 @@ import { Route as CareerApplyRouteImport } from './routes/career-apply'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductUpdatesIndexRouteImport } from './routes/product-updates.index'
+import { Route as PressIndexRouteImport } from './routes/press.index'
+import { Route as InsightsIndexRouteImport } from './routes/insights.index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ProductUpdatesSlugRouteImport } from './routes/product-updates.$slug'
 import { Route as PressSlugRouteImport } from './routes/press.$slug'
@@ -91,29 +91,14 @@ const ProductsRoute = ProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductUpdatesRoute = ProductUpdatesRouteImport.update({
-  id: '/product-updates',
-  path: '/product-updates',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PressRoute = PressRouteImport.update({
-  id: '/press',
-  path: '/press',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const InvestorRelationsRoute = InvestorRelationsRouteImport.update({
   id: '/investor-relations',
   path: '/investor-relations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InsightsRoute = InsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForBanksRoute = ForBanksRouteImport.update({
@@ -166,25 +151,40 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductUpdatesIndexRoute = ProductUpdatesIndexRouteImport.update({
+  id: '/product-updates/',
+  path: '/product-updates/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressIndexRoute = PressIndexRouteImport.update({
+  id: '/press/',
+  path: '/press/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsIndexRoute = InsightsIndexRouteImport.update({
+  id: '/insights/',
+  path: '/insights/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const ProductUpdatesSlugRoute = ProductUpdatesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ProductUpdatesRoute,
+  id: '/product-updates/$slug',
+  path: '/product-updates/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PressSlugRoute = PressSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => PressRoute,
+  id: '/press/$slug',
+  path: '/press/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const InsightsSlugRoute = InsightsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => InsightsRoute,
+  id: '/insights/$slug',
+  path: '/insights/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
@@ -298,11 +298,8 @@ export interface FileRoutesByFullPath {
   '/disclaimer': typeof DisclaimerRoute
   '/early-access': typeof EarlyAccessRoute
   '/for-banks': typeof ForBanksRoute
-  '/insights': typeof InsightsRouteWithChildren
   '/investor-relations': typeof InvestorRelationsRoute
-  '/press': typeof PressRouteWithChildren
   '/privacy': typeof PrivacyRoute
-  '/product-updates': typeof ProductUpdatesRouteWithChildren
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/smartpocket': typeof SmartpocketRoute
@@ -315,6 +312,9 @@ export interface FileRoutesByFullPath {
   '/press/$slug': typeof PressSlugRoute
   '/product-updates/$slug': typeof ProductUpdatesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/insights/': typeof InsightsIndexRoute
+  '/press/': typeof PressIndexRoute
+  '/product-updates/': typeof ProductUpdatesIndexRoute
   '/admin/blogs/$blogId': typeof AdminBlogsBlogIdRoute
   '/admin/blogs/new': typeof AdminBlogsNewRoute
   '/admin/careers/$jobId': typeof AdminCareersJobIdRoute
@@ -345,11 +345,8 @@ export interface FileRoutesByTo {
   '/disclaimer': typeof DisclaimerRoute
   '/early-access': typeof EarlyAccessRoute
   '/for-banks': typeof ForBanksRoute
-  '/insights': typeof InsightsRouteWithChildren
   '/investor-relations': typeof InvestorRelationsRoute
-  '/press': typeof PressRouteWithChildren
   '/privacy': typeof PrivacyRoute
-  '/product-updates': typeof ProductUpdatesRouteWithChildren
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/smartpocket': typeof SmartpocketRoute
@@ -362,6 +359,9 @@ export interface FileRoutesByTo {
   '/press/$slug': typeof PressSlugRoute
   '/product-updates/$slug': typeof ProductUpdatesSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/insights': typeof InsightsIndexRoute
+  '/press': typeof PressIndexRoute
+  '/product-updates': typeof ProductUpdatesIndexRoute
   '/admin/blogs/$blogId': typeof AdminBlogsBlogIdRoute
   '/admin/blogs/new': typeof AdminBlogsNewRoute
   '/admin/careers/$jobId': typeof AdminCareersJobIdRoute
@@ -394,11 +394,8 @@ export interface FileRoutesById {
   '/disclaimer': typeof DisclaimerRoute
   '/early-access': typeof EarlyAccessRoute
   '/for-banks': typeof ForBanksRoute
-  '/insights': typeof InsightsRouteWithChildren
   '/investor-relations': typeof InvestorRelationsRoute
-  '/press': typeof PressRouteWithChildren
   '/privacy': typeof PrivacyRoute
-  '/product-updates': typeof ProductUpdatesRouteWithChildren
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/smartpocket': typeof SmartpocketRoute
@@ -411,6 +408,9 @@ export interface FileRoutesById {
   '/press/$slug': typeof PressSlugRoute
   '/product-updates/$slug': typeof ProductUpdatesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/insights/': typeof InsightsIndexRoute
+  '/press/': typeof PressIndexRoute
+  '/product-updates/': typeof ProductUpdatesIndexRoute
   '/admin/blogs/$blogId': typeof AdminBlogsBlogIdRoute
   '/admin/blogs/new': typeof AdminBlogsNewRoute
   '/admin/careers/$jobId': typeof AdminCareersJobIdRoute
@@ -444,11 +444,8 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/early-access'
     | '/for-banks'
-    | '/insights'
     | '/investor-relations'
-    | '/press'
     | '/privacy'
-    | '/product-updates'
     | '/products'
     | '/sitemap.xml'
     | '/smartpocket'
@@ -461,6 +458,9 @@ export interface FileRouteTypes {
     | '/press/$slug'
     | '/product-updates/$slug'
     | '/admin/'
+    | '/insights/'
+    | '/press/'
+    | '/product-updates/'
     | '/admin/blogs/$blogId'
     | '/admin/blogs/new'
     | '/admin/careers/$jobId'
@@ -491,11 +491,8 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/early-access'
     | '/for-banks'
-    | '/insights'
     | '/investor-relations'
-    | '/press'
     | '/privacy'
-    | '/product-updates'
     | '/products'
     | '/sitemap.xml'
     | '/smartpocket'
@@ -508,6 +505,9 @@ export interface FileRouteTypes {
     | '/press/$slug'
     | '/product-updates/$slug'
     | '/admin'
+    | '/insights'
+    | '/press'
+    | '/product-updates'
     | '/admin/blogs/$blogId'
     | '/admin/blogs/new'
     | '/admin/careers/$jobId'
@@ -539,11 +539,8 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/early-access'
     | '/for-banks'
-    | '/insights'
     | '/investor-relations'
-    | '/press'
     | '/privacy'
-    | '/product-updates'
     | '/products'
     | '/sitemap.xml'
     | '/smartpocket'
@@ -556,6 +553,9 @@ export interface FileRouteTypes {
     | '/press/$slug'
     | '/product-updates/$slug'
     | '/admin/'
+    | '/insights/'
+    | '/press/'
+    | '/product-updates/'
     | '/admin/blogs/$blogId'
     | '/admin/blogs/new'
     | '/admin/careers/$jobId'
@@ -588,11 +588,8 @@ export interface RootRouteChildren {
   DisclaimerRoute: typeof DisclaimerRoute
   EarlyAccessRoute: typeof EarlyAccessRoute
   ForBanksRoute: typeof ForBanksRoute
-  InsightsRoute: typeof InsightsRouteWithChildren
   InvestorRelationsRoute: typeof InvestorRelationsRoute
-  PressRoute: typeof PressRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
-  ProductUpdatesRoute: typeof ProductUpdatesRouteWithChildren
   ProductsRoute: typeof ProductsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SmartpocketRoute: typeof SmartpocketRoute
@@ -600,6 +597,12 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ThankYouRoute: typeof ThankYouRoute
   TrustCenterRoute: typeof TrustCenterRoute
+  InsightsSlugRoute: typeof InsightsSlugRoute
+  PressSlugRoute: typeof PressSlugRoute
+  ProductUpdatesSlugRoute: typeof ProductUpdatesSlugRoute
+  InsightsIndexRoute: typeof InsightsIndexRoute
+  PressIndexRoute: typeof PressIndexRoute
+  ProductUpdatesIndexRoute: typeof ProductUpdatesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -653,13 +656,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/product-updates': {
-      id: '/product-updates'
-      path: '/product-updates'
-      fullPath: '/product-updates'
-      preLoaderRoute: typeof ProductUpdatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -667,25 +663,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/press': {
-      id: '/press'
-      path: '/press'
-      fullPath: '/press'
-      preLoaderRoute: typeof PressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/investor-relations': {
       id: '/investor-relations'
       path: '/investor-relations'
       fullPath: '/investor-relations'
       preLoaderRoute: typeof InvestorRelationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insights': {
-      id: '/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/for-banks': {
@@ -758,6 +740,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/product-updates/': {
+      id: '/product-updates/'
+      path: '/product-updates'
+      fullPath: '/product-updates/'
+      preLoaderRoute: typeof ProductUpdatesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press/': {
+      id: '/press/'
+      path: '/press'
+      fullPath: '/press/'
+      preLoaderRoute: typeof PressIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights/': {
+      id: '/insights/'
+      path: '/insights'
+      fullPath: '/insights/'
+      preLoaderRoute: typeof InsightsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -767,24 +770,24 @@ declare module '@tanstack/react-router' {
     }
     '/product-updates/$slug': {
       id: '/product-updates/$slug'
-      path: '/$slug'
+      path: '/product-updates/$slug'
       fullPath: '/product-updates/$slug'
       preLoaderRoute: typeof ProductUpdatesSlugRouteImport
-      parentRoute: typeof ProductUpdatesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/press/$slug': {
       id: '/press/$slug'
-      path: '/$slug'
+      path: '/press/$slug'
       fullPath: '/press/$slug'
       preLoaderRoute: typeof PressSlugRouteImport
-      parentRoute: typeof PressRoute
+      parentRoute: typeof rootRouteImport
     }
     '/insights/$slug': {
       id: '/insights/$slug'
-      path: '/$slug'
+      path: '/insights/$slug'
       fullPath: '/insights/$slug'
       preLoaderRoute: typeof InsightsSlugRouteImport
-      parentRoute: typeof InsightsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/login': {
       id: '/admin/login'
@@ -981,40 +984,6 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
   AdminRouteRouteChildren,
 )
 
-interface InsightsRouteChildren {
-  InsightsSlugRoute: typeof InsightsSlugRoute
-}
-
-const InsightsRouteChildren: InsightsRouteChildren = {
-  InsightsSlugRoute: InsightsSlugRoute,
-}
-
-const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
-  InsightsRouteChildren,
-)
-
-interface PressRouteChildren {
-  PressSlugRoute: typeof PressSlugRoute
-}
-
-const PressRouteChildren: PressRouteChildren = {
-  PressSlugRoute: PressSlugRoute,
-}
-
-const PressRouteWithChildren = PressRoute._addFileChildren(PressRouteChildren)
-
-interface ProductUpdatesRouteChildren {
-  ProductUpdatesSlugRoute: typeof ProductUpdatesSlugRoute
-}
-
-const ProductUpdatesRouteChildren: ProductUpdatesRouteChildren = {
-  ProductUpdatesSlugRoute: ProductUpdatesSlugRoute,
-}
-
-const ProductUpdatesRouteWithChildren = ProductUpdatesRoute._addFileChildren(
-  ProductUpdatesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
@@ -1026,11 +995,8 @@ const rootRouteChildren: RootRouteChildren = {
   DisclaimerRoute: DisclaimerRoute,
   EarlyAccessRoute: EarlyAccessRoute,
   ForBanksRoute: ForBanksRoute,
-  InsightsRoute: InsightsRouteWithChildren,
   InvestorRelationsRoute: InvestorRelationsRoute,
-  PressRoute: PressRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
-  ProductUpdatesRoute: ProductUpdatesRouteWithChildren,
   ProductsRoute: ProductsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SmartpocketRoute: SmartpocketRoute,
@@ -1038,6 +1004,12 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ThankYouRoute: ThankYouRoute,
   TrustCenterRoute: TrustCenterRoute,
+  InsightsSlugRoute: InsightsSlugRoute,
+  PressSlugRoute: PressSlugRoute,
+  ProductUpdatesSlugRoute: ProductUpdatesSlugRoute,
+  InsightsIndexRoute: InsightsIndexRoute,
+  PressIndexRoute: PressIndexRoute,
+  ProductUpdatesIndexRoute: ProductUpdatesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

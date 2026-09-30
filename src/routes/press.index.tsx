@@ -10,7 +10,7 @@ import {
 import { listPublishedPressReleases } from "@/lib/admin/pressReleases";
 import type { PressRelease } from "@/lib/admin/types";
 
-export const Route = createFileRoute("/press")({
+export const Route = createFileRoute("/press/")({
   head: () => ({
     meta: [
       { title: "Press — Vednix Technology" },
