@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import { slugify, computeReadingTime } from "../src/lib/admin/blogs";
+import { sanitizeHtml } from "../src/lib/sanitize";
 import { abuseLimiter } from "../src/lib/server/rateLimiter.server";
 import type {
   BlogStatus,
@@ -595,6 +596,116 @@ async function runDataIntegrityTests() {
           !visiblePress.some((p) => p.slug === "unannounced-acquisition"),
           "Draft press release hidden",
         );
+      },
+    );
+  }
+
+  // -------------------------------------------------------------------
+  // Suite 6: Rich-Text Color & Sanitization Security
+  // -------------------------------------------------------------------
+  console.log("\nSuite 6: Rich-Text Color & Sanitization Security");
+  {
+    await record(
+      "Approved CMS color classes survive sanitization",
+      () => {
+        const approvedClasses = [
+          "cms-color-emerald",
+          "cms-color-electric",
+          "cms-color-foreground",
+          "cms-color-muted",
+          "cms-highlight-emerald",
+          "cms-highlight-electric",
+        ];
+        for (const cls of approvedClasses) {
+          const input = `<p><span class="${cls}">Sample formatted text</span></p>`;
+          const output = sanitizeHtml(input);
+          assert(
+            output.includes(`class="${cls}"`),
+            `Expected ${cls} to survive sanitization, got: ${output}`,
+          );
+        }
+      },
+    );
+
+    await record(
+      "Arbitrary inline style attributes are strictly removed",
+      () => {
+        const malicious = '<p><span style="color: red; position: fixed;">Red text</span></p>';
+        const output = sanitizeHtml(malicious);
+        assert(
+          !output.includes("style="),
+          `Inline styles must be stripped, got: ${output}`,
+        );
+        assert(
+          !output.includes("position: fixed"),
+          `CSS injection must be removed, got: ${output}`,
+        );
+      },
+    );
+
+    await record(
+      "Unauthorized/malicious CSS classes are removed from elements",
+      () => {
+        const malicious = '<p><span class="malicious-class evil-injection">Injected text</span></p>';
+        const output = sanitizeHtml(malicious);
+        assert(
+          !output.includes("malicious-class"),
+          `Unauthorized class must be stripped, got: ${output}`,
+        );
+        assert(
+          !output.includes("evil-injection"),
+          `Unauthorized class must be stripped, got: ${output}`,
+        );
+        assert(
+          !output.includes('class=""'),
+          `Empty class attribute should be removed, got: ${output}`,
+        );
+      },
+    );
+
+    await record(
+      "Mixed classes preserve only approved CMS classes",
+      () => {
+        const mixed = '<p><span class="cms-color-emerald malicious-class">Styled text</span></p>';
+        const output = sanitizeHtml(mixed);
+        assert(
+          output.includes('class="cms-color-emerald"'),
+          `Approved class must remain, got: ${output}`,
+        );
+        assert(
+          !output.includes("malicious-class"),
+          `Malicious class must be removed, got: ${output}`,
+        );
+      },
+    );
+
+    await record(
+      "Existing semantic HTML structure is completely preserved",
+      () => {
+        const standardContent = `
+          <h2>Heading 2</h2>
+          <p>This is a paragraph with <strong>bold</strong>, <em>italic</em>, and <a href="https://vednixtech.in" target="_blank">a link</a>.</p>
+          <ul><li>List item 1</li><li>List item 2</li></ul>
+          <blockquote><p>Quote text</p></blockquote>
+        `.trim();
+        const output = sanitizeHtml(standardContent);
+        assert(output.includes("<h2>Heading 2</h2>"), "Heading preserved");
+        assert(output.includes("<strong>bold</strong>"), "Bold preserved");
+        assert(output.includes("<em>italic</em>"), "Italic preserved");
+        assert(output.includes("rel=\"noopener noreferrer\""), "Safe rel added on target=_blank link");
+        assert(output.includes("<blockquote><p>Quote text</p></blockquote>"), "Blockquote preserved");
+        assert(output.includes("<ul><li>List item 1</li><li>List item 2</li></ul>"), "Lists preserved");
+      },
+    );
+
+    await record(
+      "Script tags and dangerous event handlers are completely removed",
+      () => {
+        const attack = '<p><span class="cms-color-emerald" onclick="alert(1)">Text</span><script>alert(2)</script></p>';
+        const output = sanitizeHtml(attack);
+        assert(!output.includes("<script>"), "Script tag stripped");
+        assert(!output.includes("onclick"), "onclick event handler stripped");
+        assert(output.includes('class="cms-color-emerald"'), "Approved class remains safe");
       },
     );
   }

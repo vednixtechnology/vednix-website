@@ -16,9 +16,22 @@ import {
   ImageIcon,
   Undo,
   Redo,
+  Palette,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import {
+  CmsColorMark,
+  CmsHighlightMark,
+} from "./tiptapColorExtension";
 
 interface RichTextEditorProps {
   value: string;
@@ -43,16 +56,19 @@ export function RichTextEditor({
       Placeholder.configure({
         placeholder: "Write your article...",
       }),
+      CmsColorMark,
+      CmsHighlightMark,
     ],
     content: value,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm md:prose-base max-w-none focus:outline-none min-h-[320px] px-4 py-3",
+          "prose prose-invert prose-sm md:prose-base max-w-none focus:outline-none min-h-[320px] px-4 py-3",
       },
     },
   });
+
 
   if (!editor) return null;
 
@@ -158,6 +174,93 @@ export function RichTextEditor({
           <Quote className="h-4 w-4" />,
           "Quote",
         )}
+        <div className="mx-1 h-5 w-px bg-border" />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              title="Text Color & Highlights"
+              className={cn(
+                "grid h-8 w-8 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground",
+                (editor.isActive("cmsColor") ||
+                  editor.isActive("cmsHighlight")) &&
+                  "bg-muted text-foreground",
+              )}
+            >
+              <Palette className="h-4 w-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="w-48 border-border bg-card shadow-xl"
+          >
+            <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground">
+              Text Color
+            </DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().unsetCmsColor().run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-full border border-border bg-transparent" />
+              Default (Inherit)
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setCmsColor("emerald").run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-full bg-emerald" />
+              Primary Emerald
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setCmsColor("electric").run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-full bg-electric" />
+              Accent Electric
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setCmsColor("foreground").run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-full bg-foreground" />
+              High Contrast (White)
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setCmsColor("muted").run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-full bg-muted-foreground" />
+              Muted Text
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator className="my-1 bg-border/60" />
+
+            <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground">
+              Text Highlight
+            </DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().unsetCmsHighlight().run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-sm border border-border" />
+              None (Clear)
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setCmsHighlight("emerald").run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-sm border border-emerald/50 bg-emerald/30" />
+              Emerald Highlight
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setCmsHighlight("electric").run()}
+              className="flex cursor-pointer items-center gap-2 text-xs"
+            >
+              <span className="h-3 w-3 rounded-sm border border-electric/50 bg-electric/30" />
+              Electric Highlight
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <div className="mx-1 h-5 w-px bg-border" />
         {toolbarButton(
           editor.isActive("link"),

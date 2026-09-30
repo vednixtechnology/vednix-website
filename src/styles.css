@@ -418,3 +418,32 @@
 @utility animate-fade-in-up {
   animation: fade-in-up 0.3s ease forwards;
 }
+
+/* =========================================================
+   CMS Rich-Text Controlled Semantic Color System
+   ========================================================= */
+.cms-color-emerald {
+  color: var(--emerald) !important;
+}
+.cms-color-electric {
+  color: var(--electric) !important;
+}
+.cms-color-foreground {
+  color: var(--foreground) !important;
+}
+.cms-color-muted {
+  color: var(--muted-foreground) !important;
+}
+
+.cms-highlight-emerald {
+  background-color: oklch(0.74 0.17 162 / 18%) !important;
+  color: var(--emerald) !important;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+}
+.cms-highlight-electric {
+  background-color: oklch(0.66 0.2 255 / 18%) !important;
+  color: var(--electric) !important;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+}
