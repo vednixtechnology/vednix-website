@@ -4,6 +4,7 @@ import { Loader2, Mail, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/site/primitives";
 import { submitNewsletterForm } from "@/lib/api/publicSubmissions.functions";
 import { HoneypotField } from "@/components/site/HoneypotField";
+import { TurnstileWidget } from "@/components/site/TurnstileWidget";
 
 const emailSchema = z
   .string()
@@ -15,6 +16,7 @@ type Status = "idle" | "loading" | "success" | "duplicate" | "error";
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -38,11 +40,13 @@ export function NewsletterSignup() {
           email: normalizedEmail,
           source: "footer",
           honeypot: honeypot || undefined,
+          turnstileToken: turnstileToken || undefined,
         },
       });
       setStatus("success");
       setEmail("");
       setHoneypot("");
+      setTurnstileToken("");
     } catch (err: unknown) {
       if (
         (err != null &&
@@ -79,47 +83,53 @@ export function NewsletterSignup() {
 
         <form
           onSubmit={handleSubmit}
-          className="flex w-full max-w-md flex-col gap-3 sm:flex-row sm:items-start"
+          className="flex w-full max-w-md flex-col gap-3"
           noValidate
         >
-          <div className="flex-1">
-            <label htmlFor="newsletter-email" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="newsletter-email"
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (status !== "idle" && status !== "loading")
-                  setStatus("idle");
-              }}
-              placeholder="you@company.com"
-              aria-invalid={status === "error"}
-              aria-describedby="newsletter-status"
-              className="h-11 w-full rounded-xl border border-border bg-background/60 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-emerald focus:outline-none focus:ring-2 focus:ring-emerald/30"
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-start">
+            <div className="flex-1">
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="newsletter-email"
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (status !== "idle" && status !== "loading")
+                    setStatus("idle");
+                }}
+                placeholder="you@company.com"
+                aria-invalid={status === "error"}
+                aria-describedby="newsletter-status"
+                className="h-11 w-full rounded-xl border border-border bg-background/60 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-emerald focus:outline-none focus:ring-2 focus:ring-emerald/30"
+              />
+            </div>
+            <HoneypotField
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
             />
+            <Button
+              type="submit"
+              variant="primary"
+              className="h-11 shrink-0 whitespace-nowrap"
+              disabled={status === "loading"}
+            >
+              {status === "loading" ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Subscribe"
+              )}
+            </Button>
           </div>
-          <HoneypotField
-            value={honeypot}
-            onChange={(e) => setHoneypot(e.target.value)}
+          <TurnstileWidget
+            onVerify={(token) => setTurnstileToken(token)}
+            onExpire={() => setTurnstileToken("")}
           />
-          <Button
-            type="submit"
-            variant="primary"
-            className="h-11 shrink-0 whitespace-nowrap"
-            disabled={status === "loading"}
-          >
-            {status === "loading" ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              "Subscribe"
-            )}
-          </Button>
         </form>
       </div>
 
